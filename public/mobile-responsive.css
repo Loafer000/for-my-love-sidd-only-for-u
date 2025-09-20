@@ -11,36 +11,7 @@
         padding: 0 15px;
     }
 
-    /* Navigation */
-    .navbar {
-        padding: 10px;
-    }
-
-    .navbar-nav {
-        flex-direction: column;
-        width: 100%;
-        position: fixed;
-        top: 60px;
-        left: -100%;
-        background: #fff;
-        height: calc(100vh - 60px);
-        transition: 0.3s;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .navbar-nav.active {
-        left: 0;
-    }
-
-    .nav-item {
-        width: 100%;
-        padding: 15px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .hamburger-menu {
-        display: block;
-    }
+    /* Navigation styles are now handled in navbar.css for consistency */
 
     /* Property Cards */
     .property-card {
