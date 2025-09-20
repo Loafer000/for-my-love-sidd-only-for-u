@@ -1,0 +1,243 @@
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    /* General */
+    body {
+        font-size: 16px;
+        overflow-x: hidden;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    /* Navigation */
+    .navbar {
+        padding: 10px;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+        position: fixed;
+        top: 60px;
+        left: -100%;
+        background: #fff;
+        height: calc(100vh - 60px);
+        transition: 0.3s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .navbar-nav.active {
+        left: 0;
+    }
+
+    .nav-item {
+        width: 100%;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
+
+    /* Property Cards */
+    .property-card {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .property-image {
+        height: 200px;
+    }
+
+    .property-details {
+        padding: 15px;
+    }
+
+    /* Search Section */
+    .search-section {
+        padding: 20px 15px;
+    }
+
+    .search-filters {
+        flex-direction: column;
+    }
+
+    .filter-item {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    /* Forms */
+    .form-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    /* Property Details Page */
+    .property-gallery {
+        flex-direction: column;
+    }
+
+    .gallery-main {
+        width: 100%;
+    }
+
+    .gallery-thumbnails {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        margin-top: 10px;
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        margin-right: 10px;
+    }
+
+    /* Dashboard */
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .dashboard-sidebar {
+        width: 100%;
+        position: static;
+    }
+
+    .dashboard-content {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /* Property List Page */
+    .property-list {
+        grid-template-columns: 1fr;
+    }
+
+    .filters-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 80%;
+        height: 100vh;
+        background: #fff;
+        z-index: 1000;
+        transition: 0.3s;
+        padding: 20px;
+    }
+
+    .filters-sidebar.active {
+        left: 0;
+    }
+
+    /* Buttons */
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    /* Grid Layouts */
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    /* Contact Form */
+    .contact-container {
+        flex-direction: column;
+    }
+
+    .contact-info, .contact-form {
+        width: 100%;
+    }
+
+    /* Footer */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-section {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+/* Tablet Support */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .property-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .container {
+        width: 95%;
+    }
+}
+
+/* Small height devices */
+@media screen and (max-height: 600px) {
+    .navbar-nav {
+        overflow-y: auto;
+    }
+
+    .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+/* Utility Classes for Mobile */
+.mobile-only {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-only {
+        display: block;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-stack {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-center {
+        text-align: center;
+    }
+
+    .mobile-p-0 {
+        padding: 0;
+    }
+
+    .mobile-m-0 {
+        margin: 0;
+    }
+}
