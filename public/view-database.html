@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Database</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .property { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .property h3 { margin: 0 0 10px 0; color: #333; }
+        .property-info { margin: 5px 0; }
+        .files { margin: 10px 0; }
+        .file-link { color: #007bff; text-decoration: none; margin-right: 10px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Property Database</h1>
+    <button onclick="loadProperties()">Refresh Database</button>
+    <div id="propertiesList"></div>
+
+    <script>
+        async function loadProperties() {
+            try {
+                const response = await fetch('http://localhost:3000/api/properties');
+                const data = await response.json();
+                
+                const container = document.getElementById('propertiesList');
+                
+                if (data.properties.length === 0) {
+                    container.innerHTML = '<p>No properties in database yet.</p>';
+                    return;
+                }
+                
+                container.innerHTML = data.properties.map(property => `
+                    <div class="property">
+                        <h3>${property.title}</h3>
+                        <div class="property-info"><strong>ID:</strong> ${property.id}</div>
+                        <div class="property-info"><strong>Location:</strong> ${property.location}</div>
+                        <div class="property-info"><strong>Type:</strong> ${property.type}</div>
+                        <div class="property-info"><strong>Rent:</strong> ₹${property.rent}</div>
+                        <div class="property-info"><strong>Size:</strong> ${property.size} sq ft</div>
+                        <div class="property-info"><strong>Landlord:</strong> ${property.landlordName}</div>
+                        <div class="property-info"><strong>Phone:</strong> ${property.phone}</div>
+                        <div class="property-info"><strong>Description:</strong> ${property.description}</div>
+                        <div class="property-info"><strong>Created:</strong> ${new Date(property.createdAt).toLocaleString()}</div>
+                        
+                        ${property.files && Object.keys(property.files).length > 0 ? `
+                            <div class="files">
+                                <strong>Files:</strong><br>
+                                ${Object.entries(property.files).map(([type, files]) => 
+                                    files.map(file => 
+                                        `<a href="${file.url}" target="_blank" class="file-link">${file.originalName}</a>`
+                                    ).join('')
+                                ).join('')}
+                            </div>
+                        ` : '<div class="files">No files uploaded</div>'}
+                    </div>
+                `).join('');
+                
+                console.log(`📊 Loaded ${data.total} properties from database`);
+            } catch (error) {
+                document.getElementById('propertiesList').innerHTML = '<p>Error loading database</p>';
+                console.error('Error:', error);
+            }
+        }
+        
+        // Load properties on page load
+        loadProperties();
+    </script>
+</body>
+</html>

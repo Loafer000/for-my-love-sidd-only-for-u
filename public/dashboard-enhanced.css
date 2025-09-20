@@ -1,0 +1,89 @@
+/* Enhanced Dashboard Styles */
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.875rem;
+}
+
+.btn-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.875rem;
+}
+
+.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.inquiry-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.inquiry-actions button,
+.inquiry-actions a {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.property-card .btn-primary,
+.property-card .btn-secondary,
+.property-card .btn-danger {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.no-properties,
+.no-inquiries {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    background: #f9fafb;
+    border-radius: 10px;
+    border: 2px dashed #d1d5db;
+}
+
+.error {
+    text-align: center;
+    padding: 2rem;
+    color: #ef4444;
+    background: #fef2f2;
+    border-radius: 10px;
+    border: 2px solid #fecaca;
+}
+
+@media (max-width: 768px) {
+    .inquiry-actions {
+        flex-direction: column;
+    }
+    
+    .property-card div[style*="margin-top"] {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
