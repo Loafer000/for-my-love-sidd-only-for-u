@@ -92,6 +92,13 @@ function handleLogin(event) {
         // Simulate API call
         setTimeout(() => {
             hideLoading(event.target);
+            
+            // Set authentication in localStorage
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userType', currentUserType);
+            localStorage.setItem('userName', email.split('@')[0]); // Use email prefix as username
+            localStorage.setItem('userEmail', email);
+            
             showSuccess();
             
             // Redirect after success
@@ -125,6 +132,13 @@ function handleSignup(event) {
         // Simulate API call
         setTimeout(() => {
             hideLoading(event.target);
+            
+            // Set authentication in localStorage
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userType', currentUserType);
+            localStorage.setItem('userName', formData.firstName + ' ' + formData.lastName);
+            localStorage.setItem('userEmail', formData.email);
+            
             showSuccess();
             
             // Redirect after success

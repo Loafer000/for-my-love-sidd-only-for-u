@@ -6,26 +6,26 @@
     <title>Dashboard - ConnectSpace</title>
     <link rel="stylesheet" href="modern-design-system.css">
     <link rel="stylesheet" href="modern-navbar.css">
-    <link rel="stylesheet" href="modern-dashboard.css">
+    <link rel="stylesheet" href="modern-dashboard-enhanced.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="modern-navbar">
+    <nav class="navbar">
         <div class="nav-container">
             <a class="nav-brand" href="index.html">
-                <div class="nav-brand-icon">
+                <div class="brand-icon">
                     <i class="fas fa-building"></i>
                 </div>
-                <span>ConnectSpace</span>
+                <span class="brand-text">ConnectSpace</span>
             </a>
             
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="search.html">Search</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li class="nav-user">
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="search.html" class="nav-link">Search</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <div class="nav-user">
                     <div class="user-menu">
                         <button class="user-menu-toggle">
                             <img src="https://via.placeholder.com/32x32/3B82F6/FFFFFF?text=U" alt="User" class="user-avatar">
@@ -43,14 +43,28 @@
                             </a>
                         </div>
                     </div>
-                </li>
-            </ul>
+                </div>
+            </div>
             
             <button class="nav-toggle">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="nav-mobile-menu">
+            <div class="nav-mobile-content">
+                <a href="index.html" class="nav-mobile-link">Home</a>
+                <a href="search.html" class="nav-mobile-link">Search Properties</a>
+                <a href="about.html" class="nav-mobile-link">About</a>
+                <a href="contact.html" class="nav-mobile-link">Contact</a>
+                <div class="nav-mobile-divider"></div>
+                <a href="list-property.html" class="nav-mobile-link">List Property</a>
+                <a href="verify.html" class="nav-mobile-link">Verify Account</a>
+                <a href="#" class="nav-mobile-link" onclick="logout()">Logout</a>
+            </div>
         </div>
     </nav>
 
@@ -334,7 +348,7 @@
         </div>
     </main>
 
-    <script src="navbar.js"></script>
-    <script src="dashboard.js"></script>
+    <script src="modern-navbar.js"></script>
+    <script src="dashboard-enhanced.js"></script>
 </body>
 </html>
