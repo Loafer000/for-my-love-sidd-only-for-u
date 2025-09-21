@@ -3,7 +3,7 @@ class ModernNavigation {
   constructor() {
     this.navbar = document.querySelector('.navbar');
     this.navToggle = document.querySelector('.nav-toggle');
-    this.navMobile = document.querySelector('.nav-mobile');
+    this.navMobile = document.querySelector('.nav-mobile-menu');
     this.navLinks = document.querySelectorAll('.nav-link, .nav-mobile-link');
     
     this.init();
