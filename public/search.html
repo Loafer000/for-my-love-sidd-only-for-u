@@ -8,6 +8,7 @@
     <!-- Modern Design System -->
     <link rel="stylesheet" href="modern-design-system.css">
     <link rel="stylesheet" href="modern-navbar.css">
+    <link rel="stylesheet" href="modern-search.css">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +21,7 @@
     <!-- Scripts -->
     <script src="config.js"></script>
     <script src="modern-navbar.js" defer></script>
+    <script src="search-functionality.js" defer></script>
 </head>
 <body>
     <!-- Modern Navigation -->
@@ -67,29 +69,74 @@
 
     <!-- Search Hero Section -->
     <section class="search-hero">
+        <div class="hero-background">
+            <div class="hero-pattern"></div>
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
+        </div>
         <div class="container">
             <div class="search-hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i>
+                    <span>Over 10,000+ Properties Listed</span>
+                </div>
                 <h1 class="search-title">Find Your Perfect Commercial Space</h1>
-                <p class="search-subtitle">Discover thousands of verified commercial properties across 50+ cities</p>
+                <p class="search-subtitle">Discover thousands of verified commercial properties across 50+ cities with AI-powered search</p>
                 
                 <div class="search-main-form">
                     <div class="search-input-group">
                         <div class="search-field">
                             <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search by location, property type, or keywords..." class="search-input" id="mainSearch">
+                            <input type="text" placeholder="Search by location, property type, or keywords..." class="search-input" id="mainSearch" autocomplete="off">
+                            <div class="search-suggestions" id="searchSuggestions"></div>
                         </div>
-                        <button class="btn btn-primary search-btn">
+                        <button class="btn btn-primary search-btn" id="mainSearchBtn">
                             <i class="fas fa-search"></i>
-                            Search
+                            <span>Search</span>
                         </button>
                     </div>
                     
                     <div class="search-quick-filters">
                         <span class="quick-filter-label">Popular:</span>
-                        <button class="quick-filter-btn">Office Space</button>
-                        <button class="quick-filter-btn">Retail Store</button>
-                        <button class="quick-filter-btn">Warehouse</button>
-                        <button class="quick-filter-btn">Co-working</button>
+                        <button class="quick-filter-btn" data-filter="office">
+                            <i class="fas fa-building"></i>
+                            Office Space
+                        </button>
+                        <button class="quick-filter-btn" data-filter="retail">
+                            <i class="fas fa-store"></i>
+                            Retail Store
+                        </button>
+                        <button class="quick-filter-btn" data-filter="warehouse">
+                            <i class="fas fa-warehouse"></i>
+                            Warehouse
+                        </button>
+                        <button class="quick-filter-btn" data-filter="coworking">
+                            <i class="fas fa-users"></i>
+                            Co-working
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Search Stats -->
+                <div class="search-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">10,000+</div>
+                        <div class="stat-label">Properties</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Cities</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Satisfaction</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support</div>
                     </div>
                 </div>
             </div>
@@ -99,117 +146,288 @@
     <!-- Search Interface -->
     <section class="search-interface">
         <div class="container">
+            <!-- Mobile Filters Toggle -->
+            <div class="mobile-filters-toggle">
+                <button class="btn btn-outline filters-toggle-btn" id="mobileFiltersToggle">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Filters</span>
+                    <span class="active-filters-count" id="activeFiltersCount">0</span>
+                </button>
+                <div class="results-summary">
+                    <span id="mobileResultsCount">234 properties found</span>
+                </div>
+            </div>
+            
             <div class="search-layout">
-                <!-- Filters Sidebar -->
-                <div class="search-filters">
+                <!-- Enhanced Filters Sidebar -->
+                <div class="search-filters" id="searchFilters">
                     <div class="filters-header">
-                        <h3>Filters</h3>
-                        <button class="filter-clear">Clear All</button>
+                        <h3>
+                            <i class="fas fa-filter"></i>
+                            Filters
+                        </h3>
+                        <button class="filter-clear" id="clearAllFilters">
+                            <i class="fas fa-times"></i>
+                            Clear All
+                        </button>
+                    </div>
+                    
+                    <!-- Location Filter -->
+                    <div class="filter-group">
+                        <h4 class="filter-title">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Location
+                        </h4>
+                        <div class="location-search">
+                            <input type="text" placeholder="Enter city or area..." class="location-input" id="locationFilter">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
                     
                     <div class="filter-group">
-                        <h4 class="filter-title">Property Type</h4>
+                        <h4 class="filter-title">
+                            <i class="fas fa-building"></i>
+                            Property Type
+                        </h4>
                         <div class="filter-options">
                             <label class="filter-option">
-                                <input type="checkbox" value="office">
-                                <span class="checkmark"></span>
-                                Office Space
+                                <input type="checkbox" value="office" name="propertyType">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-building option-icon"></i>
+                                    <span>Office Space</span>
+                                </div>
                             </label>
                             <label class="filter-option">
-                                <input type="checkbox" value="retail">
-                                <span class="checkmark"></span>
-                                Retail Store
+                                <input type="checkbox" value="retail" name="propertyType">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-store option-icon"></i>
+                                    <span>Retail Store</span>
+                                </div>
                             </label>
                             <label class="filter-option">
-                                <input type="checkbox" value="warehouse">
-                                <span class="checkmark"></span>
-                                Warehouse
+                                <input type="checkbox" value="warehouse" name="propertyType">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-warehouse option-icon"></i>
+                                    <span>Warehouse</span>
+                                </div>
                             </label>
                             <label class="filter-option">
-                                <input type="checkbox" value="coworking">
-                                <span class="checkmark"></span>
-                                Co-working
+                                <input type="checkbox" value="coworking" name="propertyType">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-users option-icon"></i>
+                                    <span>Co-working</span>
+                                </div>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="restaurant" name="propertyType">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-utensils option-icon"></i>
+                                    <span>Restaurant</span>
+                                </div>
                             </label>
                         </div>
                     </div>
                     
                     <div class="filter-group">
-                        <h4 class="filter-title">Price Range</h4>
+                        <h4 class="filter-title">
+                            <i class="fas fa-dollar-sign"></i>
+                            Monthly Rent
+                        </h4>
                         <div class="price-range">
-                            <input type="range" min="0" max="50000" value="25000" class="price-slider" id="priceRange">
+                            <div class="dual-range-slider">
+                                <input type="range" min="0" max="50000" value="0" class="price-slider" id="priceMin">
+                                <input type="range" min="0" max="50000" value="50000" class="price-slider" id="priceMax">
+                            </div>
+                            <div class="price-inputs">
+                                <div class="price-input-group">
+                                    <span>$</span>
+                                    <input type="number" placeholder="Min" class="price-input" id="priceMinInput">
+                                </div>
+                                <span class="price-separator">to</span>
+                                <div class="price-input-group">
+                                    <span>$</span>
+                                    <input type="number" placeholder="Max" class="price-input" id="priceMaxInput">
+                                </div>
+                            </div>
                             <div class="price-labels">
                                 <span>$0</span>
-                                <span id="priceValue">$25,000</span>
                                 <span>$50,000+</span>
                             </div>
                         </div>
                     </div>
                     
+                    
                     <div class="filter-group">
-                        <h4 class="filter-title">Area (sq ft)</h4>
+                        <h4 class="filter-title">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                            Area (sq ft)
+                        </h4>
                         <div class="area-inputs">
-                            <input type="number" placeholder="Min" class="area-input">
-                            <span>-</span>
-                            <input type="number" placeholder="Max" class="area-input">
+                            <div class="area-input-group">
+                                <input type="number" placeholder="Min" class="area-input" id="areaMin">
+                                <span>sq ft</span>
+                            </div>
+                            <span class="area-separator">to</span>
+                            <div class="area-input-group">
+                                <input type="number" placeholder="Max" class="area-input" id="areaMax">
+                                <span>sq ft</span>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="filter-group">
-                        <h4 class="filter-title">Amenities</h4>
-                        <div class="filter-options">
+                        <h4 class="filter-title">
+                            <i class="fas fa-star"></i>
+                            Amenities
+                        </h4>
+                        <div class="filter-options amenities-grid">
                             <label class="filter-option">
-                                <input type="checkbox" value="parking">
-                                <span class="checkmark"></span>
-                                Parking
+                                <input type="checkbox" value="parking" name="amenities">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-parking option-icon"></i>
+                                    <span>Parking</span>
+                                </div>
                             </label>
                             <label class="filter-option">
-                                <input type="checkbox" value="elevator">
-                                <span class="checkmark"></span>
-                                Elevator
+                                <input type="checkbox" value="elevator" name="amenities">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-elevator option-icon"></i>
+                                    <span>Elevator</span>
+                                </div>
                             </label>
                             <label class="filter-option">
-                                <input type="checkbox" value="ac">
-                                <span class="checkmark"></span>
-                                Air Conditioning
+                                <input type="checkbox" value="ac" name="amenities">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-snowflake option-icon"></i>
+                                    <span>A/C</span>
+                                </div>
                             </label>
                             <label class="filter-option">
-                                <input type="checkbox" value="security">
-                                <span class="checkmark"></span>
-                                24/7 Security
+                                <input type="checkbox" value="security" name="amenities">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-shield-alt option-icon"></i>
+                                    <span>Security</span>
+                                </div>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="wifi" name="amenities">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-wifi option-icon"></i>
+                                    <span>WiFi</span>
+                                </div>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="conference" name="amenities">
+                                <span class="checkmark">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <div class="option-content">
+                                    <i class="fas fa-users option-icon"></i>
+                                    <span>Meeting Room</span>
+                                </div>
                             </label>
                         </div>
                     </div>
+
+                    <!-- Apply Filters Button -->
+                    <div class="filters-footer">
+                        <button class="btn btn-primary apply-filters-btn" id="applyFilters">
+                            <i class="fas fa-filter"></i>
+                            Apply Filters
+                        </button>
+                    </div>
                 </div>
                 
-                <!-- Results Area -->
+                <!-- Enhanced Results Area -->
                 <div class="search-results">
                     <div class="results-header">
                         <div class="results-info">
-                            <h2>Search Results</h2>
-                            <p id="resultsCount">Showing 234 properties</p>
+                            <h2>
+                                <i class="fas fa-search"></i>
+                                Search Results
+                            </h2>
+                            <p id="resultsCount">Showing 234 properties in your area</p>
+                            <div class="active-filters" id="activeFilterTags"></div>
                         </div>
                         
                         <div class="results-controls">
                             <div class="view-toggle">
-                                <button class="view-btn active" data-view="grid">
+                                <button class="view-btn active" data-view="grid" title="Grid View">
                                     <i class="fas fa-th-large"></i>
                                 </button>
-                                <button class="view-btn" data-view="list">
+                                <button class="view-btn" data-view="list" title="List View">
                                     <i class="fas fa-list"></i>
+                                </button>
+                                <button class="view-btn" data-view="map" title="Map View">
+                                    <i class="fas fa-map"></i>
                                 </button>
                             </div>
                             
-                            <select class="sort-select">
-                                <option value="newest">Newest First</option>
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                                <option value="area-large">Area: Largest First</option>
-                            </select>
+                            <div class="sort-controls">
+                                <label class="sort-label">Sort by:</label>
+                                <select class="sort-select" id="sortSelect">
+                                    <option value="relevance">Most Relevant</option>
+                                    <option value="newest">Newest First</option>
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                    <option value="area-large">Area: Largest First</option>
+                                    <option value="area-small">Area: Smallest First</option>
+                                </select>
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- Search Results Loading State -->
+                    <div class="results-loading" id="resultsLoading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>Searching properties...</p>
                     </div>
                     
                     <div class="properties-grid" id="searchResults">
                         <!-- Properties will be loaded dynamically -->
+                    </div>
+
+                    <!-- No Results State -->
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <div class="no-results-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>No properties found</h3>
+                        <p>Try adjusting your filters or search criteria</p>
+                        <button class="btn btn-outline" onclick="clearAllFilters()">
+                            <i class="fas fa-times"></i>
+                            Clear All Filters
+                        </button>
                     </div>
                     
                     <div class="pagination">
