@@ -3,109 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landlord Dashboard - ConnectSpace</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="dashboard-enhanced.css">
+    <title>Dashboard - ConnectSpace</title>
+    <link rel="stylesheet" href="modern-design-system.css">
+    <link rel="stylesheet" href="modern-navbar.css">
+    <link rel="stylesheet" href="modern-dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">
-                <h1>ConnectSpace</h1>
-            </div>
+    <!-- Navigation -->
+    <nav class="modern-navbar">
+        <div class="nav-container">
+            <a class="nav-brand" href="index.html">
+                <div class="nav-brand-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <span>ConnectSpace</span>
+            </a>
+            
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="search.html">Search</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="#" onclick="logout()" class="btn-secondary">Logout</a></li>
+                <li class="nav-user">
+                    <div class="user-menu">
+                        <button class="user-menu-toggle">
+                            <img src="https://via.placeholder.com/32x32/3B82F6/FFFFFF?text=U" alt="User" class="user-avatar">
+                            <span id="userName">Landlord</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown">
+                            <a href="verify.html" class="dropdown-item">
+                                <i class="fas fa-id-card"></i>
+                                Verify Account
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </li>
             </ul>
-        </nav>
-    </header>
+            
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
 
-    <main>
+    <main class="dashboard-main">
+        <!-- Dashboard Header -->
         <div class="dashboard-header">
             <div class="container">
-                <h2>Landlord Dashboard</h2>
-                <p>Manage your properties and inquiries</p>
+                <div class="header-content">
+                    <div class="header-text">
+                        <h1 class="dashboard-title">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </h1>
+                        <p class="dashboard-subtitle">Welcome back! Here's an overview of your properties and activities.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export Data
+                        </button>
+                        <a href="list-property.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add Property
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="dashboardContent" class="container">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalListings">0</div>
-                    <div class="stat-label">Total Listings</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="verifiedListings">0</div>
-                    <div class="stat-label">Verified Properties</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalInquiries">0</div>
-                    <div class="stat-label">Total Inquiries</div>
-                </div>
-            </div>
-
-            <div class="dashboard-actions">
-                <a href="list-property.html" class="btn-primary">Add New Property</a>
-                <a href="verify.html" class="btn-secondary" id="verifyBtn">🆔 Verify Account</a>
-            </div>
-
-            <section class="dashboard-section">
-                <h3>Your Properties</h3>
-                <div class="property-grid">
-                    <div class="property-card">
-                        <div class="property-image">
-                            <span>Property Image</span>
-                        </div>
-                        <div class="property-info">
-                            <h3 class="property-title">Modern Office Space in Salt Lake</h3>
-                            <div class="property-price">₹45,000/month</div>
-                            <div class="property-details">
-                                <p><strong>Type:</strong> Office</p>
-                                <p><strong>Size:</strong> 1200 sq ft</p>
-                                <p><strong>Status:</strong> <span class="verified-badge">✓ Verified</span></p>
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="container">
+                <!-- Stats Overview -->
+                <section class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon total">
+                                <i class="fas fa-home"></i>
                             </div>
-                            <div style="margin-top: 1rem;">
-                                <button class="btn-primary" style="margin-right: 0.5rem;">Edit</button>
-                                <button class="btn-secondary">View Inquiries (3)</button>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalListings">0</div>
+                                <div class="stat-label">Total Properties</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +2 this month
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon verified">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="verifiedListings">0</div>
+                                <div class="stat-label">Verified Properties</div>
+                                <div class="stat-change neutral">
+                                    <i class="fas fa-clock"></i>
+                                    1 pending
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon inquiries">
+                                <i class="fas fa-message"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalInquiries">0</div>
+                                <div class="stat-label">Total Inquiries</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +5 this week
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon revenue">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">₹2.4L</div>
+                                <div class="stat-label">Monthly Revenue</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +12% from last month
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="dashboard-section">
-                <h3>Recent Inquiries</h3>
-                <div class="inquiry-list">
-                    <div class="inquiry-item">
-                        <div class="inquiry-header">
-                            <strong>Amit Patel</strong>
-                            <span class="inquiry-date">2 hours ago</span>
-                        </div>
-                        <div class="inquiry-property">Modern Office Space in Salt Lake</div>
-                        <div class="inquiry-message">I'm interested in this office space for my startup. Can we schedule a visit?</div>
-                        <div class="inquiry-contact">
-                            <span>📧 amit.patel@email.com</span>
-                            <span>📱 +91 98765 43210</span>
-                        </div>
-                        <div class="inquiry-actions">
-                            <button class="btn-primary">Reply</button>
-                            <button class="btn-secondary">Mark as Read</button>
-                        </div>
+                <!-- Quick Actions -->
+                <section class="quick-actions-section">
+                    <h2 class="section-title">Quick Actions</h2>
+                    <div class="quick-actions-grid">
+                        <a href="list-property.html" class="action-card">
+                            <div class="action-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>Add New Property</h3>
+                                <p>List a new property for rent or sale</p>
+                            </div>
+                        </a>
+                        
+                        <a href="verify.html" class="action-card">
+                            <div class="action-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>Verify Account</h3>
+                                <p>Complete account verification process</p>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="action-card" onclick="viewAnalytics()">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>View Analytics</h3>
+                                <p>Check property performance metrics</p>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="action-card" onclick="manageInquiries()">
+                            <div class="action-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3>Manage Inquiries</h3>
+                                <p>Respond to property inquiries</p>
+                            </div>
+                        </a>
                     </div>
+                </section>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Properties Section -->
+                    <section class="dashboard-section properties-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <i class="fas fa-building"></i>
+                                Your Properties
+                            </h2>
+                            <button class="btn btn-secondary btn-sm" onclick="viewAllProperties()">
+                                View All
+                            </button>
+                        </div>
+                        
+                        <div class="properties-list" id="propertiesList">
+                            <!-- Property Card -->
+                            <div class="property-card">
+                                <div class="property-image">
+                                    <img src="https://via.placeholder.com/300x200/E5E7EB/6B7280?text=Property+Image" alt="Property">
+                                    <div class="property-status verified">
+                                        <i class="fas fa-check-circle"></i>
+                                        Verified
+                                    </div>
+                                </div>
+                                <div class="property-details">
+                                    <h3 class="property-title">Modern Office Space in Salt Lake</h3>
+                                    <div class="property-price">₹45,000/month</div>
+                                    <div class="property-meta">
+                                        <span class="meta-item">
+                                            <i class="fas fa-home"></i>
+                                            Office
+                                        </span>
+                                        <span class="meta-item">
+                                            <i class="fas fa-ruler-combined"></i>
+                                            1200 sq ft
+                                        </span>
+                                        <span class="meta-item">
+                                            <i class="fas fa-eye"></i>
+                                            45 views
+                                        </span>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary">
+                                            <i class="fas fa-envelope"></i>
+                                            Inquiries (3)
+                                        </button>
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-chart-line"></i>
+                                            Analytics
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Empty State -->
+                            <div class="empty-state" id="emptyProperties" style="display: none;">
+                                <div class="empty-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <h3>No Properties Listed</h3>
+                                <p>Start by adding your first property to get inquiries from potential tenants.</p>
+                                <a href="list-property.html" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    Add Your First Property
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Recent Inquiries -->
+                    <section class="dashboard-section inquiries-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <i class="fas fa-message"></i>
+                                Recent Inquiries
+                            </h2>
+                            <button class="btn btn-secondary btn-sm" onclick="viewAllInquiries()">
+                                View All
+                            </button>
+                        </div>
+                        
+                        <div class="inquiries-list" id="inquiriesList">
+                            <!-- Inquiry Item -->
+                            <div class="inquiry-item">
+                                <div class="inquiry-header">
+                                    <div class="inquirer-info">
+                                        <img src="https://via.placeholder.com/40x40/3B82F6/FFFFFF?text=AP" alt="Amit" class="inquirer-avatar">
+                                        <div>
+                                            <div class="inquirer-name">Amit Patel</div>
+                                            <div class="inquiry-time">2 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="inquiry-status unread">
+                                        <i class="fas fa-circle"></i>
+                                        New
+                                    </div>
+                                </div>
+                                <div class="inquiry-property">Modern Office Space in Salt Lake</div>
+                                <div class="inquiry-message">I'm interested in this office space for my startup. Can we schedule a visit?</div>
+                                <div class="inquiry-contact">
+                                    <span class="contact-item">
+                                        <i class="fas fa-envelope"></i>
+                                        amit.patel@email.com
+                                    </span>
+                                    <span class="contact-item">
+                                        <i class="fas fa-phone"></i>
+                                        +91 98765 43210
+                                    </span>
+                                </div>
+                                <div class="inquiry-actions">
+                                    <button class="btn btn-sm btn-primary">
+                                        <i class="fas fa-reply"></i>
+                                        Reply
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-check"></i>
+                                        Mark Read
+                                    </button>
+                                    <button class="btn btn-sm btn-outline">
+                                        <i class="fas fa-calendar"></i>
+                                        Schedule
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Empty State -->
+                            <div class="empty-state" id="emptyInquiries" style="display: none;">
+                                <div class="empty-icon">
+                                    <i class="fas fa-message"></i>
+                                </div>
+                                <h3>No Inquiries Yet</h3>
+                                <p>Once you list properties, potential tenants will start reaching out to you.</p>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            </section>
+            </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 ConnectSpace. Connecting spaces, building trust.</p>
-        </div>
-    </footer>
-
+    <script src="navbar.js"></script>
     <script src="dashboard.js"></script>
 </body>
 </html>

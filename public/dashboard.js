@@ -1,250 +1,299 @@
-// Dashboard - Real User Data
-// Import secure config
-// const API_BASE = 'http://localhost:3000/api'; // REMOVED - Security risk
-const API_BASE = CONFIG.API_BASE; // Secure dynamic configuration
+// Modern Dashboard - Enhanced User Experience
+const API_BASE = CONFIG?.API_BASE || 'http://localhost:3000/api';
 
-document.addEventListener('DOMContentLoaded', loadDashboard);
+document.addEventListener('DOMContentLoaded', initializeDashboard);
 
-async function loadDashboard() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
+async function initializeDashboard() {
+    // Check authentication
+    if (!checkAuth()) return;
+    
+    // Load demo data (replace with real API calls)
+    loadDemoData();
+    
+    // Initialize UI components
+    initializeUserMenu();
+}
+
+function checkAuth() {
+    const userLoggedIn = localStorage.getItem('userLoggedIn');
+    const userType = localStorage.getItem('userType');
+    
+    if (!userLoggedIn) {
         window.location.href = 'auth.html';
-        return;
+        return false;
     }
     
-    try {
-        // Load user's properties
-        const propertiesResponse = await fetch(`${API_BASE}/properties/my`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const propertiesData = await propertiesResponse.json();
-        
-        // Load user's inquiries
-        const inquiriesResponse = await fetch(`${API_BASE}/inquiries/my`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const inquiriesData = await inquiriesResponse.json();
-        
-        displayStats(propertiesData.properties, inquiriesData.inquiries);
-        displayProperties(propertiesData.properties);
-        displayInquiries(inquiriesData.inquiries, propertiesData.properties);
-        
-    } catch (error) {
-        console.error('Dashboard error:', error);
-        document.getElementById('dashboardContent').innerHTML = 
-            '<div class="error">Failed to load dashboard. Please try again.</div>';
+    // Update user info in header
+    const userName = document.getElementById('userName');
+    if (userName) {
+        userName.textContent = userType === 'landlord' ? 'Landlord' : 'Tenant';
     }
+    
+    return true;
 }
 
-function displayStats(properties, inquiries) {
-    document.getElementById('totalListings').textContent = properties.length;
-    document.getElementById('verifiedListings').textContent = 
-        properties.filter(p => p.verified).length;
-    document.getElementById('totalInquiries').textContent = inquiries.length;
+function loadDemoData() {
+    // Demo stats
+    document.getElementById('totalListings').textContent = '5';
+    document.getElementById('verifiedListings').textContent = '4';
+    document.getElementById('totalInquiries').textContent = '12';
+    
+    // Load demo properties
+    loadDemoProperties();
+    
+    // Load demo inquiries
+    loadDemoInquiries();
 }
 
-function displayProperties(properties) {
-    const container = document.querySelector('.property-grid');
+function loadDemoProperties() {
+    const propertiesList = document.getElementById('propertiesList');
+    const emptyProperties = document.getElementById('emptyProperties');
+    
+    // Demo property data
+    const properties = [
+        {
+            id: 1,
+            title: 'Modern Office Space in Salt Lake',
+            price: '45,000',
+            type: 'Office',
+            size: '1200',
+            views: 45,
+            inquiries: 3,
+            verified: true,
+            image: 'https://via.placeholder.com/300x200/E5E7EB/6B7280?text=Office+Space'
+        },
+        {
+            id: 2,
+            title: 'Luxury Apartment in Park Street',
+            price: '35,000',
+            type: 'Apartment',
+            size: '900',
+            views: 32,
+            inquiries: 5,
+            verified: true,
+            image: 'https://via.placeholder.com/300x200/E5E7EB/6B7280?text=Apartment'
+        }
+    ];
     
     if (properties.length === 0) {
-        container.innerHTML = `
-            <div class="no-properties">
-                <h3>No properties listed yet</h3>
-                <p>Start by adding your first property</p>
-                <a href="list-property.html" class="btn-primary">Add Property</a>
-            </div>
-        `;
+        propertiesList.innerHTML = '';
+        emptyProperties.style.display = 'block';
         return;
     }
     
-    container.innerHTML = properties.map(property => `
+    emptyProperties.style.display = 'none';
+    propertiesList.innerHTML = properties.map(property => `
         <div class="property-card">
             <div class="property-image">
-                <i class="fas fa-building" style="font-size: 2rem; color: #667eea;"></i>
-            </div>
-            <div class="property-info">
-                <h3 class="property-title">${property.title}</h3>
-                <div class="property-price">₹${property.rent.toLocaleString()}/month</div>
-                <div class="property-details">
-                    <p><strong>Type:</strong> ${property.type}</p>
-                    <p><strong>Size:</strong> ${property.size} sq ft</p>
-                    <p><strong>Status:</strong> 
-                        ${property.verified ? 
-                            '<span class="verified-badge">✓ Verified</span>' : 
-                            '<span class="pending-badge">⏳ Pending</span>'
-                        }
-                    </p>
+                <img src="${property.image}" alt="${property.title}">
+                <div class="property-status ${property.verified ? 'verified' : 'pending'}">
+                    <i class="fas fa-${property.verified ? 'check-circle' : 'clock'}"></i>
+                    ${property.verified ? 'Verified' : 'Pending'}
                 </div>
-                <div style="margin-top: 1rem;">
-                    <button class="btn-primary" onclick="editProperty(${property.id})" style="margin-right: 0.5rem;">Edit</button>
-                    <button class="btn-secondary" onclick="viewPropertyInquiries(${property.id})" style="margin-right: 0.5rem;">
-                        Inquiries (${getInquiryCount(property.id)})
+            </div>
+            <div class="property-details">
+                <h3 class="property-title">${property.title}</h3>
+                <div class="property-price">₹${property.price}/month</div>
+                <div class="property-meta">
+                    <span class="meta-item">
+                        <i class="fas fa-home"></i>
+                        ${property.type}
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-ruler-combined"></i>
+                        ${property.size} sq ft
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-eye"></i>
+                        ${property.views} views
+                    </span>
+                </div>
+                <div class="property-actions">
+                    <button class="btn btn-sm btn-primary" onclick="editProperty(${property.id})">
+                        <i class="fas fa-edit"></i>
+                        Edit
                     </button>
-                    <button class="btn-danger" onclick="deleteProperty(${property.id})">Delete</button>
+                    <button class="btn btn-sm btn-secondary" onclick="viewInquiries(${property.id})">
+                        <i class="fas fa-envelope"></i>
+                        Inquiries (${property.inquiries})
+                    </button>
+                    <button class="btn btn-sm btn-outline" onclick="viewAnalytics(${property.id})">
+                        <i class="fas fa-chart-line"></i>
+                        Analytics
+                    </button>
                 </div>
             </div>
         </div>
     `).join('');
 }
 
-function displayInquiries(inquiries, properties) {
-    const container = document.querySelector('.inquiry-list');
+function loadDemoInquiries() {
+    const inquiriesList = document.getElementById('inquiriesList');
+    const emptyInquiries = document.getElementById('emptyInquiries');
+    
+    // Demo inquiry data
+    const inquiries = [
+        {
+            id: 1,
+            name: 'Amit Patel',
+            email: 'amit.patel@email.com',
+            phone: '+91 98765 43210',
+            property: 'Modern Office Space in Salt Lake',
+            message: "I'm interested in this office space for my startup. Can we schedule a visit?",
+            time: '2 hours ago',
+            status: 'unread',
+            avatar: 'https://via.placeholder.com/40x40/3B82F6/FFFFFF?text=AP'
+        },
+        {
+            id: 2,
+            name: 'Priya Singh',
+            email: 'priya.singh@email.com',
+            phone: '+91 98765 43211',
+            property: 'Luxury Apartment in Park Street',
+            message: "Is this apartment still available? I'd like to know more about the amenities.",
+            time: '5 hours ago',
+            status: 'read',
+            avatar: 'https://via.placeholder.com/40x40/8B5CF6/FFFFFF?text=PS'
+        }
+    ];
     
     if (inquiries.length === 0) {
-        container.innerHTML = '<div class="no-inquiries">No inquiries yet</div>';
+        inquiriesList.innerHTML = '';
+        emptyInquiries.style.display = 'block';
         return;
     }
     
-    container.innerHTML = inquiries.slice(0, 5).map(inquiry => {
-        const property = properties.find(p => p.id == inquiry.propertyId);
-        return `
-            <div class="inquiry-item">
-                <div class="inquiry-header">
-                    <strong>${inquiry.name}</strong>
-                    <span class="inquiry-date">${formatDate(inquiry.createdAt)}</span>
+    emptyInquiries.style.display = 'none';
+    inquiriesList.innerHTML = inquiries.map(inquiry => `
+        <div class="inquiry-item">
+            <div class="inquiry-header">
+                <div class="inquirer-info">
+                    <img src="${inquiry.avatar}" alt="${inquiry.name}" class="inquirer-avatar">
+                    <div>
+                        <div class="inquirer-name">${inquiry.name}</div>
+                        <div class="inquiry-time">${inquiry.time}</div>
+                    </div>
                 </div>
-                <div class="inquiry-property">${property ? property.title : 'Property'}</div>
-                <div class="inquiry-message">${inquiry.message}</div>
-                <div class="inquiry-contact">
-                    <span>📧 ${inquiry.email}</span>
-                    <span>📱 ${inquiry.phone}</span>
-                </div>
-                <div class="inquiry-actions">
-                    <button class="btn-primary" onclick="replyToInquiry('${inquiry.email}', '${inquiry.name}', ${inquiry.propertyId})">Reply</button>
-                    <a href="tel:${inquiry.phone}" class="btn-secondary">Call</a>
-                    <button class="btn-success" onclick="sendEmailNotification('${inquiry.email}', '${inquiry.name}', ${inquiry.id})">Send Email</button>
+                <div class="inquiry-status ${inquiry.status}">
+                    <i class="fas fa-circle"></i>
+                    ${inquiry.status === 'unread' ? 'New' : 'Read'}
                 </div>
             </div>
-        `;
-    }).join('');
+            <div class="inquiry-property">${inquiry.property}</div>
+            <div class="inquiry-message">${inquiry.message}</div>
+            <div class="inquiry-contact">
+                <span class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    ${inquiry.email}
+                </span>
+                <span class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    ${inquiry.phone}
+                </span>
+            </div>
+            <div class="inquiry-actions">
+                <button class="btn btn-sm btn-primary" onclick="replyToInquiry(${inquiry.id})">
+                    <i class="fas fa-reply"></i>
+                    Reply
+                </button>
+                <button class="btn btn-sm btn-secondary" onclick="markAsRead(${inquiry.id})">
+                    <i class="fas fa-check"></i>
+                    Mark Read
+                </button>
+                <button class="btn btn-sm btn-outline" onclick="scheduleVisit(${inquiry.id})">
+                    <i class="fas fa-calendar"></i>
+                    Schedule
+                </button>
+            </div>
+        </div>
+    `).join('');
 }
 
-function getInquiryCount(propertyId) {
-    // This will be populated when inquiries are loaded
-    return 0;
-}
-
-function viewPropertyInquiries(propertyId) {
-    alert(`Viewing inquiries for property ${propertyId}`);
-}
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now - date;
+function initializeUserMenu() {
+    const userMenuToggle = document.querySelector('.user-menu-toggle');
+    const userDropdown = document.querySelector('.user-dropdown');
     
-    if (diff < 3600000) return `${Math.floor(diff/60000)} minutes ago`;
-    if (diff < 86400000) return `${Math.floor(diff/3600000)} hours ago`;
-    return `${Math.floor(diff/86400000)} days ago`;
-}
-
-async function editProperty(propertyId) {
-    const property = await getPropertyById(propertyId);
-    if (!property) return;
-    
-    const newTitle = prompt('Property Title:', property.title);
-    const newRent = prompt('Monthly Rent (₹):', property.rent);
-    const newDescription = prompt('Description:', property.description);
-    
-    if (newTitle && newRent) {
-        try {
-            const token = localStorage.getItem('authToken');
-            const response = await fetch(`${API_BASE}/properties/${propertyId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    title: newTitle,
-                    rent: parseInt(newRent),
-                    description: newDescription
-                })
-            });
-            
-            if (response.ok) {
-                alert('Property updated successfully!');
-                loadDashboard();
-            } else {
-                throw new Error('Update failed');
-            }
-        } catch (error) {
-            alert('Failed to update property');
-        }
-    }
-}
-
-async function deleteProperty(propertyId) {
-    if (!confirm('Are you sure you want to delete this property?')) return;
-    
-    try {
-        const token = localStorage.getItem('authToken');
-        const response = await fetch(`${API_BASE}/properties/${propertyId}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
+    if (userMenuToggle && userDropdown) {
+        userMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.style.opacity = userDropdown.style.opacity === '1' ? '0' : '1';
+            userDropdown.style.visibility = userDropdown.style.visibility === 'visible' ? 'hidden' : 'visible';
         });
         
-        if (response.ok) {
-            alert('Property deleted successfully!');
-            loadDashboard();
-        } else {
-            throw new Error('Delete failed');
-        }
-    } catch (error) {
-        alert('Failed to delete property');
-    }
-}
-
-async function getPropertyById(propertyId) {
-    try {
-        const token = localStorage.getItem('authToken');
-        const response = await fetch(`${API_BASE}/properties/my`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+        document.addEventListener('click', () => {
+            userDropdown.style.opacity = '0';
+            userDropdown.style.visibility = 'hidden';
         });
-        const data = await response.json();
-        return data.properties.find(p => p.id === propertyId);
-    } catch (error) {
-        return null;
     }
 }
 
-async function replyToInquiry(email, name, propertyId) {
-    const property = await getPropertyById(propertyId);
-    const subject = `Re: Inquiry for ${property ? property.title : 'Property'}`;
-    const message = prompt(`Reply to ${name}:`, `Hi ${name},\n\nThank you for your interest in our property. I would be happy to discuss further details.\n\nBest regards`);
-    
+// Action Functions
+function editProperty(propertyId) {
+    alert(`Editing property ${propertyId}. This will redirect to the edit form.`);
+    // window.location.href = `edit-property.html?id=${propertyId}`;
+}
+
+function viewInquiries(propertyId) {
+    alert(`Viewing all inquiries for property ${propertyId}. This will open a detailed inquiry manager.`);
+    // window.location.href = `property-inquiries.html?id=${propertyId}`;
+}
+
+function viewAnalytics(propertyId = null) {
+    if (propertyId) {
+        alert(`Viewing analytics for property ${propertyId}. This will show detailed performance metrics.`);
+    } else {
+        alert('Viewing overall analytics dashboard with charts and insights.');
+    }
+    // window.location.href = propertyId ? `property-analytics.html?id=${propertyId}` : 'analytics.html';
+}
+
+function replyToInquiry(inquiryId) {
+    const message = prompt('Enter your reply message:');
     if (message) {
-        await sendEmailNotification(email, name, null, subject, message);
+        alert(`Reply sent to inquiry ${inquiryId}! In a real application, this would send an email.`);
+        // Implement actual email sending here
     }
 }
 
-async function sendEmailNotification(email, name, inquiryId, customSubject = null, customMessage = null) {
-    const subject = customSubject || `Property Inquiry Response - ConnectSpace`;
-    const message = customMessage || `Dear ${name},\n\nThank you for your inquiry. We will get back to you soon.\n\nBest regards,\nConnectSpace Team`;
-    
-    try {
-        const response = await fetch(`${API_BASE}/inquiries/notify`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                to: email,
-                subject: subject,
-                message: message,
-                inquiryId: inquiryId
-            })
-        });
-        
-        if (response.ok) {
-            alert(`Email sent to ${email} successfully!`);
-        } else {
-            throw new Error('Email send failed');
-        }
-    } catch (error) {
-        alert('Failed to send email notification');
+function markAsRead(inquiryId) {
+    alert(`Inquiry ${inquiryId} marked as read.`);
+    // Update inquiry status in database
+    loadDemoInquiries(); // Refresh the list
+}
+
+function scheduleVisit(inquiryId) {
+    const date = prompt('Enter preferred visit date (YYYY-MM-DD):');
+    if (date) {
+        alert(`Visit scheduled for inquiry ${inquiryId} on ${date}!`);
+        // Implement calendar integration here
     }
+}
+
+function manageInquiries() {
+    alert('Opening comprehensive inquiry management panel.');
+    // window.location.href = 'inquiries.html';
+}
+
+function viewAllProperties() {
+    alert('Viewing all properties in a detailed grid view.');
+    // window.location.href = 'my-properties.html';
+}
+
+function viewAllInquiries() {
+    alert('Viewing all inquiries with advanced filtering options.');
+    // window.location.href = 'all-inquiries.html';
+}
+
+function exportData() {
+    alert('Exporting dashboard data to CSV/Excel format.');
+    // Implement data export functionality
 }
 
 function logout() {
-    localStorage.removeItem('authToken');
-    window.location.href = 'auth.html';
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('userLoggedIn');
+        localStorage.removeItem('userType');
+        localStorage.removeItem('userEmail');
+        window.location.href = 'auth.html';
+    }
 }

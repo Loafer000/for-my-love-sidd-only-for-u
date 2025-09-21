@@ -4,98 +4,419 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Details - ConnectSpace</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modern-design-system.css">
+    <link rel="stylesheet" href="modern-navbar.css">
+    <link rel="stylesheet" href="modern-property-details.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">
-                <h1>ConnectSpace 🏢</h1>
-            </div>
+    <!-- Navigation -->
+    <nav class="modern-navbar">
+        <div class="nav-container">
+            <a class="nav-brand" href="index.html">
+                <div class="nav-brand-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <span>ConnectSpace</span>
+            </a>
+            
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="search.html">Search</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="auth.html" class="btn-secondary">Login/Signup</a></li>
+                <li><a href="auth.html" class="btn btn-secondary">Login/Signup</a></li>
             </ul>
-        </nav>
-    </header>
+            
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
 
-    <main class="container">
-        <div class="property-detail-container">
-            <div class="property-header">
-                <h1 id="propertyTitle">Property Title</h1>
-                <div class="property-price" id="propertyPrice">₹0/month</div>
-                <span id="verifiedBadge" class="verified-badge" style="display: none;">✓ Verified</span>
+    <main class="property-details-main">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb-section">
+            <div class="container">
+                <nav class="breadcrumb">
+                    <a href="index.html" class="breadcrumb-item">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
+                    <span class="breadcrumb-separator">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <a href="search.html" class="breadcrumb-item">Properties</a>
+                    <span class="breadcrumb-separator">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <span class="breadcrumb-current" id="breadcrumbTitle">Property Details</span>
+                </nav>
             </div>
+        </div>
 
-            <div class="property-content">
-                <div class="property-gallery">
-                    <div class="main-image">
-                        <div class="property-image">Property Images</div>
-                    </div>
+        <!-- Property Content -->
+        <div class="property-content">
+            <div class="container">
+                <div class="property-layout">
+                    <!-- Property Gallery -->
+                    <section class="property-gallery">
+                        <div class="gallery-container">
+                            <div class="main-image">
+                                <img src="https://via.placeholder.com/800x500/E5E7EB/6B7280?text=Property+Image" 
+                                     alt="Property" id="mainImage" class="main-property-image">
+                                <div class="image-overlay">
+                                    <button class="gallery-btn prev-btn" onclick="previousImage()">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <button class="gallery-btn next-btn" onclick="nextImage()">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                    <button class="gallery-btn fullscreen-btn" onclick="openFullscreen()">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                                <div class="image-count">
+                                    <span id="currentImage">1</span> / <span id="totalImages">6</span>
+                                </div>
+                            </div>
+                            <div class="thumbnail-grid" id="thumbnailGrid">
+                                <!-- Thumbnails will be populated by JS -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Property Info -->
+                    <section class="property-info">
+                        <!-- Property Header -->
+                        <div class="property-header">
+                            <div class="property-status-badges">
+                                <span class="status-badge verified" id="verifiedBadge">
+                                    <i class="fas fa-check-circle"></i>
+                                    Verified
+                                </span>
+                                <span class="status-badge featured">
+                                    <i class="fas fa-star"></i>
+                                    Featured
+                                </span>
+                            </div>
+                            <h1 class="property-title" id="propertyTitle">Modern Office Space in Salt Lake</h1>
+                            <div class="property-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="propertyLocation">Salt Lake City, Sector 5, Kolkata</span>
+                            </div>
+                            <div class="property-price-section">
+                                <div class="price-main">
+                                    <span class="price-amount" id="propertyPrice">₹45,000</span>
+                                    <span class="price-period">/month</span>
+                                </div>
+                                <div class="price-details">
+                                    <span class="price-per-sqft">₹38/sq ft</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="quick-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-ruler-combined"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="propertySize">1200</div>
+                                    <div class="stat-label">Sq Ft</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="propertyType">Office</div>
+                                    <div class="stat-label">Type</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value">Available</div>
+                                    <div class="stat-label">Status</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value">145</div>
+                                    <div class="stat-label">Views</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="property-actions">
+                            <button class="btn btn-primary btn-large" onclick="openContactModal()">
+                                <i class="fas fa-envelope"></i>
+                                Contact Landlord
+                            </button>
+                            <button class="btn btn-secondary" onclick="scheduleVisit()">
+                                <i class="fas fa-calendar-plus"></i>
+                                Schedule Visit
+                            </button>
+                            <button class="btn btn-outline" onclick="shareProperty()">
+                                <i class="fas fa-share-alt"></i>
+                                Share
+                            </button>
+                            <button class="btn btn-outline favorite-btn" onclick="toggleFavorite()">
+                                <i class="far fa-heart"></i>
+                                Save
+                            </button>
+                        </div>
+                    </section>
                 </div>
 
-                <div class="property-info-section">
-                    <h3>Property Details</h3>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <strong>Size:</strong> <span id="propertySize">0 sq ft</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong>Type:</strong> <span id="propertyType">Office</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong>Location:</strong> <span id="propertyLocation">Location</span>
-                        </div>
+                <!-- Property Details Sections -->
+                <div class="details-layout">
+                    <!-- Main Content -->
+                    <div class="details-main">
+                        <!-- Description -->
+                        <section class="details-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Description
+                            </h2>
+                            <div class="description-content">
+                                <p id="propertyDescription">
+                                    This modern office space is perfect for startups and small businesses looking for a professional environment. 
+                                    Located in the heart of Salt Lake City, it offers excellent connectivity and modern amenities. 
+                                    The space features large windows, modern lighting, and flexible layout options.
+                                </p>
+                                <div class="description-tags">
+                                    <span class="tag">Furnished</span>
+                                    <span class="tag">AC</span>
+                                    <span class="tag">WiFi Ready</span>
+                                    <span class="tag">Parking</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Features & Amenities -->
+                        <section class="details-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-star"></i>
+                                Features & Amenities
+                            </h2>
+                            <div class="amenities-grid">
+                                <div class="amenity-item">
+                                    <i class="fas fa-wifi"></i>
+                                    <span>High-Speed Internet</span>
+                                </div>
+                                <div class="amenity-item">
+                                    <i class="fas fa-snowflake"></i>
+                                    <span>Air Conditioning</span>
+                                </div>
+                                <div class="amenity-item">
+                                    <i class="fas fa-car"></i>
+                                    <span>Parking Available</span>
+                                </div>
+                                <div class="amenity-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>24/7 Security</span>
+                                </div>
+                                <div class="amenity-item">
+                                    <i class="fas fa-elevator"></i>
+                                    <span>Elevator Access</span>
+                                </div>
+                                <div class="amenity-item">
+                                    <i class="fas fa-coffee"></i>
+                                    <span>Cafeteria</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Location & Map -->
+                        <section class="details-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Location & Nearby
+                            </h2>
+                            <div class="location-content">
+                                <div class="map-container">
+                                    <div class="map-placeholder" id="mapContainer">
+                                        <div class="map-info">
+                                            <i class="fas fa-map"></i>
+                                            <h3>Interactive Map</h3>
+                                            <p>Click to view detailed location and nearby amenities</p>
+                                            <button class="btn btn-primary" onclick="loadMap()">
+                                                <i class="fas fa-map-marked-alt"></i>
+                                                Load Map
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="nearby-places">
+                                    <h3>Nearby Places</h3>
+                                    <div class="places-list">
+                                        <div class="place-item">
+                                            <i class="fas fa-subway"></i>
+                                            <span>Metro Station - 500m</span>
+                                        </div>
+                                        <div class="place-item">
+                                            <i class="fas fa-hospital"></i>
+                                            <span>Hospital - 1.2km</span>
+                                        </div>
+                                        <div class="place-item">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <span>Shopping Mall - 800m</span>
+                                        </div>
+                                        <div class="place-item">
+                                            <i class="fas fa-utensils"></i>
+                                            <span>Restaurants - 200m</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
 
-                    <h3>Description</h3>
-                    <p id="propertyDescription">Property description will appear here.</p>
+                    <!-- Sidebar -->
+                    <div class="details-sidebar">
+                        <!-- Landlord Info -->
+                        <div class="sidebar-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-user"></i>
+                                Property Owner
+                            </h3>
+                            <div class="landlord-info">
+                                <img src="https://via.placeholder.com/60x60/3B82F6/FFFFFF?text=RL" alt="Landlord" class="landlord-avatar">
+                                <div class="landlord-details">
+                                    <h4 class="landlord-name">Rajesh Kumar</h4>
+                                    <div class="landlord-rating">
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="rating-text">4.2 (15 reviews)</span>
+                                    </div>
+                                    <div class="landlord-stats">
+                                        <span><i class="fas fa-building"></i> 8 Properties</span>
+                                        <span><i class="fas fa-clock"></i> Joined 2020</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contact-actions">
+                                <button class="btn btn-primary btn-full" onclick="openContactModal()">
+                                    <i class="fas fa-envelope"></i>
+                                    Send Message
+                                </button>
+                                <button class="btn btn-outline btn-full" onclick="callLandlord()">
+                                    <i class="fas fa-phone"></i>
+                                    Call Now
+                                </button>
+                            </div>
+                        </div>
 
-                    <div class="map-section">
-                        <h3>Location</h3>
-                        <div class="map-placeholder">
-                            <p>Interactive map will be displayed here</p>
+                        <!-- Similar Properties -->
+                        <div class="sidebar-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-th-large"></i>
+                                Similar Properties
+                            </h3>
+                            <div class="similar-properties" id="similarProperties">
+                                <!-- Similar properties will be populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="sidebar-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-bolt"></i>
+                                Quick Actions
+                            </h3>
+                            <div class="quick-actions">
+                                <button class="action-btn" onclick="downloadBrochure()">
+                                    <i class="fas fa-download"></i>
+                                    Download Brochure
+                                </button>
+                                <button class="action-btn" onclick="reportProperty()">
+                                    <i class="fas fa-flag"></i>
+                                    Report Property
+                                </button>
+                                <button class="action-btn" onclick="printDetails()">
+                                    <i class="fas fa-print"></i>
+                                    Print Details
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="contact-section">
-                <h3>Interested? Contact the Landlord</h3>
-                <div class="form-container">
-                    <form onsubmit="contactLandlord(event)">
-                        <div class="form-group">
-                            <label for="name">Your Name:</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone:</label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message:</label>
-                            <textarea id="message" name="message" placeholder="I'm interested in this property..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn-primary">Send Message</button>
-                    </form>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 ConnectSpace 🏢. Connecting spaces, building trust.</p>
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Contact Landlord</h2>
+                <button class="modal-close" onclick="closeContactModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="contact-form" onsubmit="submitContactForm(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-user"></i>
+                                Your Name
+                            </label>
+                            <input type="text" name="name" class="form-input" required placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-envelope"></i>
+                                Email Address
+                            </label>
+                            <input type="email" name="email" class="form-input" required placeholder="your.email@example.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-phone"></i>
+                            Phone Number
+                        </label>
+                        <input type="tel" name="phone" class="form-input" required placeholder="+91 XXXXX XXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-comment"></i>
+                            Message
+                        </label>
+                        <textarea name="message" class="form-input" rows="4" required 
+                                  placeholder="I'm interested in this property and would like to know more details..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeContactModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </footer>
+    </div>
 
+    <script src="navbar.js"></script>
     <script src="property-details.js"></script>
 </body>
 </html>

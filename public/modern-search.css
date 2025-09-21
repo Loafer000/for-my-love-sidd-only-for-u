@@ -485,15 +485,28 @@
 @media (max-width: 1024px) {
   .search-layout {
     grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
   
   .search-filters {
     position: static;
     order: 2;
+    margin-top: var(--space-6);
   }
   
   .search-results {
     order: 1;
+  }
+  
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+  
+  .results-controls {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
@@ -513,41 +526,68 @@
   .search-input-group {
     flex-direction: column;
     gap: var(--space-3);
+    padding: var(--space-3);
   }
   
   .search-btn {
     width: 100%;
+    padding: var(--space-4);
   }
   
   .search-quick-filters {
     justify-content: flex-start;
+    gap: var(--space-2);
   }
   
-  .results-header {
-    flex-direction: column;
-    gap: var(--space-4);
-    align-items: flex-start;
+  .quick-filter-btn {
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
   }
   
-  .results-controls {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .properties-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .search-filters {
-    padding: var(--space-4);
-  }
-}
-
-@media (max-width: 480px) {
   .search-interface {
     padding: var(--space-8) 0;
   }
   
+  .search-layout {
+    gap: var(--space-4);
+  }
+  
+  .search-filters {
+    padding: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  
+  .properties-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  
+  .property-card {
+    margin-bottom: var(--space-4);
+  }
+  
+  .property-actions {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .property-actions .btn {
+    width: 100%;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+  
+  .pagination-btn {
+    min-width: 35px;
+    height: 35px;
+    font-size: var(--text-sm);
+  }
+}
+
+@media (max-width: 480px) {
   .search-hero {
     padding: var(--space-8) 0 var(--space-6);
   }
@@ -556,7 +596,80 @@
     font-size: var(--text-2xl);
   }
   
-  .property-actions {
+  .search-subtitle {
+    font-size: var(--text-base);
+  }
+  
+  .search-interface {
+    padding: var(--space-6) 0;
+  }
+  
+  .search-layout {
+    gap: var(--space-3);
+  }
+  
+  .search-filters {
+    padding: var(--space-3);
+  }
+  
+  .filter-group {
+    margin-bottom: var(--space-4);
+  }
+  
+  .filter-title {
+    font-size: var(--text-base);
+  }
+  
+  .search-results {
+    padding: var(--space-4);
+  }
+  
+  .results-header h2 {
+    font-size: var(--text-xl);
+  }
+  
+  .results-controls {
     flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .view-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .sort-select {
+    width: 100%;
+  }
+  
+  .property-content {
+    padding: var(--space-4);
+  }
+  
+  .property-price {
+    font-size: var(--text-xl);
+  }
+  
+  .property-title {
+    font-size: var(--text-base);
+  }
+  
+  .property-features {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  
+  .property-feature {
+    font-size: var(--text-xs);
+  }
+  
+  .pagination {
+    justify-content: center;
+  }
+  
+  .pagination-btn {
+    min-width: 30px;
+    height: 30px;
+    font-size: var(--text-xs);
   }
 }
