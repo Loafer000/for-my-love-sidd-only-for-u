@@ -4,79 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - ConnectSpace</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="navbar.css">
-    <link rel="stylesheet" href="about-contact-beautiful.css">
+    <link rel="stylesheet" href="modern-design-system.css">
+    <link rel="stylesheet" href="modern-navbar.css">
+    <link rel="stylesheet" href="modern-contact.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">
-                <h1>ConnectSpace 🏢</h1>
+    <!-- Navigation -->
+    <nav class="modern-navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-building"></i>
+                    <span>ConnectSpace</span>
+                </div>
+                
+                <div class="navbar-menu">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="search.html" class="nav-link">Search</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="contact.html" class="nav-link active">Contact</a>
+                    <a href="auth.html" class="btn btn-primary">Login</a>
+                </div>
+                
+                <button class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="search.html">Search</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="auth.html" class="btn-secondary">Login/Signup</a></li>
-            </ul>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
-    <main class="container">
-        <section class="contact-hero">
-            <h1>Contact ConnectSpace</h1>
-            <p>We're here to help you connect with the perfect commercial space</p>
-        </section>
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="contact-hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Get in Touch</h1>
+                    <p class="hero-subtitle">We're here to help you connect with the perfect commercial space. Reach out to our team for any questions or support.</p>
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <i class="fas fa-clock"></i>
+                            <span>24/7 Support</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-reply"></i>
+                            <span>Quick Response</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-users"></i>
+                            <span>Expert Team</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="contact-illustration">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <section class="contact-content">
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h2>Get in Touch</h2>
-                    <div class="contact-item">
-                        <h3>📧 Email</h3>
+    <!-- Contact Methods Section -->
+    <section class="contact-methods">
+        <div class="container">
+            <div class="methods-grid">
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="method-title">Email Us</h3>
+                    <div class="method-content">
                         <p>support@ConnectSpace.in</p>
                         <p>partnerships@ConnectSpace.in</p>
                     </div>
-                    <div class="contact-item">
-                        <h3>📱 Phone</h3>
+                    <a href="mailto:support@ConnectSpace.in" class="method-action">
+                        <i class="fas fa-arrow-right"></i>
+                        Send Email
+                    </a>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 class="method-title">Call Us</h3>
+                    <div class="method-content">
                         <p>+91 33 XXXX XXXX</p>
                         <p>Mon-Fri: 9:00 AM - 6:00 PM</p>
                     </div>
-                    <div class="contact-item">
-                        <h3>📍 Address</h3>
-                        <p>ConnectSpace Technologies<br>
-                        Salt Lake City, Sector V<br>
-                        Kolkata, West Bengal 700091</p>
+                    <a href="tel:+913300000000" class="method-action">
+                        <i class="fas fa-arrow-right"></i>
+                        Call Now
+                    </a>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-map-marker-alt"></i>
                     </div>
-                    <div class="contact-item">
-                        <h3>🕒 Business Hours</h3>
-                        <p>Monday - Friday: 9:00 AM - 6:00 PM<br>
-                        Saturday: 10:00 AM - 4:00 PM<br>
-                        Sunday: Closed</p>
+                    <h3 class="method-title">Visit Us</h3>
+                    <div class="method-content">
+                        <p>ConnectSpace Technologies</p>
+                        <p>Salt Lake City, Sector V</p>
+                        <p>Kolkata, West Bengal 700091</p>
+                    </div>
+                    <a href="#" class="method-action">
+                        <i class="fas fa-arrow-right"></i>
+                        Get Directions
+                    </a>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="method-title">Business Hours</h3>
+                    <div class="method-content">
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                        <p>Saturday: 10:00 AM - 4:00 PM</p>
+                        <p>Sunday: Closed</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="contact-form-section">
-                    <h2>Send us a Message</h2>
-                    <div class="form-container">
-                        <form onsubmit="submitContactForm(event)">
+    <!-- Contact Form Section -->
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="contact-layout">
+                <div class="form-side">
+                    <div class="form-header">
+                        <h2 class="form-title">Send us a Message</h2>
+                        <p class="form-subtitle">Have a question or need assistance? Fill out the form below and we'll get back to you within 24 hours.</p>
+                    </div>
+                    
+                    <form class="contact-form" onsubmit="submitContactForm(event)">
+                        <div class="form-row">
                             <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" required>
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
                             </div>
                             <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" required>
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-input">
                             </div>
                             <div class="form-group">
-                                <label for="phone">Phone:</label>
-                                <input type="tel" id="phone" name="phone">
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Subject:</label>
-                                <select id="subject" name="subject" required>
+                                <label for="subject" class="form-label">Subject</label>
+                                <select id="subject" name="subject" class="form-select" required>
                                     <option value="">Select a topic</option>
                                     <option value="general">General Inquiry</option>
                                     <option value="support">Technical Support</option>
@@ -86,54 +171,178 @@
                                     <option value="feedback">Feedback</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="message">Message:</label>
-                                <textarea id="message" name="message" required 
-                                          placeholder="How can we help you?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" name="message" class="form-textarea" 
+                                    placeholder="How can we help you?" required rows="6"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-large form-submit">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="info-side">
+                    <div class="info-card">
+                        <h3>Why Contact Us?</h3>
+                        <div class="info-list">
+                            <div class="info-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Quick response within 24 hours</span>
                             </div>
-                            <button type="submit" class="btn-primary">Send Message</button>
-                        </form>
+                            <div class="info-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Expert guidance on property listings</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Technical support for platform issues</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Partnership opportunities</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>Emergency Support</h3>
+                        <p>For urgent issues related to your property listings or account, contact our emergency support line.</p>
+                        <a href="tel:+913300000000" class="emergency-contact">
+                            <i class="fas fa-phone"></i>
+                            +91 33 XXXX XXXX
+                        </a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="faq-section">
-            <h2>Frequently Asked Questions</h2>
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Find answers to common questions about ConnectSpace</p>
+            </div>
+            
             <div class="faq-grid">
-                <div class="faq-item">
-                    <h3>How do I list my property?</h3>
-                    <p>Click on "List Your Property" and fill out the detailed form. Upload required documents for verification. Your property will be live within 24 hours after verification.</p>
+                <div class="faq-card">
+                    <div class="faq-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3 class="faq-question">How do I list my property?</h3>
+                    <p class="faq-answer">Click on "List Your Property" and fill out the detailed form. Upload required documents for verification. Your property will be live within 24 hours after verification.</p>
                 </div>
-                <div class="faq-item">
-                    <h3>Is there any fee for listing?</h3>
-                    <p>Basic listings are completely free. We plan to introduce premium features in the future for enhanced visibility and analytics.</p>
+                
+                <div class="faq-card">
+                    <div class="faq-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="faq-question">Is there any fee for listing?</h3>
+                    <p class="faq-answer">Basic listings are completely free. We plan to introduce premium features in the future for enhanced visibility and analytics.</p>
                 </div>
-                <div class="faq-item">
-                    <h3>How do you verify properties?</h3>
-                    <p>Our team manually reviews all uploaded documents including Sale Deed, Property Tax Receipt, and other relevant papers to ensure legitimacy.</p>
+                
+                <div class="faq-card">
+                    <div class="faq-icon">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3 class="faq-question">How do you verify properties?</h3>
+                    <p class="faq-answer">Our team manually reviews all uploaded documents including Sale Deed, Property Tax Receipt, and other relevant papers to ensure legitimacy.</p>
                 </div>
-                <div class="faq-item">
-                    <h3>Can I edit my listing?</h3>
-                    <p>Yes, you can edit your listings anytime through the Landlord Dashboard. Changes will be reflected immediately.</p>
+                
+                <div class="faq-card">
+                    <div class="faq-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="faq-question">Can I edit my listing?</h3>
+                    <p class="faq-answer">Yes, you can edit your listings anytime through the Landlord Dashboard. Changes will be reflected immediately.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="faq-question">How long does verification take?</h3>
+                    <p class="faq-answer">Our verification process typically takes 24-48 hours. You'll receive an email notification once your property is verified and live.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="faq-question">How do I connect with tenants?</h3>
+                    <p class="faq-answer">Once your property is listed, interested tenants can contact you directly through our secure messaging system or phone.</p>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <footer>
+    <!-- Modern Footer -->
+    <footer class="modern-footer">
         <div class="container">
-            <p>&copy; 2024 ConnectSpace 🏢. Connecting spaces, building trust.</p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="brand-logo">
+                        <i class="fas fa-building"></i>
+                        <span>ConnectSpace</span>
+                    </div>
+                    <p>Connecting spaces, building trust.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Platform</h4>
+                        <a href="search.html">Search Properties</a>
+                        <a href="list-property.html">List Property</a>
+                        <a href="dashboard.html">Dashboard</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Company</h4>
+                        <a href="about.html">About Us</a>
+                        <a href="contact.html">Contact</a>
+                        <a href="#">Privacy Policy</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Support</h4>
+                        <a href="contact.html">Help Center</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Documentation</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ConnectSpace. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
     <script>
         function submitContactForm(event) {
             event.preventDefault();
-            alert('Thank you for your message! We will get back to you within 24 hours.');
-            event.target.reset();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('.form-submit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Thank you for your message! We will get back to you within 24 hours.');
+                event.target.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
         }
     </script>
-    <script src="script.js"></script>
+    <script src="modern-navbar.js"></script>
 </body>
 </html>

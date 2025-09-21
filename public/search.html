@@ -2,36 +2,290 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Properties - ConnectSpace</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="navbar-with-effects.css">
-    <link rel="stylesheet" href="search-padding.css">
-    <link rel="stylesheet" href="responsive-queries.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Modern Design System -->
+    <link rel="stylesheet" href="modern-design-system.css">
+    <link rel="stylesheet" href="modern-navbar.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="modern-navbar.js" defer></script>
 </head>
 <body>
-    <!-- Clean Navigation -->
+    <!-- Modern Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-building"></i>
+            <a href="index.html" class="nav-brand">
+                <div class="nav-brand-icon">
+                    <i class="fas fa-building"></i>
+                </div>
                 <span>ConnectSpace</span>
-            </div>
+            </a>
             
             <div class="nav-menu">
-                <a href="index.html" class="nav-item">Home</a>
-                <a href="search.html" class="nav-item active">Search</a>
-                <a href="about.html" class="nav-item">About</a>
-                <a href="contact.html" class="nav-item">Contact</a>
-                <a href="list-property.html" class="nav-btn">List Property</a>
-                <a href="auth.html" class="nav-btn-primary">Login</a>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="search.html" class="nav-link active">Search Properties</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
             </div>
             
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-actions">
+                <a href="list-property.html" class="btn btn-outline">List Property</a>
+                <a href="auth.html" class="nav-cta">Get Started</a>
+            </div>
+            
+            <button class="nav-toggle">
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="nav-mobile">
+            <div class="nav-mobile-content">
+                <a href="index.html" class="nav-mobile-link">Home</a>
+                <a href="search.html" class="nav-mobile-link active">Search Properties</a>
+                <a href="about.html" class="nav-mobile-link">About</a>
+                <a href="contact.html" class="nav-mobile-link">Contact</a>
+                <div class="nav-mobile-divider"></div>
+                <a href="list-property.html" class="nav-mobile-link">List Property</a>
+                <a href="auth.html" class="nav-mobile-cta">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Hero Section -->
+    <section class="search-hero">
+        <div class="container">
+            <div class="search-hero-content">
+                <h1 class="search-title">Find Your Perfect Commercial Space</h1>
+                <p class="search-subtitle">Discover thousands of verified commercial properties across 50+ cities</p>
+                
+                <div class="search-main-form">
+                    <div class="search-input-group">
+                        <div class="search-field">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search by location, property type, or keywords..." class="search-input" id="mainSearch">
+                        </div>
+                        <button class="btn btn-primary search-btn">
+                            <i class="fas fa-search"></i>
+                            Search
+                        </button>
+                    </div>
+                    
+                    <div class="search-quick-filters">
+                        <span class="quick-filter-label">Popular:</span>
+                        <button class="quick-filter-btn">Office Space</button>
+                        <button class="quick-filter-btn">Retail Store</button>
+                        <button class="quick-filter-btn">Warehouse</button>
+                        <button class="quick-filter-btn">Co-working</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Interface -->
+    <section class="search-interface">
+        <div class="container">
+            <div class="search-layout">
+                <!-- Filters Sidebar -->
+                <div class="search-filters">
+                    <div class="filters-header">
+                        <h3>Filters</h3>
+                        <button class="filter-clear">Clear All</button>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4 class="filter-title">Property Type</h4>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" value="office">
+                                <span class="checkmark"></span>
+                                Office Space
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="retail">
+                                <span class="checkmark"></span>
+                                Retail Store
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="warehouse">
+                                <span class="checkmark"></span>
+                                Warehouse
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="coworking">
+                                <span class="checkmark"></span>
+                                Co-working
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4 class="filter-title">Price Range</h4>
+                        <div class="price-range">
+                            <input type="range" min="0" max="50000" value="25000" class="price-slider" id="priceRange">
+                            <div class="price-labels">
+                                <span>$0</span>
+                                <span id="priceValue">$25,000</span>
+                                <span>$50,000+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4 class="filter-title">Area (sq ft)</h4>
+                        <div class="area-inputs">
+                            <input type="number" placeholder="Min" class="area-input">
+                            <span>-</span>
+                            <input type="number" placeholder="Max" class="area-input">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4 class="filter-title">Amenities</h4>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" value="parking">
+                                <span class="checkmark"></span>
+                                Parking
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="elevator">
+                                <span class="checkmark"></span>
+                                Elevator
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="ac">
+                                <span class="checkmark"></span>
+                                Air Conditioning
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="security">
+                                <span class="checkmark"></span>
+                                24/7 Security
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Area -->
+                <div class="search-results">
+                    <div class="results-header">
+                        <div class="results-info">
+                            <h2>Search Results</h2>
+                            <p id="resultsCount">Showing 234 properties</p>
+                        </div>
+                        
+                        <div class="results-controls">
+                            <div class="view-toggle">
+                                <button class="view-btn active" data-view="grid">
+                                    <i class="fas fa-th-large"></i>
+                                </button>
+                                <button class="view-btn" data-view="list">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                            </div>
+                            
+                            <select class="sort-select">
+                                <option value="newest">Newest First</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="area-large">Area: Largest First</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="properties-grid" id="searchResults">
+                        <!-- Properties will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="pagination">
+                        <button class="pagination-btn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <span class="pagination-dots">...</span>
+                        <button class="pagination-btn">12</button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="nav-brand-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span>ConnectSpace</span>
+                    </div>
+                    <p>Connecting businesses with their perfect commercial spaces.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <a href="search.html">Search Properties</a>
+                        <a href="list-property.html">List Property</a>
+                        <a href="dashboard.html">Dashboard</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="about.html">About Us</a>
+                        <a href="contact.html">Contact</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Press</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">API Docs</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ConnectSpace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="search-functionality.js"></script>
+    <script src="api.js"></script>
+</body>
+</html>
             </div>
         </div>
     </nav>

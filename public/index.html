@@ -2,48 +2,280 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ConnectSpace - Commercial Real Estate Platform</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="navbar-with-effects.css">
-    <link rel="stylesheet" href="responsive-queries.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectSpace - Modern Commercial Real Estate Platform</title>
+    
+    <!-- Modern Design System -->
+    <link rel="stylesheet" href="modern-design-system.css">
+    <link rel="stylesheet" href="modern-navbar.css">
+    <link rel="stylesheet" href="modern-home.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Scripts -->
     <script src="config.js"></script>
+    <script src="modern-navbar.js" defer></script>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <i class="fas fa-building"></i>
-                <h2>ConnectSpace 🏢</h2>
-            </div>
-            <div class="loading-spinner"></div>
-            <p>Connecting spaces, building trust...</p>
-        </div>
-    </div>
-
-    <!-- Clean Navigation -->
+    <!-- Modern Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <i class="fas fa-building"></i>
+            <a href="index.html" class="nav-brand">
+                <div class="nav-brand-icon">
+                    <i class="fas fa-building"></i>
+                </div>
                 <span>ConnectSpace</span>
             </a>
             
             <div class="nav-menu">
-                <a href="index.html" class="nav-item active">Home</a>
-                <a href="search.html" class="nav-item">Search</a>
-                <a href="about.html" class="nav-item">About</a>
-                <a href="contact.html" class="nav-item">Contact</a>
-                <a href="list-property.html" class="nav-btn">List Property</a>
-                <a href="auth.html" class="nav-btn-primary">Login</a>
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="search.html" class="nav-link">Search Properties</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
             </div>
             
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-actions">
+                <a href="list-property.html" class="btn btn-outline">List Property</a>
+                <a href="auth.html" class="nav-cta">Get Started</a>
+            </div>
+            
+            <button class="nav-toggle">
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="nav-mobile">
+            <div class="nav-mobile-content">
+                <a href="index.html" class="nav-mobile-link active">Home</a>
+                <a href="search.html" class="nav-mobile-link">Search Properties</a>
+                <a href="about.html" class="nav-mobile-link">About</a>
+                <a href="contact.html" class="nav-mobile-link">Contact</a>
+                <div class="nav-mobile-divider"></div>
+                <a href="list-property.html" class="nav-mobile-link">List Property</a>
+                <a href="auth.html" class="nav-mobile-cta">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-up">
+                    <i class="fas fa-star"></i>
+                    <span>Trusted by 10,000+ Businesses</span>
+                </div>
+                
+                <h1 class="hero-title animate-fade-up">
+                    Find Your Perfect
+                    <span class="hero-gradient-text">Commercial Space</span>
+                </h1>
+                
+                <p class="hero-subtitle animate-fade-up">
+                    Discover premium commercial properties with our intelligent platform. 
+                    Connect with verified landlords and find spaces that grow with your business.
+                </p>
+                
+                <div class="hero-actions animate-fade-up">
+                    <a href="search.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search"></i>
+                        Start Searching
+                    </a>
+                    <a href="about.html" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-play"></i>
+                        Watch Demo
+                    </a>
+                </div>
+                
+                <div class="hero-stats animate-fade-up">
+                    <div class="stat-item">
+                        <div class="stat-number">15K+</div>
+                        <div class="stat-label">Properties</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2.5K+</div>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Cities</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual animate-fade-scale">
+                <div class="hero-image-container">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&crop=entropy&auto=format&q=80" 
+                         alt="Modern Office Building" class="hero-image">
+                    <div class="hero-overlay">
+                        <div class="hero-card">
+                            <div class="hero-card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="hero-card-content">
+                                <h4>Market Insights</h4>
+                                <p>Real-time property analytics</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Why Choose ConnectSpace?</h2>
+                <p class="section-subtitle">Experience the future of commercial real estate</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card animate-fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <h3>Smart Search</h3>
+                    <p>AI-powered search that understands your business needs and preferences.</p>
+                </div>
+                
+                <div class="feature-card animate-fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3>Verified Properties</h3>
+                    <p>All properties are verified and authenticated for your peace of mind.</p>
+                </div>
+                
+                <div class="feature-card animate-fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Direct Connect</h3>
+                    <p>Connect directly with property owners and skip the middleman.</p>
+                </div>
+                
+                <div class="feature-card animate-fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Market Analytics</h3>
+                    <p>Get detailed market insights and property value analysis.</p>
+                </div>
+                
+                <div class="feature-card animate-fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Ready</h3>
+                    <p>Access properties on-the-go with our responsive platform.</p>
+                </div>
+                
+                <div class="feature-card animate-fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock customer support for all your queries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Properties Section -->
+    <section class="properties-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Properties</h2>
+                <p class="section-subtitle">Discover premium commercial spaces</p>
+                <a href="search.html" class="btn btn-outline">View All Properties</a>
+            </div>
+            
+            <div class="properties-grid" id="featuredProperties">
+                <!-- Properties will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Find Your Perfect Space?</h2>
+                <p class="cta-subtitle">Join thousands of businesses who found their ideal commercial property with ConnectSpace.</p>
+                <div class="cta-actions">
+                    <a href="search.html" class="btn btn-primary btn-lg">Start Your Search</a>
+                    <a href="list-property.html" class="btn btn-secondary btn-lg">List Your Property</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="nav-brand-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span>ConnectSpace</span>
+                    </div>
+                    <p>Connecting businesses with their perfect commercial spaces.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <a href="search.html">Search Properties</a>
+                        <a href="list-property.html">List Property</a>
+                        <a href="dashboard.html">Dashboard</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="about.html">About Us</a>
+                        <a href="contact.html">Contact</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Press</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">API Docs</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ConnectSpace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
             </div>
         </div>
     </nav>
