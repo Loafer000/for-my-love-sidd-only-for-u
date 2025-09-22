@@ -213,6 +213,9 @@ a:hover {
   transition: var(--transition-fast);
   text-decoration: none;
   white-space: nowrap;
+  min-height: 48px;
+  min-width: 48px;
+  touch-action: manipulation;
 }
 
 .btn-primary {

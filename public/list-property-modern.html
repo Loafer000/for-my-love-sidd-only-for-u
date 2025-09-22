@@ -4,30 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Your Property - ConnectSpace</title>
-    <link rel="stylesheet" href="modern-design-system.css?v=2024">
-    <link rel="stylesheet" href="modern-navbar.css?v=2024">
-    <link rel="stylesheet" href="list-property-light-theme.css?v=light2024">
-    <link rel="stylesheet" href="universal-responsive.css">
+    <link rel="stylesheet" href="modern-design-system.css">
+    <link rel="stylesheet" href="modern-navbar.css">
+        <!-- Stylesheets -->
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="list-property-enhanced.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Additional light theme enhancements */
-        .form-section {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05) !important;
-        }
-        
-        .form-section:hover {
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08) !important;
-            transform: translateY(-1px);
-        }
-        
-        .modern-navbar {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95) !important;
-            border-bottom: 1px solid #e2e8f0;
-        }
-    </style>
 </head>
 <body>
     <!-- Authentication Check -->
@@ -42,29 +24,63 @@
     </script>
 
     <!-- Navigation -->
-    <nav class="modern-navbar">
+    <nav class="navbar">
         <div class="nav-container">
             <a class="nav-brand" href="index.html">
-                <div class="nav-brand-icon">
+                <div class="brand-icon">
                     <i class="fas fa-building"></i>
                 </div>
-                <span>ConnectSpace</span>
+                <span class="brand-text">ConnectSpace</span>
             </a>
             
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="search.html">Search</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="list-property.html" class="active">List Property</a></li>
-            </ul>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="search.html" class="nav-link">Search</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="list-property.html" class="nav-link active">List Property</a>
+                <div class="nav-user">
+                    <div class="user-menu">
+                        <button class="user-menu-toggle">
+                            <img src="https://via.placeholder.com/32x32/3B82F6/FFFFFF?text=L" alt="User" class="user-avatar">
+                            <span id="userName">Landlord</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown">
+                            <a href="verify.html" class="dropdown-item">
+                                <i class="fas fa-id-card"></i>
+                                Verify Account
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <button class="nav-toggle">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="nav-mobile-menu">
+            <div class="nav-mobile-content">
+                <a href="index.html" class="nav-mobile-link">Home</a>
+                <a href="search.html" class="nav-mobile-link">Search Properties</a>
+                <a href="about.html" class="nav-mobile-link">About</a>
+                <a href="contact.html" class="nav-mobile-link">Contact</a>
+                <a href="dashboard.html" class="nav-mobile-link">Dashboard</a>
+                <a href="list-property.html" class="nav-mobile-link active">List Property</a>
+                <div class="nav-mobile-divider"></div>
+                <a href="verify.html" class="nav-mobile-link">Verify Account</a>
+                <a href="#" class="nav-mobile-link" onclick="logout()">Logout</a>
+            </div>
         </div>
     </nav>
 
@@ -140,21 +156,15 @@
                         </div>
 
                         <div class="form-grid">
-                            <div class="form-section card-primary">
-                                <div class="section-badge">
-                                    <i class="fas fa-info-circle"></i>
-                                    <span>Required Information</span>
-                                </div>
+                            <div class="form-section">
                                 <h3 class="section-title">Property Information</h3>
                                 
                                 <div class="form-group">
                                     <label class="form-label">
                                         <i class="fas fa-tag"></i>
                                         Property Title
-                                        <span class="status-indicator required">Required</span>
                                     </label>
-                                    <input type="text" name="title" class="form-input interactive-element" required 
-                                           placeholder="e.g., Modern Office Space in Salt Lake City">
+                                    <input type="text" name="title" class="form-input" required placeholder="e.g., Modern Office Space in Salt Lake City">
                                     <div class="form-hint">Choose a descriptive title that highlights your property's best features</div>
                                 </div>
 
@@ -164,7 +174,7 @@
                                             <i class="fas fa-building"></i>
                                             Property Type
                                         </label>
-                                        <select name="type" class="form-select interactive-element" required>
+                                        <select name="type" class="form-select" required>
                                             <option value="">Select property type</option>
                                             <option value="office">Office Space</option>
                                             <option value="retail">Retail Shop</option>
@@ -181,8 +191,7 @@
                                             <i class="fas fa-ruler-combined"></i>
                                             Total Area (sq ft)
                                         </label>
-                                        <input type="number" name="size" class="form-input interactive-element" required 
-                                               placeholder="1200" min="100">
+                                        <input type="number" name="size" class="form-input" required placeholder="1200" min="100">
                                     </div>
                                 </div>
 
@@ -190,20 +199,13 @@
                                     <label class="form-label">
                                         <i class="fas fa-align-left"></i>
                                         Property Description
-                                        <span class="status-indicator required">Required</span>
                                     </label>
-                                    <textarea name="description" class="form-textarea interactive-element" rows="4" required
-                                              placeholder="Describe your property's key features, location benefits, and what makes it special..."></textarea>
+                                    <textarea name="description" class="form-textarea" rows="4" required placeholder="Describe your property's key features, location benefits, and what makes it special..."></textarea>
                                     <div class="form-hint">Minimum 50 characters. Include details about location, amenities, and unique selling points.</div>
-                                    <div class="character-counter" id="descriptionCounter">0 / 500 characters</div>
                                 </div>
                             </div>
 
-                            <div class="form-section card-secondary">
-                                <div class="section-badge">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Location Details</span>
-                                </div>
+                            <div class="form-section">
                                 <h3 class="section-title">Location & Pricing</h3>
                                 
                                 <div class="form-group">
@@ -211,8 +213,7 @@
                                         <i class="fas fa-map-marker-alt"></i>
                                         Full Address
                                     </label>
-                                    <textarea name="address" class="form-textarea" rows="3" required
-                                              placeholder="Building name, street address, area, city, state, PIN code"></textarea>
+                                    <textarea name="address" class="form-textarea" rows="3" required placeholder="Building name, street address, area, city, state, PIN code"></textarea>
                                 </div>
 
                                 <div class="form-row">
@@ -238,8 +239,7 @@
                                             <i class="fas fa-location-arrow"></i>
                                             Area/Locality
                                         </label>
-                                        <input type="text" name="locality" class="form-input" required 
-                                               placeholder="e.g., Salt Lake City, Sector 5">
+                                        <input type="text" name="locality" class="form-input" required placeholder="e.g., Salt Lake City, Sector 5">
                                     </div>
                                 </div>
 
@@ -249,8 +249,7 @@
                                             <i class="fas fa-rupee-sign"></i>
                                             Monthly Rent (₹)
                                         </label>
-                                        <input type="number" name="rent" class="form-input" required 
-                                               placeholder="45000" min="1000">
+                                        <input type="number" name="rent" class="form-input" required placeholder="45000" min="1000">
                                     </div>
                                     
                                     <div class="form-group">
@@ -258,20 +257,17 @@
                                             <i class="fas fa-hand-holding-usd"></i>
                                             Security Deposit (₹)
                                         </label>
-                                        <input type="number" name="deposit" class="form-input" required 
-                                               placeholder="90000" min="0">
+                                        <input type="number" name="deposit" class="form-input" required placeholder="90000" min="0">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-navigation">
-                            <div class="nav-buttons">
-                                <button type="button" class="btn btn-magical btn-large" onclick="nextStep()">
-                                    <span class="btn-text">Next: Property Features</span>
-                                    <i class="fas fa-arrow-right btn-icon"></i>
-                                </button>
-                            </div>
+                        <div class="step-navigation">
+                            <button type="button" class="btn btn-primary btn-large" onclick="nextStep()">
+                                Next: Property Features
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -327,8 +323,7 @@
                                             <i class="fas fa-car"></i>
                                             Parking Spaces
                                         </label>
-                                        <input type="number" name="parking" class="form-input" 
-                                               placeholder="2" min="0" max="50">
+                                        <input type="number" name="parking" class="form-input" placeholder="2" min="0" max="50">
                                     </div>
                                     
                                     <div class="form-group">
@@ -336,7 +331,7 @@
                                             <i class="fas fa-calendar-alt"></i>
                                             Available From
                                         </label>
-                                        <input type="date" name="availableFrom" class="form-input" required>
+                                        <input type="date" name="availableFrom" class="form-input" required min="2025-09-22">
                                     </div>
                                 </div>
                             </div>
@@ -533,182 +528,8 @@
         </div>
     </div>
 
-    <script src="navbar.js?v=2024"></script>
-    <script src="list-property-enhanced.js?v=enhanced2024"></script>
-    <script src="universal-mobile.js"></script>
-    <script>
-        // Enhanced Light Theme Interactions
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize character counter
-            const descriptionTextarea = document.querySelector('textarea[name="description"]');
-            const descriptionCounter = document.getElementById('descriptionCounter');
-            
-            if (descriptionTextarea && descriptionCounter) {
-                descriptionTextarea.addEventListener('input', function() {
-                    const currentLength = this.value.length;
-                    const maxLength = 500;
-                    descriptionCounter.textContent = `${currentLength} / ${maxLength} characters`;
-                    
-                    if (currentLength > maxLength * 0.9) {
-                        descriptionCounter.classList.add('warning');
-                    } else {
-                        descriptionCounter.classList.remove('warning');
-                    }
-                    
-                    if (currentLength > maxLength) {
-                        descriptionCounter.classList.add('error');
-                    } else {
-                        descriptionCounter.classList.remove('error');
-                    }
-                });
-            }
-            
-            // Add progress bar animation
-            function updateProgressBar() {
-                const currentStep = document.querySelector('.progress-step.active');
-                if (currentStep) {
-                    const stepNumber = parseInt(currentStep.dataset.step);
-                    const progressPercentage = (stepNumber / 4) * 100;
-                    
-                    // Create or update progress bar if it doesn't exist
-                    let progressBar = document.querySelector('.progress-bar-container');
-                    if (!progressBar) {
-                        const progressSection = document.querySelector('.progress-section .container');
-                        const progressBarHTML = `
-                            <div class="progress-visual">
-                                <div class="progress-header">
-                                    <div class="progress-title">Form Completion</div>
-                                    <div class="progress-subtitle">Step ${stepNumber} of 4</div>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar" style="width: ${progressPercentage}%"></div>
-                                </div>
-                                <div class="progress-percentage">${progressPercentage}% Complete</div>
-                            </div>
-                        `;
-                        progressSection.insertAdjacentHTML('afterend', progressBarHTML);
-                    } else {
-                        const bar = document.querySelector('.progress-bar');
-                        const percentage = document.querySelector('.progress-percentage');
-                        const subtitle = document.querySelector('.progress-subtitle');
-                        
-                        if (bar) bar.style.width = progressPercentage + '%';
-                        if (percentage) percentage.textContent = progressPercentage + '% Complete';
-                        if (subtitle) subtitle.textContent = `Step ${stepNumber} of 4`;
-                    }
-                }
-            }
-            
-            // Add interactive elements enhancement
-            const interactiveElements = document.querySelectorAll('.interactive-element');
-            interactiveElements.forEach(element => {
-                element.addEventListener('focus', function() {
-                    this.classList.add('focus-ring');
-                    // Add subtle scale animation
-                    this.style.transform = 'scale(1.01)';
-                });
-                
-                element.addEventListener('blur', function() {
-                    this.classList.remove('focus-ring');
-                    this.style.transform = 'scale(1)';
-                });
-                
-                element.addEventListener('input', function() {
-                    if (this.value.trim() !== '') {
-                        this.classList.add('form-success');
-                        this.classList.remove('form-error');
-                        
-                        // Add validation icon if it doesn't exist
-                        let icon = this.parentNode.querySelector('.validation-icon');
-                        if (!icon) {
-                            icon = document.createElement('i');
-                            icon.className = 'validation-icon fas fa-check valid';
-                            this.parentNode.style.position = 'relative';
-                            this.parentNode.appendChild(icon);
-                        } else {
-                            icon.className = 'validation-icon fas fa-check valid';
-                        }
-                    } else {
-                        this.classList.remove('form-success');
-                        const icon = this.parentNode.querySelector('.validation-icon');
-                        if (icon) icon.remove();
-                    }
-                });
-            });
-            
-            // Enhanced step transitions
-            const originalNextStep = window.nextStep;
-            const originalPreviousStep = window.previousStep;
-            
-            window.nextStep = function() {
-                // Add loading state
-                const submitBtn = document.querySelector('.btn-magical');
-                if (submitBtn) {
-                    submitBtn.style.opacity = '0.7';
-                    submitBtn.style.pointerEvents = 'none';
-                    
-                    setTimeout(() => {
-                        submitBtn.style.opacity = '1';
-                        submitBtn.style.pointerEvents = 'auto';
-                    }, 300);
-                }
-                
-                // Call original function
-                if (originalNextStep) originalNextStep();
-                
-                // Update progress after transition
-                setTimeout(updateProgressBar, 100);
-                
-                // Add step transition animation
-                const activeStep = document.querySelector('.form-step.active');
-                if (activeStep) {
-                    activeStep.classList.add('step-transition');
-                    setTimeout(() => {
-                        activeStep.classList.remove('step-transition');
-                    }, 500);
-                }
-            };
-            
-            window.previousStep = function() {
-                if (originalPreviousStep) originalPreviousStep();
-                setTimeout(updateProgressBar, 100);
-            };
-            
-            // Initialize progress bar
-            updateProgressBar();
-            
-            // Add scroll animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                    }
-                });
-            }, observerOptions);
-            
-            // Observe form sections for scroll animations
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.classList.add('animate-on-scroll');
-                observer.observe(section);
-            });
-            
-            // Add magical hover effects to sections
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-2px)';
-                    this.style.transition = 'all 0.3s ease';
-                });
-                
-                section.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-        });
-    </script>
+    <script src="navbar.js"></script>
+    <script src="list-property-enhanced.js"></script>
+
 </body>
 </html>

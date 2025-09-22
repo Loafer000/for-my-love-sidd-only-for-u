@@ -70,8 +70,27 @@ function checkAuth() {
 
 function updateUserInfo() {
     const userName = document.getElementById('userName');
-    if (userName && dashboardState.user) {
-        userName.textContent = dashboardState.user.name;
+    const userNameMobile = document.getElementById('userNameMobile');
+    
+    if (dashboardState.user) {
+        const displayName = dashboardState.user.name;
+        const userType = dashboardState.user.type;
+        
+        // Update desktop user menu
+        if (userName) {
+            userName.textContent = displayName;
+        }
+        
+        // Update mobile user info
+        if (userNameMobile) {
+            userNameMobile.textContent = displayName;
+        }
+        
+        // Update user type display
+        const userTypeMobile = document.querySelector('.user-type-mobile');
+        if (userTypeMobile) {
+            userTypeMobile.textContent = userType === 'landlord' ? 'Property Owner' : 'Property Seeker';
+        }
     }
 }
 

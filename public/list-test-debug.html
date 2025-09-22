@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Property Test - Debug Mode</title>
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="list-property-enhanced.css?v=debug2025">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Additional debugging styles */
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            z-index: 10000;
+        }
+        .form-step {
+            border: 2px solid transparent;
+        }
+        .form-step.active {
+            border-color: #4F46E5 !important;
+            background-color: #F0F9FF !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <div>Current Step: <span id="debug-step">1</span></div>
+        <div>Total Steps: <span id="debug-total">4</span></div>
+        <div>Status: <span id="debug-status">Ready</span></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html">ConnectSpace</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="list-property-main">
+        <!-- Header -->
+        <section class="list-header">
+            <div class="container">
+                <div class="header-content">
+                    <h1>List Your Property (Debug Mode)</h1>
+                    <p>Test the enhanced UI with brighter colors and working navigation</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Property Listing Form -->
+        <section class="form-section">
+            <div class="container">
+                <div class="form-wrapper">
+                    <!-- Progress Indicator -->
+                    <div class="progress-indicator">
+                        <div class="progress-step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Basic Details</div>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="2">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Features</div>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="3">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Images</div>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="4">
+                            <div class="step-number">4</div>
+                            <div class="step-label">Review</div>
+                        </div>
+                    </div>
+
+                    <form id="propertyForm" class="property-form">
+                        <!-- Step 1: Basic Details -->
+                        <div class="form-step active" data-step="1">
+                            <h2>Basic Property Details</h2>
+                            
+                            <div class="form-group">
+                                <label for="title">Property Title</label>
+                                <input type="text" id="title" name="title" placeholder="e.g., Modern 2BHK Apartment">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="type">Property Type</label>
+                                    <select id="type" name="type">
+                                        <option value="">Select Type</option>
+                                        <option value="apartment">Apartment</option>
+                                        <option value="house">House</option>
+                                        <option value="villa">Villa</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bedrooms">Bedrooms</label>
+                                    <select id="bedrooms" name="bedrooms">
+                                        <option value="">Select</option>
+                                        <option value="1">1 BHK</option>
+                                        <option value="2">2 BHK</option>
+                                        <option value="3">3 BHK</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-primary btn-next">
+                                    <span>Next</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Features -->
+                        <div class="form-step" data-step="2">
+                            <h2>Property Features</h2>
+                            
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <input type="checkbox" id="parking" name="features" value="parking">
+                                    <label for="parking">
+                                        <i class="fas fa-car"></i>
+                                        <span>Parking</span>
+                                    </label>
+                                </div>
+                                <div class="feature-item">
+                                    <input type="checkbox" id="gym" name="features" value="gym">
+                                    <label for="gym">
+                                        <i class="fas fa-dumbbell"></i>
+                                        <span>Gym</span>
+                                    </label>
+                                </div>
+                                <div class="feature-item">
+                                    <input type="checkbox" id="pool" name="features" value="pool">
+                                    <label for="pool">
+                                        <i class="fas fa-swimming-pool"></i>
+                                        <span>Swimming Pool</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-secondary btn-prev">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span>Previous</span>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-next">
+                                    <span>Next</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Images -->
+                        <div class="form-step" data-step="3">
+                            <h2>Property Images</h2>
+                            
+                            <div class="upload-area" id="uploadArea">
+                                <div class="upload-content">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h3>Upload Property Images</h3>
+                                    <p>Drag & drop images here or click to browse</p>
+                                    <button type="button" class="btn btn-outline">Browse Files</button>
+                                </div>
+                                <input type="file" id="images" name="images" multiple accept="image/*" hidden>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-secondary btn-prev">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span>Previous</span>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-next">
+                                    <span>Next</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Review -->
+                        <div class="form-step" data-step="4">
+                            <h2>Review & Submit</h2>
+                            
+                            <div class="review-section">
+                                <h3>Property Summary</h3>
+                                <div class="summary-card">
+                                    <p>Review your property details before submitting.</p>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-secondary btn-prev">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span>Previous</span>
+                                </button>
+                                <button type="submit" class="btn btn-success btn-submit">
+                                    <span>Submit Property</span>
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="navbar.js"></script>
+    <script src="list-property-enhanced.js?v=debug2025"></script>
+    <script>
+        // Debug mode enhancements
+        window.debug = true;
+        
+        // Override console.log to also show in debug panel
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const debugStatus = document.getElementById('debug-status');
+            if (debugStatus && args.length > 0) {
+                debugStatus.textContent = args.join(' ');
+            }
+        };
+
+        // Update debug info
+        function updateDebugInfo() {
+            const debugStep = document.getElementById('debug-step');
+            const debugTotal = document.getElementById('debug-total');
+            
+            if (window.propertyListingEnhanced) {
+                debugStep.textContent = window.propertyListingEnhanced.currentStep;
+                debugTotal.textContent = window.propertyListingEnhanced.totalSteps;
+            }
+        }
+
+        // Update debug info every second
+        setInterval(updateDebugInfo, 1000);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Debug mode enabled - validation bypassed for testing');
+        });
+    </script>
+</body>
+</html>

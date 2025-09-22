@@ -267,12 +267,16 @@
   text-decoration: none;
   transition: var(--transition-fast);
   border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .nav-mobile-link:hover {
   color: var(--primary-600);
   background: var(--primary-50);
   border-color: var(--primary-200);
+  transform: translateX(4px);
 }
 
 .nav-mobile-link.active {
@@ -282,10 +286,51 @@
   font-weight: 600;
 }
 
+.nav-mobile-link i {
+  width: 16px;
+  text-align: center;
+  color: var(--neutral-500);
+}
+
+.nav-mobile-link:hover i {
+  color: var(--primary-600);
+}
+
 .nav-mobile-divider {
   height: 1px;
   background: var(--neutral-200);
   margin: var(--space-4) 0;
+}
+
+/* Mobile User Info Styles */
+.user-info-mobile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--primary-200);
+}
+
+.user-info-mobile .user-avatar {
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--primary-300);
+}
+
+.user-name-mobile {
+  font-weight: 700;
+  color: var(--neutral-800);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-1);
+}
+
+.user-type-mobile {
+  font-size: var(--text-sm);
+  color: var(--primary-600);
+  font-weight: 500;
 }
 
 .nav-mobile-cta {
@@ -358,6 +403,141 @@
   .nav-mobile {
     top: 60px;
     max-height: calc(100vh - 60px);
+  }
+}
+
+/* User Menu Styles */
+.nav-user {
+  position: relative;
+  margin-left: var(--space-4);
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--text-sm);
+  color: var(--neutral-700);
+}
+
+.user-menu-toggle:hover {
+  background: var(--neutral-50);
+  border-color: var(--primary-300);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-200);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+  border: 1px solid var(--neutral-200);
+  min-width: 200px;
+  padding: var(--space-2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.user-menu:hover .user-dropdown,
+.user-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--neutral-700);
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  transition: all 0.2s ease;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: var(--primary-50);
+  color: var(--primary-700);
+  transform: translateX(4px);
+}
+
+.dropdown-item i {
+  width: 16px;
+  text-align: center;
+  color: var(--neutral-500);
+}
+
+.dropdown-item:hover i {
+  color: var(--primary-600);
+}
+
+/* Mobile User Menu */
+@media (max-width: 768px) {
+  .nav-user {
+    display: none; /* Hide in mobile, use mobile menu instead */
+  }
+  
+  .user-menu-mobile {
+    display: block;
+    border-top: 1px solid var(--neutral-200);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+  }
+  
+  .user-info-mobile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--neutral-50);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-3);
+  }
+  
+  .user-info-mobile .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .user-name-mobile {
+    font-weight: 600;
+    color: var(--neutral-800);
+    font-size: var(--text-base);
+  }
+  
+  .user-type-mobile {
+    font-size: var(--text-sm);
+    color: var(--neutral-600);
   }
 }
 
