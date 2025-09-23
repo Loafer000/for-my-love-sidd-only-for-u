@@ -28,20 +28,5 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "functions": {
-    "server.js": {
-      "maxDuration": 30
-    }
-  },
-  "regions": ["bom1"],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/((?!api/.*).*)",
-      "destination": "/index.html"
-    }
-  ]
+  "regions": ["bom1"]
 }
