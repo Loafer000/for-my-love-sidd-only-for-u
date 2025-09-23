@@ -4,30 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Properties - ConnectSpace</title>
-    
-    <!-- Modern Design System -->
-    <link rel="stylesheet" href="modern-design-system.css">
-    <link rel="stylesheet" href="modern-navbar.css">
-    <link rel="stylesheet" href="modern-search.css">
-    <link rel="stylesheet" href="universal-responsive.css">
-    
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Search and find commercial properties for rent. Browse offices, retail spaces, and warehouses across India.">
+    <meta name="keywords" content="search properties, commercial real estate, office space, retail shop, warehouse rental">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="modern-navbar.js" defer></script>
-    <script src="search-functionality.js" defer></script>
-    <script src="universal-mobile.js" defer></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="universal-design-system.css">
+    <link rel="stylesheet" href="search.css">
 </head>
 <body>
-    <!-- Modern Navigation -->
-    <nav class="navbar">
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-brand">
                 <div class="nav-brand-icon">
@@ -35,28 +31,28 @@
                 </div>
                 <span>ConnectSpace</span>
             </a>
-            
+
             <div class="nav-menu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="search.html" class="nav-link active">Search Properties</a>
                 <a href="about.html" class="nav-link">About</a>
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
-            
+
             <div class="nav-actions">
                 <a href="list-property.html" class="btn btn-outline">List Property</a>
                 <a href="auth.html" class="nav-cta">Login/Signup</a>
             </div>
-            
-            <button class="nav-toggle">
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span class="nav-toggle-line"></span>
                 <span class="nav-toggle-line"></span>
                 <span class="nav-toggle-line"></span>
             </button>
         </div>
-        
+
         <!-- Mobile Menu -->
-        <div class="nav-mobile">
+        <div class="nav-mobile" id="navMobile">
             <div class="nav-mobile-content">
                 <a href="index.html" class="nav-mobile-link">Home</a>
                 <a href="search.html" class="nav-mobile-link active">Search Properties</a>
@@ -69,386 +65,140 @@
         </div>
     </nav>
 
-    <!-- Search Hero Section -->
-    <section class="search-hero">
-        <div class="hero-background">
-            <div class="hero-pattern"></div>
-            <div class="floating-elements">
-                <div class="floating-element"></div>
-                <div class="floating-element"></div>
-                <div class="floating-element"></div>
+    <!-- Main Content -->
+    <main>
+        <!-- Search Hero Section -->
+        <section class="search-hero">
+            <div class="search-hero-background">
+                <div class="search-hero-pattern"></div>
             </div>
-        </div>
-        <div class="container">
-            <div class="search-hero-content">
-                <div class="hero-badge">
-                    <i class="fas fa-star"></i>
-                    <span>Over 10,000+ Properties Listed</span>
-                </div>
-                <h1 class="search-title">Find Your Perfect Commercial Space</h1>
-                <p class="search-subtitle">Discover thousands of verified commercial properties across 50+ cities with AI-powered search</p>
-                
-                <div class="search-main-form">
-                    <div class="search-input-group">
-                        <div class="search-field">
-                            <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search by location, property type, or keywords..." class="search-input" id="mainSearch" autocomplete="off">
-                            <div class="search-suggestions" id="searchSuggestions"></div>
-                        </div>
-                        <button class="btn btn-primary search-btn" id="mainSearchBtn">
-                            <i class="fas fa-search"></i>
-                            <span>Search</span>
-                        </button>
+            <div class="container">
+                <div class="search-hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-star"></i>
+                        <span>Over 10,000+ Properties Listed</span>
                     </div>
-                    
-                    <div class="search-quick-filters">
-                        <span class="quick-filter-label">Popular:</span>
-                        <button class="quick-filter-btn" data-filter="office">
-                            <i class="fas fa-building"></i>
-                            Office Space
-                        </button>
-                        <button class="quick-filter-btn" data-filter="retail">
-                            <i class="fas fa-store"></i>
-                            Retail Store
-                        </button>
-                        <button class="quick-filter-btn" data-filter="warehouse">
-                            <i class="fas fa-warehouse"></i>
-                            Warehouse
-                        </button>
-                        <button class="quick-filter-btn" data-filter="coworking">
-                            <i class="fas fa-users"></i>
-                            Co-working
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Search Stats -->
-                <div class="search-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">10,000+</div>
-                        <div class="stat-label">Properties</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">50+</div>
-                        <div class="stat-label">Cities</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Satisfaction</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">Support</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <h1 class="search-title">Find Your Perfect Commercial Space</h1>
+                    <p class="search-subtitle">
+                        Discover thousands of verified commercial properties across 50+ cities with AI-powered search
+                    </p>
 
-    <!-- Search Interface -->
-    <section class="search-interface">
-        <div class="container">
-            <!-- Mobile Filters Toggle -->
-            <div class="mobile-filters-toggle">
-                <button class="btn btn-outline filters-toggle-btn" id="mobileFiltersToggle">
-                    <i class="fas fa-sliders-h"></i>
-                    <span>Filters</span>
-                    <span class="active-filters-count" id="activeFiltersCount">0</span>
-                </button>
-                <div class="results-summary">
-                    <span id="mobileResultsCount">234 properties found</span>
-                </div>
-            </div>
-            
-            <div class="search-layout">
-                <!-- Enhanced Filters Sidebar -->
-                <div class="search-filters" id="searchFilters">
-                    <div class="filters-header">
-                        <h3>
-                            <i class="fas fa-filter"></i>
-                            Filters
-                        </h3>
-                        <button class="filter-clear" id="clearAllFilters">
-                            <i class="fas fa-times"></i>
-                            Clear All
-                        </button>
-                    </div>
-                    
-                    <!-- Location Filter -->
-                    <div class="filter-group">
-                        <h4 class="filter-title">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Location
-                        </h4>
-                        <div class="location-search">
-                            <input type="text" placeholder="Enter city or area..." class="location-input" id="locationFilter">
-                            <i class="fas fa-search"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <h4 class="filter-title">
-                            <i class="fas fa-building"></i>
-                            Property Type
-                        </h4>
-                        <div class="filter-options">
-                            <label class="filter-option">
-                                <input type="checkbox" value="office" name="propertyType">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-building option-icon"></i>
-                                    <span>Office Space</span>
+                    <!-- Search Form -->
+                    <div class="search-main-form">
+                        <div class="search-form-container">
+                            <div class="search-input-group">
+                                <div class="search-field">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Search by location, property type, or keywords..." class="search-input" id="mainSearch" autocomplete="off">
+                                    <div class="search-suggestions" id="searchSuggestions"></div>
                                 </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="retail" name="propertyType">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-store option-icon"></i>
-                                    <span>Retail Store</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="warehouse" name="propertyType">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-warehouse option-icon"></i>
-                                    <span>Warehouse</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="coworking" name="propertyType">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-users option-icon"></i>
-                                    <span>Co-working</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="restaurant" name="propertyType">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-utensils option-icon"></i>
-                                    <span>Restaurant</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <h4 class="filter-title">
-                            <i class="fas fa-dollar-sign"></i>
-                            Monthly Rent
-                        </h4>
-                        <div class="price-range">
-                            <div class="dual-range-slider">
-                                <input type="range" min="0" max="50000" value="0" class="price-slider" id="priceMin">
-                                <input type="range" min="0" max="50000" value="50000" class="price-slider" id="priceMax">
-                            </div>
-                            <div class="price-inputs">
-                                <div class="price-input-group">
-                                    <span>$</span>
-                                    <input type="number" placeholder="Min" class="price-input" id="priceMinInput">
-                                </div>
-                                <span class="price-separator">to</span>
-                                <div class="price-input-group">
-                                    <span>$</span>
-                                    <input type="number" placeholder="Max" class="price-input" id="priceMaxInput">
-                                </div>
-                            </div>
-                            <div class="price-labels">
-                                <span>$0</span>
-                                <span>$50,000+</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="filter-group">
-                        <h4 class="filter-title">
-                            <i class="fas fa-expand-arrows-alt"></i>
-                            Area (sq ft)
-                        </h4>
-                        <div class="area-inputs">
-                            <div class="area-input-group">
-                                <input type="number" placeholder="Min" class="area-input" id="areaMin">
-                                <span>sq ft</span>
-                            </div>
-                            <span class="area-separator">to</span>
-                            <div class="area-input-group">
-                                <input type="number" placeholder="Max" class="area-input" id="areaMax">
-                                <span>sq ft</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <h4 class="filter-title">
-                            <i class="fas fa-star"></i>
-                            Amenities
-                        </h4>
-                        <div class="filter-options amenities-grid">
-                            <label class="filter-option">
-                                <input type="checkbox" value="parking" name="amenities">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-parking option-icon"></i>
-                                    <span>Parking</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="elevator" name="amenities">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-elevator option-icon"></i>
-                                    <span>Elevator</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="ac" name="amenities">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-snowflake option-icon"></i>
-                                    <span>A/C</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="security" name="amenities">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-shield-alt option-icon"></i>
-                                    <span>Security</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="wifi" name="amenities">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-wifi option-icon"></i>
-                                    <span>WiFi</span>
-                                </div>
-                            </label>
-                            <label class="filter-option">
-                                <input type="checkbox" value="conference" name="amenities">
-                                <span class="checkmark">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <div class="option-content">
-                                    <i class="fas fa-users option-icon"></i>
-                                    <span>Meeting Room</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Apply Filters Button -->
-                    <div class="filters-footer">
-                        <button class="btn btn-primary apply-filters-btn" id="applyFilters">
-                            <i class="fas fa-filter"></i>
-                            Apply Filters
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Enhanced Results Area -->
-                <div class="search-results">
-                    <div class="results-header">
-                        <div class="results-info">
-                            <h2>
-                                <i class="fas fa-search"></i>
-                                Search Results
-                            </h2>
-                            <p id="resultsCount">Showing 234 properties in your area</p>
-                            <div class="active-filters" id="activeFilterTags"></div>
-                        </div>
-                        
-                        <div class="results-controls">
-                            <div class="view-toggle">
-                                <button class="view-btn active" data-view="grid" title="Grid View">
-                                    <i class="fas fa-th-large"></i>
-                                </button>
-                                <button class="view-btn" data-view="list" title="List View">
-                                    <i class="fas fa-list"></i>
-                                </button>
-                                <button class="view-btn" data-view="map" title="Map View">
-                                    <i class="fas fa-map"></i>
+                                <button class="btn btn-primary search-btn" id="mainSearchBtn">
+                                    <i class="fas fa-search"></i>
+                                    <span>Search</span>
                                 </button>
                             </div>
-                            
-                            <div class="sort-controls">
-                                <label class="sort-label">Sort by:</label>
-                                <select class="sort-select" id="sortSelect">
-                                    <option value="relevance">Most Relevant</option>
-                                    <option value="newest">Newest First</option>
-                                    <option value="price-low">Price: Low to High</option>
-                                    <option value="price-high">Price: High to Low</option>
-                                    <option value="area-large">Area: Largest First</option>
-                                    <option value="area-small">Area: Smallest First</option>
-                                </select>
+
+                            <!-- Advanced Filters -->
+                            <div class="search-filters" id="searchFilters">
+                                <div class="filter-row">
+                                    <div class="filter-group">
+                                        <label class="filter-label">Property Type</label>
+                                        <select class="filter-select" id="propertyType">
+                                            <option value="">All Types</option>
+                                            <option value="office">Office Space</option>
+                                            <option value="retail">Retail Shop</option>
+                                            <option value="industrial">Warehouse</option>
+                                            <option value="restaurant">Restaurant</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="filter-group">
+                                        <label class="filter-label">Price Range</label>
+                                        <div class="price-inputs">
+                                            <input type="number" placeholder="Min ₹" class="filter-input" id="minPrice">
+                                            <span class="price-separator">-</span>
+                                            <input type="number" placeholder="Max ₹" class="filter-input" id="maxPrice">
+                                        </div>
+                                    </div>
+
+                                    <div class="filter-group">
+                                        <label class="filter-label">Size (sq ft)</label>
+                                        <div class="size-inputs">
+                                            <input type="number" placeholder="Min size" class="filter-input" id="minSize">
+                                            <span class="size-separator">-</span>
+                                            <input type="number" placeholder="Max size" class="filter-input" id="maxSize">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-actions">
+                                    <button class="btn btn-outline btn-sm" id="clearFilters">Clear All</button>
+                                    <button class="btn btn-primary btn-sm" id="applyFilters">Apply Filters</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Search Results Loading State -->
-                    <div class="results-loading" id="resultsLoading" style="display: none;">
-                        <div class="loading-spinner"></div>
-                        <p>Searching properties...</p>
-                    </div>
-                    
-                    <div class="properties-grid" id="searchResults">
-                        <!-- Properties will be loaded dynamically -->
-                    </div>
-
-                    <!-- No Results State -->
-                    <div class="no-results" id="noResults" style="display: none;">
-                        <div class="no-results-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <h3>No properties found</h3>
-                        <p>Try adjusting your filters or search criteria</p>
-                        <button class="btn btn-outline" onclick="clearAllFilters()">
-                            <i class="fas fa-times"></i>
-                            Clear All Filters
-                        </button>
-                    </div>
-                    
-                    <div class="pagination">
-                        <button class="pagination-btn" disabled>
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <span class="pagination-dots">...</span>
-                        <button class="pagination-btn">12</button>
-                        <button class="pagination-btn">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Search Results Section -->
+        <section class="search-results">
+            <div class="container">
+                <!-- Results Header -->
+                <div class="results-header">
+                    <div class="results-info">
+                        <h2 id="resultsTitle">All Properties</h2>
+                        <p id="resultsCount">Loading properties...</p>
+                    </div>
+
+                    <div class="results-controls">
+                        <div class="sort-group">
+                            <label class="sort-label">Sort by:</label>
+                            <select class="sort-select" id="sortBy">
+                                <option value="createdAt">Newest First</option>
+                                <option value="price">Price: Low to High</option>
+                                <option value="price_desc">Price: High to Low</option>
+                                <option value="size">Size: Small to Large</option>
+                            </select>
+                        </div>
+
+                        <div class="view-toggle">
+                            <button class="view-btn active" id="gridView" aria-label="Grid view">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="view-btn" id="listView" aria-label="List view">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Properties Grid -->
+                <div class="properties-container" id="propertiesContainer">
+                    <!-- Properties will be loaded here -->
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                    <button class="btn btn-outline" id="loadMoreBtn">
+                        <i class="fas fa-plus"></i>
+                        Load More Properties
+                    </button>
+                </div>
+
+                <!-- No Results -->
+                <div class="no-results" id="noResults" style="display: none;">
+                    <div class="no-results-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>No properties found</h3>
+                    <p>Try adjusting your search criteria or filters</p>
+                    <button class="btn btn-primary" id="resetSearch">Reset Search</button>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -463,13 +213,13 @@
                     </div>
                     <p>Connecting businesses with their perfect commercial spaces.</p>
                     <div class="footer-social">
-                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="footer-links">
                     <div class="footer-column">
                         <h4>Platform</h4>
@@ -477,7 +227,7 @@
                         <a href="list-property.html">List Property</a>
                         <a href="dashboard.html">Dashboard</a>
                     </div>
-                    
+
                     <div class="footer-column">
                         <h4>Company</h4>
                         <a href="about.html">About Us</a>
@@ -485,7 +235,7 @@
                         <a href="#">Careers</a>
                         <a href="#">Press</a>
                     </div>
-                    
+
                     <div class="footer-column">
                         <h4>Support</h4>
                         <a href="#">Help Center</a>
@@ -495,14 +245,15 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2025 ConnectSpace. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script src="search-functionality.js"></script>
-    <script src="api.js"></script>
+    <!-- Scripts -->
+    <script src="config.js" defer></script>
+    <script src="search.js" defer></script>
 </body>
 </html>

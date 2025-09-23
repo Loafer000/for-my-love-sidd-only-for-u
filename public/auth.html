@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Signup - ConnectSpace</title>
-    
-    <!-- Modern Design System -->
-    <link rel="stylesheet" href="modern-design-system.css">
-    <link rel="stylesheet" href="modern-navbar.css">
-    <link rel="stylesheet" href="auth-modern.css">
-    <link rel="stylesheet" href="universal-responsive.css">
-    
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Login or create an account on ConnectSpace to access commercial property listings and manage your properties.">
+    <meta name="keywords" content="login, signup, account, commercial real estate, property management">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="universal-design-system.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 <body>
-    <!-- Modern Navigation -->
-    <nav class="navbar">
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-brand">
                 <div class="nav-brand-icon">
@@ -29,31 +31,35 @@
                 </div>
                 <span>ConnectSpace</span>
             </a>
-            
+
             <div class="nav-menu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="search.html" class="nav-link">Search Properties</a>
                 <a href="about.html" class="nav-link">About</a>
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
-            
+
             <div class="nav-actions">
-                <a class="btn btn-outline" href="list-property.html">List Property</a>
-                <a class="nav-cta active" href="auth.html">Login/Signup</a>
+                <a href="list-property.html" class="btn btn-outline">List Property</a>
+                <a href="auth.html" class="nav-cta active">Login/Signup</a>
             </div>
-            
-            <button class="nav-toggle">
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span class="nav-toggle-line"></span>
                 <span class="nav-toggle-line"></span>
                 <span class="nav-toggle-line"></span>
             </button>
-            
-            <div class="nav-mobile-menu">
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="nav-mobile" id="navMobile">
+            <div class="nav-mobile-content">
                 <a href="index.html" class="nav-mobile-link">Home</a>
                 <a href="search.html" class="nav-mobile-link">Search Properties</a>
                 <a href="about.html" class="nav-mobile-link">About</a>
                 <a href="contact.html" class="nav-mobile-link">Contact</a>
-                <a href="list-property.html" class="nav-mobile-btn">List Property</a>
+                <div class="nav-mobile-divider"></div>
+                <a href="list-property.html" class="nav-mobile-link">List Property</a>
                 <a href="auth.html" class="nav-mobile-cta active">Login/Signup</a>
             </div>
         </div>
@@ -71,7 +77,7 @@
                         </div>
                         <h1 class="welcome-title">Welcome to ConnectSpace</h1>
                         <p class="welcome-subtitle">The modern platform for commercial real estate in India</p>
-                        
+
                         <div class="welcome-features">
                             <div class="welcome-feature">
                                 <i class="fas fa-shield-check"></i>
@@ -86,7 +92,7 @@
                                 <span>Market Insights</span>
                             </div>
                         </div>
-                        
+
                         <div class="welcome-stats">
                             <div class="stat">
                                 <div class="stat-number">1200+</div>
@@ -112,7 +118,7 @@
                             <h2>Choose Your Account Type</h2>
                             <p>Select the option that best describes you</p>
                         </div>
-                        
+
                         <div class="user-type-grid">
                             <div class="user-type-card" onclick="selectUserType('tenant')">
                                 <div class="user-type-icon">
@@ -230,7 +236,7 @@
 
                             <div class="form-group">
                                 <label class="form-label">
-                                    <input type="checkbox" id="agreeTerms" required> 
+                                    <input type="checkbox" id="agreeTerms" required>
                                     I agree to the <a href="#" class="auth-toggle-link">Terms of Service</a> and <a href="#" class="auth-toggle-link">Privacy Policy</a>
                                 </label>
                             </div>
@@ -273,8 +279,60 @@
         </div>
     </main>
 
-    <script src="modern-navbar.js"></script>
-    <script src="auth-modern.js"></script>
-    <script src="universal-mobile.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="nav-brand-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span>ConnectSpace</span>
+                    </div>
+                    <p>Connecting businesses with their perfect commercial spaces.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <a href="search.html">Search Properties</a>
+                        <a href="list-property.html">List Property</a>
+                        <a href="dashboard.html">Dashboard</a>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="about.html">About Us</a>
+                        <a href="contact.html">Contact</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Press</a>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">API Docs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 ConnectSpace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="config.js" defer></script>
+    <script src="auth.js" defer></script>
 </body>
 </html>
