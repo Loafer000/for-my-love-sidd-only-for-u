@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>View Uploaded Files</title>
+    <link rel="stylesheet" href="ultimate-responsive-system.css">
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .file-item { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        .file-name { font-weight: bold; }
-        .file-url { color: #007bff; text-decoration: none; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        body { font-family: var(--font-primary); padding: var(--space-4); }
+        .file-item { margin: var(--space-2) 0; padding: var(--space-2); border: 1px solid var(--gray-300); border-radius: var(--radius-md); }
+        .file-name { font-weight: 600; }
+        .file-url { color: var(--primary-600); text-decoration: none; }
+        button { padding: var(--space-2) var(--space-4); background: var(--primary-600); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; min-height: 48px; }
     </style>
 </head>
 <body>

@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>View Database</title>
+    <link rel="stylesheet" href="ultimate-responsive-system.css">
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .property { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
-        .property h3 { margin: 0 0 10px 0; color: #333; }
-        .property-info { margin: 5px 0; }
-        .files { margin: 10px 0; }
-        .file-link { color: #007bff; text-decoration: none; margin-right: 10px; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 10px 0; }
+        body { font-family: var(--font-primary); padding: var(--space-4); }
+        .property { margin: var(--space-4) 0; padding: var(--space-3); border: 1px solid var(--gray-300); border-radius: var(--radius-lg); }
+        .property h3 { margin: 0 0 var(--space-2) 0; color: var(--gray-900); }
+        .property-info { margin: var(--space-1) 0; }
+        .files { margin: var(--space-2) 0; }
+        .file-link { color: var(--primary-600); text-decoration: none; margin-right: var(--space-2); }
+        button { padding: var(--space-2) var(--space-4); background: var(--primary-600); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; margin: var(--space-2) 0; min-height: 48px; }
     </style>
 </head>
 <body>

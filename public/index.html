@@ -2,21 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConnectSpace - Modern Commercial Real Estate Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ConnectSpace - Ultimate Commercial Real Estate Platform</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Find your perfect commercial space with ConnectSpace. Discover verified office spaces, retail shops, and warehouses across India.">
-    <meta name="keywords" content="commercial real estate, office space, retail shop, warehouse, property rental, India">
+    <meta name="description" content="Find your perfect commercial space with ConnectSpace. Discover verified office spaces, retail shops, and warehouses across India with our mobile-first platform.">
+    <meta name="keywords" content="commercial real estate, office space, retail shop, warehouse, property rental, India, mobile, responsive">
     <meta name="author" content="ConnectSpace">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="ConnectSpace - Modern Commercial Real Estate Platform">
-    <meta property="og:description" content="Find your perfect commercial space with ConnectSpace.">
+    <meta property="og:title" content="ConnectSpace - Ultimate Commercial Real Estate Platform">
+    <meta property="og:description" content="Find your perfect commercial space with our mobile-optimized platform.">
     <meta property="og:image" content="/images/og-image.jpg">
     <meta property="og:url" content="https://connectspace.vercel.app">
 
-    <!-- Fonts -->
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ConnectSpace">
+
+    <!-- Fonts - Optimized Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -24,12 +30,9 @@
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="universal-design-system.css">
-    <link rel="stylesheet" href="homepage.css">
-
-    <!-- Scripts -->
-    <script src="config.js" defer></script>
+    <!-- Ultimate Responsive System -->
+    <link rel="stylesheet" href="ultimate-responsive-system.css">
+    <link rel="stylesheet" href="ultimate-homepage.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -287,122 +290,64 @@
 
     <!-- Scripts -->
     <script src="config.js" defer></script>
+    <script src="ultimate-mobile-handler.js" defer></script>
+    
     <script>
-        // Mobile Navigation and Navbar Effects
+        // Initialize page-specific functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('navbar');
-            const navToggle = document.getElementById('navToggle');
-            const navMobile = document.getElementById('navMobile');
-            let isMenuOpen = false;
+            // Add smooth scrolling to internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
 
-            // Navbar scroll effect
-            function handleScroll() {
-                if (window.scrollY > 10) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            }
-
-            // Mobile menu toggle
-            function toggleMobileMenu() {
-                isMenuOpen = !isMenuOpen;
-                navMobile.classList.toggle('active', isMenuOpen);
-                navToggle.classList.toggle('active', isMenuOpen);
-                document.body.classList.toggle('menu-open', isMenuOpen);
-
-                // Update toggle button lines
-                const lines = navToggle.querySelectorAll('.nav-toggle-line');
-                if (isMenuOpen) {
-                    lines[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
-                    lines[1].style.opacity = '0';
-                    lines[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
-                } else {
-                    lines[0].style.transform = 'none';
-                    lines[1].style.opacity = '1';
-                    lines[2].style.transform = 'none';
-                }
-            }
-
-            // Close mobile menu when clicking outside
-            function closeMobileMenu(e) {
-                if (!navMobile.contains(e.target) && !navToggle.contains(e.target) && isMenuOpen) {
-                    toggleMobileMenu();
-                }
-            }
-
-            // Event listeners
-            window.addEventListener('scroll', handleScroll);
-            navToggle.addEventListener('click', toggleMobileMenu);
-            document.addEventListener('click', closeMobileMenu);
-
-            // Close menu on window resize if desktop
-            window.addEventListener('resize', function() {
-                if (window.innerWidth >= 768 && isMenuOpen) {
-                    toggleMobileMenu();
-                }
+            // Add loading states to buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.href || this.type === 'submit') {
+                        this.style.opacity = '0.7';
+                        const originalText = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.style.opacity = '1';
+                        }, 500);
+                    }
+                });
             });
 
             // Load featured properties
             loadFeaturedProperties();
+
+            console.log('🏠 Homepage initialized successfully');
         });
 
         // Load featured properties from API
         async function loadFeaturedProperties() {
             const propertiesGrid = document.getElementById('featuredProperties');
+            if (!propertiesGrid) return;
 
             try {
                 // Show loading skeletons
                 propertiesGrid.innerHTML = `
-                    <div class="property-skeleton">
-                        <div class="property-skeleton-image"></div>
-                        <div class="property-skeleton-content">
-                            <div class="property-skeleton-title"></div>
-                            <div class="property-skeleton-price"></div>
-                            <div class="property-skeleton-details">
-                                <div class="property-skeleton-detail"></div>
-                                <div class="property-skeleton-detail"></div>
-                            </div>
-                            <div class="property-skeleton-location"></div>
-                            <div class="property-skeleton-actions">
-                                <div class="property-skeleton-btn"></div>
-                                <div class="property-skeleton-btn"></div>
-                            </div>
+                    <div class="card skeleton">
+                        <div class="skeleton" style="height: 200px;"></div>
+                        <div class="card-body">
+                            <div class="skeleton" style="height: 20px; margin-bottom: 1rem;"></div>
+                            <div class="skeleton" style="height: 16px; margin-bottom: 1rem;"></div>
+                            <div class="skeleton" style="height: 40px;"></div>
                         </div>
                     </div>
-                    <div class="property-skeleton">
-                        <div class="property-skeleton-image"></div>
-                        <div class="property-skeleton-content">
-                            <div class="property-skeleton-title"></div>
-                            <div class="property-skeleton-price"></div>
-                            <div class="property-skeleton-details">
-                                <div class="property-skeleton-detail"></div>
-                                <div class="property-skeleton-detail"></div>
-                            </div>
-                            <div class="property-skeleton-location"></div>
-                            <div class="property-skeleton-actions">
-                                <div class="property-skeleton-btn"></div>
-                                <div class="property-skeleton-btn"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="property-skeleton">
-                        <div class="property-skeleton-image"></div>
-                        <div class="property-skeleton-content">
-                            <div class="property-skeleton-title"></div>
-                            <div class="property-skeleton-price"></div>
-                            <div class="property-skeleton-details">
-                                <div class="property-skeleton-detail"></div>
-                                <div class="property-skeleton-detail"></div>
-                            </div>
-                            <div class="property-skeleton-location"></div>
-                            <div class="property-skeleton-actions">
-                                <div class="property-skeleton-btn"></div>
-                                <div class="property-skeleton-btn"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                `.repeat(3);
 
                 // Try to fetch from API
                 const response = await fetch('/api/properties?limit=3');
@@ -413,7 +358,6 @@
                 if (properties && properties.length > 0) {
                     renderProperties(properties);
                 } else {
-                    // Fallback to demo properties
                     renderDemoProperties();
                 }
 
@@ -423,52 +367,14 @@
             }
         }
 
-        // Render properties from API
-        function renderProperties(properties) {
-            const propertiesGrid = document.getElementById('featuredProperties');
-
-            const propertiesHTML = properties.map(property => `
-                <div class="property-card">
-                    <div class="property-image">
-                        <img src="${property.images && property.images[0] ? property.images[0] : 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&auto=format&q=80'}"
-                             alt="${property.title}" loading="lazy">
-                        ${property.verified ? '<span class="property-badge">Verified</span>' : ''}
-                    </div>
-                    <div class="property-content">
-                        <h3 class="property-title">${property.title}</h3>
-                        <div class="property-price">₹${property.price?.toLocaleString() || 'N/A'}/month</div>
-                        <div class="property-details">
-                            <div class="property-detail">
-                                <i class="fas fa-building"></i>
-                                <span>${property.type || 'Office'}</span>
-                            </div>
-                            <div class="property-detail">
-                                <i class="fas fa-ruler-combined"></i>
-                                <span>${property.size || 'N/A'} sq ft</span>
-                            </div>
-                        </div>
-                        <div class="property-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${property.location || property.city || 'Location'}</span>
-                        </div>
-                        <div class="property-actions">
-                            <a href="property-details.html?id=${property._id || property.id}" class="btn btn-outline btn-sm">View Details</a>
-                            <a href="contact.html?property=${property._id || property.id}" class="btn btn-primary btn-sm">Contact</a>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            propertiesGrid.innerHTML = propertiesHTML;
-        }
-
         // Render demo properties when API is not available
         function renderDemoProperties() {
             const propertiesGrid = document.getElementById('featuredProperties');
+            if (!propertiesGrid) return;
 
             const demoProperties = [
                 {
-                    title: 'Modern Office Space - Tech City',
+                    title: 'Modern Office Space',
                     price: 45000,
                     type: 'Office',
                     size: 1200,
@@ -477,7 +383,7 @@
                     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop&auto=format&q=80'
                 },
                 {
-                    title: 'Retail Shop - Mall Road',
+                    title: 'Prime Retail Space',
                     price: 25000,
                     type: 'Retail',
                     size: 800,
@@ -486,9 +392,9 @@
                     image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop&auto=format&q=80'
                 },
                 {
-                    title: 'Warehouse with Loading Dock',
+                    title: 'Industrial Warehouse',
                     price: 35000,
-                    type: 'Industrial',
+                    type: 'Warehouse',
                     size: 2000,
                     location: 'Industrial Area, Mumbai',
                     verified: false,
@@ -496,40 +402,9 @@
                 }
             ];
 
-            const propertiesHTML = demoProperties.map(property => `
-                <div class="property-card">
-                    <div class="property-image">
-                        <img src="${property.image}" alt="${property.title}" loading="lazy">
-                        ${property.verified ? '<span class="property-badge">Verified</span>' : ''}
-                    </div>
-                    <div class="property-content">
-                        <h3 class="property-title">${property.title}</h3>
-                        <div class="property-price">₹${property.price.toLocaleString()}/month</div>
-                        <div class="property-details">
-                            <div class="property-detail">
-                                <i class="fas fa-building"></i>
-                                <span>${property.type}</span>
-                            </div>
-                            <div class="property-detail">
-                                <i class="fas fa-ruler-combined"></i>
-                                <span>${property.size} sq ft</span>
-                            </div>
-                        </div>
-                        <div class="property-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${property.location}</span>
-                        </div>
-                        <div class="property-actions">
-                            <a href="property-details.html?id=demo-${property.title.toLowerCase().replace(/\s+/g, '-')}" class="btn btn-outline btn-sm">View Details</a>
-                            <a href="contact.html?property=demo-${property.title.toLowerCase().replace(/\s+/g, '-')}" class="btn btn-primary btn-sm">Contact</a>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            propertiesGrid.innerHTML = propertiesHTML;
+            // Use the existing property cards structure from HTML
+            propertiesGrid.innerHTML = '';
         }
     </script>
-    <script src="script.js" defer></script>
 </body>
 </html>
