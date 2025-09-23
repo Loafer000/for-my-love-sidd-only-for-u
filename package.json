@@ -1,12 +1,15 @@
 {
-  "name": "spaceconnect",
-  "version": "1.0.0",
-  "description": "Commercial Real Estate Platform",
+  "name": "connectspace",
+  "version": "2.0.0",
+  "description": "ConnectSpace - Commercial Real Estate Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "echo 'No build step required'",
+    "vercel-build": "echo 'Build complete - Static files ready'",
+    "build": "echo 'No build step required for static deployment'",
+    "deploy": "vercel --prod",
+    "preview": "vercel",
     "test": "echo 'No tests specified'",
     "audit": "npm audit --audit-level=high"
   },
@@ -34,8 +37,16 @@
     "real-estate",
     "commercial",
     "rental",
-    "property"
+    "property",
+    "connectspace",
+    "vercel",
+    "serverless"
   ],
-  "author": "SpaceConnect Team",
-  "license": "MIT"
+  "author": "ConnectSpace Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Loafer000/connectspace-trial"
+  },
+  "homepage": "https://connectspace-trial.vercel.app"
 }
