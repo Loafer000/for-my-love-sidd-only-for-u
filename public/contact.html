@@ -4,46 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - ConnectSpace</title>
-    <link rel="stylesheet" href="modern-design-system.css">
-    <link rel="stylesheet" href="modern-navbar.css">
+    <link rel="stylesheet" href="universal-design-system.css">
     <link rel="stylesheet" href="modern-contact.css">
-    <link rel="stylesheet" href="universal-responsive.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="modern-navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a class="nav-brand" href="index.html">
-                <div class="nav-brand-icon">
-                    <i class="fas fa-building"></i>
-                </div>
+            <a href="index.html" class="nav-brand">
+                <div class="nav-brand-icon"><i class="fas fa-building"></i></div>
                 <span>ConnectSpace</span>
             </a>
-            
             <div class="nav-menu">
                 <a class="nav-link" href="index.html">Home</a>
                 <a class="nav-link" href="search.html">Search Properties</a>
                 <a class="nav-link" href="about.html">About</a>
                 <a class="nav-link active" href="contact.html">Contact</a>
             </div>
-            
             <div class="nav-actions">
                 <a class="btn btn-outline" href="list-property.html">List Property</a>
                 <a class="nav-cta" href="auth.html">Login/Signup</a>
             </div>
-            
-            <button class="nav-toggle">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span class="nav-toggle-line"></span>
                 <span class="nav-toggle-line"></span>
                 <span class="nav-toggle-line"></span>
             </button>
-            
-            <div class="nav-mobile-menu">
+        </div>
+        <div class="nav-mobile" id="navMobile">
+            <div class="nav-mobile-content">
                 <a href="index.html" class="nav-mobile-link">Home</a>
                 <a href="search.html" class="nav-mobile-link">Search Properties</a>
                 <a href="about.html" class="nav-mobile-link">About</a>
                 <a href="contact.html" class="nav-mobile-link active">Contact</a>
+                <div class="nav-mobile-divider"></div>
                 <a href="list-property.html" class="nav-mobile-btn">List Property</a>
                 <a href="auth.html" class="nav-mobile-cta">Login/Signup</a>
             </div>
@@ -296,40 +291,10 @@
         </div>
     </section>
 
-    <!-- Modern Footer -->
-    <footer class="modern-footer">
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="brand-logo">
-                        <i class="fas fa-building"></i>
-                        <span>ConnectSpace</span>
-                    </div>
-                    <p>Connecting spaces, building trust.</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-section">
-                        <h4>Platform</h4>
-                        <a href="search.html">Search Properties</a>
-                        <a href="list-property.html">List Property</a>
-                        <a href="dashboard.html">Dashboard</a>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Company</h4>
-                        <a href="about.html">About Us</a>
-                        <a href="contact.html">Contact</a>
-                        <a href="#">Privacy Policy</a>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Support</h4>
-                        <a href="contact.html">Help Center</a>
-                        <a href="#">FAQ</a>
-                        <a href="#">Documentation</a>
-                    </div>
-                </div>
-            </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 ConnectSpace. All rights reserved.</p>
+                <p>&copy; 2025 ConnectSpace. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -357,6 +322,6 @@
             }, 2000);
         }
     </script>
-    <script src="modern-navbar.js"></script>
+    <script src="universal-mobile.js"></script>
 </body>
 </html>

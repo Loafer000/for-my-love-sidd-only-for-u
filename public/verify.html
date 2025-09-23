@@ -4,26 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Account - ConnectSpace</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="navbar.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="universal-design-system.css">
     <link rel="stylesheet" href="verify.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="config.js" defer></script>
+    
+    <style>
+        /* Small polish for verify layout in universal container */
+        .verification-container { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-2xl); box-shadow: var(--shadow-lg); padding: var(--space-6); }
+        .verification-header h1 { margin-top: var(--space-2); }
+        .verification-step { margin-top: var(--space-6); }
+        .btn-primary { display: inline-flex; align-items: center; gap: var(--space-2); }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-building"></i>
+            <a href="index.html" class="nav-brand">
+                <div class="nav-brand-icon"><i class="fas fa-building"></i></div>
                 <span>ConnectSpace</span>
-            </div>
+            </a>
             <div class="nav-menu">
-                <a href="index.html" class="nav-item">Home</a>
-                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="search.html" class="nav-link">Search</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+            </div>
+            <div class="nav-actions">
+                <a href="list-property.html" class="btn btn-outline">List Property</a>
+                <a href="auth.html" class="nav-cta">Login/Signup</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+            </button>
+        </div>
+        <div class="nav-mobile" id="navMobile">
+            <div class="nav-mobile-content">
+                <a href="index.html" class="nav-mobile-link">Home</a>
+                <a href="search.html" class="nav-mobile-link">Search</a>
+                <a href="about.html" class="nav-mobile-link">About</a>
+                <a href="contact.html" class="nav-mobile-link">Contact</a>
+                <div class="nav-mobile-divider"></div>
+                <a href="dashboard.html" class="nav-mobile-link">Dashboard</a>
+                <a href="auth.html" class="nav-mobile-cta">Login/Signup</a>
             </div>
         </div>
     </nav>
 
-    <main class="container" style="max-width: 600px; margin: 2rem auto; padding: 2rem;">
+    <main class="container" style="max-width: 680px; margin: var(--space-8) auto; padding: 0 var(--space-4);">
         <div class="verification-container">
             <div class="verification-header">
                 <i class="fas fa-shield-alt" style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;"></i>
@@ -94,6 +131,15 @@
         </div>
     </main>
 
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 ConnectSpace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="verify.js"></script>
+    <script src="universal-mobile.js"></script>
 </body>
 </html>

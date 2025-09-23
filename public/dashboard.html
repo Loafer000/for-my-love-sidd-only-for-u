@@ -4,85 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - ConnectSpace</title>
-    <link rel="stylesheet" href="modern-design-system.css">
-    <link rel="stylesheet" href="modern-navbar.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Universal Design System -->
+    <link rel="stylesheet" href="universal-design-system.css">
+    <!-- Preserve existing dashboard styling -->
     <link rel="stylesheet" href="modern-dashboard-enhanced.css">
-    <link rel="stylesheet" href="universal-responsive.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Config -->
+    <script src="config.js" defer></script>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a class="nav-brand" href="index.html">
-                <div class="brand-icon">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-brand-icon">
                     <i class="fas fa-building"></i>
                 </div>
-                <span class="brand-text">ConnectSpace</span>
+                <span>ConnectSpace</span>
             </a>
-            
+
             <div class="nav-menu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="search.html" class="nav-link">Search</a>
                 <a href="about.html" class="nav-link">About</a>
                 <a href="contact.html" class="nav-link">Contact</a>
-                <div class="nav-user">
-                    <div class="user-menu">
-                        <button class="user-menu-toggle">
-                            <img src="https://via.placeholder.com/32x32/3B82F6/FFFFFF?text=U" alt="User" class="user-avatar">
-                            <span id="userName">Landlord</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="user-dropdown">
-                            <a href="verify.html" class="dropdown-item">
-                                <i class="fas fa-id-card"></i>
-                                Verify Account
-                            </a>
-                            <a href="#" class="dropdown-item" onclick="logout()">
-                                <i class="fas fa-sign-out-alt"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
             </div>
-            
-            <button class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
+
+            <div class="nav-actions">
+                <a href="list-property.html" class="btn btn-outline">List Property</a>
+                <a href="auth.html" class="nav-cta">Login/Signup</a>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
             </button>
         </div>
-        
+
         <!-- Mobile Menu -->
-        <div class="nav-mobile-menu">
+        <div class="nav-mobile" id="navMobile">
             <div class="nav-mobile-content">
-                <!-- Mobile User Info -->
-                <div class="user-info-mobile">
-                    <img src="https://via.placeholder.com/40x40/3B82F6/FFFFFF?text=U" alt="User" class="user-avatar">
-                    <div>
-                        <div class="user-name-mobile" id="userNameMobile">Landlord</div>
-                        <div class="user-type-mobile">Dashboard</div>
-                    </div>
-                </div>
-                
                 <a href="index.html" class="nav-mobile-link">Home</a>
-                <a href="search.html" class="nav-mobile-link">Search Properties</a>
+                <a href="search.html" class="nav-mobile-link">Search</a>
                 <a href="about.html" class="nav-mobile-link">About</a>
                 <a href="contact.html" class="nav-mobile-link">Contact</a>
                 <div class="nav-mobile-divider"></div>
-                <a href="list-property.html" class="nav-mobile-link">
-                    <i class="fas fa-plus"></i>
-                    List Property
-                </a>
-                <a href="verify.html" class="nav-mobile-link">
-                    <i class="fas fa-id-card"></i>
-                    Verify Account
-                </a>
-                <a href="#" class="nav-mobile-link" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
-                </a>
+                <a href="list-property.html" class="nav-mobile-link">List Property</a>
+                <a href="dashboard.html" class="nav-mobile-link active">Dashboard</a>
+                <a href="auth.html" class="nav-mobile-cta">Login/Signup</a>
             </div>
         </div>
     </nav>
@@ -367,8 +343,7 @@
         </div>
     </main>
 
-    <script src="modern-navbar.js"></script>
-    <script src="dashboard-enhanced.js"></script>
+    <script src="dashboard.js"></script>
     <script src="universal-mobile.js"></script>
 </body>
 </html>
