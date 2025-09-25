@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+</head>
+<body>
+    <h1>Property Test</h1>
+    <form onsubmit="testSubmit(event)">
+        <input name="propertyName" placeholder="Property Name" required>
+        <input name="address" placeholder="Address" required>
+        <input name="city" placeholder="City" required>
+        <input name="size" type="number" placeholder="Size" required>
+        <input name="rent" type="number" placeholder="Rent" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        async function testSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            const data = {
+                title: formData.get('propertyName'),
+                location: formData.get('address') + ', ' + formData.get('city'),
+                type: 'office',
+                rent: parseInt(formData.get('rent')),
+                size: parseInt(formData.get('size')),
+                description: formData.get('description')
+            };
+            
+            console.log('Sending:', data);
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/properties', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                alert('Success: ' + result.message);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

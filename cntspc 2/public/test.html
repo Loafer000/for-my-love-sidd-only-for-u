@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Backend Connection Test</title>
+</head>
+<body>
+    <h1>ConnectSpace Backend Test</h1>
+    
+    <button onclick="testConnection()">Test Backend Connection</button>
+    <button onclick="testSearch()">Test Search API</button>
+    <button onclick="testAddProperty()">Test Add Property</button>
+    
+    <div id="results"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        async function testConnection() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                document.getElementById('results').innerHTML = `
+                    <h3>✅ Backend Connected!</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <h3>❌ Backend Connection Failed</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+        
+        async function testSearch() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/properties`);
+                const data = await response.json();
+                document.getElementById('results').innerHTML = `
+                    <h3>🔍 Search API Works!</h3>
+                    <p>Found ${data.length} properties</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                console.log('🔍 Search API called - Check backend terminal!');
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <h3>❌ Search Failed</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+        
+        async function testAddProperty() {
+            try {
+                const testProperty = {
+                    title: 'Test Office Space',
+                    type: 'office',
+                    location: 'Kolkata',
+                    address: 'Test Address',
+                    city: 'Kolkata',
+                    pincode: '700001',
+                    price: 50000,
+                    size: 1000,
+                    description: 'Test property from frontend',
+                    landlord: 'Test Landlord',
+                    phone: '9876543210'
+                };
+                
+                const response = await fetch(`${API_BASE_URL}/properties`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testProperty)
+                });
+                
+                const data = await response.json();
+                document.getElementById('results').innerHTML = `
+                    <h3>🏢 Property Added!</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                console.log('🏢 Property added - Check backend terminal!');
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <h3>❌ Add Property Failed</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test File Upload</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .form-group { margin: 15px 0; }
+        input, button { padding: 10px; margin: 5px; }
+        button { background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Test File Upload</h1>
+    
+    <form onsubmit="testUpload(event)">
+        <div class="form-group">
+            <label>Property Name:</label>
+            <input type="text" name="propertyName" value="Test Property" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Select Files:</label>
+            <input type="file" name="photos" multiple accept="image/*">
+        </div>
+        
+        <button type="submit">Upload Test</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        async function testUpload(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const resultDiv = document.getElementById('result');
+            
+            // Show what we're sending
+            console.log('📤 Uploading files...');
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/properties', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="result">
+                        <h3>Upload Result:</h3>
+                        <pre>${JSON.stringify(result, null, 2)}</pre>
+                    </div>
+                `;
+                
+                console.log('✅ Upload result:', result);
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result">
+                        <h3>Error:</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                console.error('❌ Upload failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>
