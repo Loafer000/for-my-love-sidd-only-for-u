@@ -152,7 +152,7 @@ describe('API Integration', () => {
       json: () => Promise.resolve(mockData),
     });
 
-    const { authAPI } = require('../services/enhancedAPI_fixed');
+    const { authAPI } = require('../services/enhancedAPI');
     const result = await authAPI.checkAuthStatus();
     
     expect(result).toEqual(mockData);
@@ -168,7 +168,7 @@ describe('API Integration', () => {
       json: () => Promise.resolve(mockError),
     });
 
-    const { authAPI, APIError } = require('../services/enhancedAPI_fixed');
+    const { authAPI, APIError } = require('../services/enhancedAPI');
     
     await expect(authAPI.checkAuthStatus()).rejects.toThrow(APIError);
   });
@@ -176,7 +176,7 @@ describe('API Integration', () => {
   test('API handles network error', async () => {
     global.fetch.mockRejectedValueOnce(new TypeError('Network request failed'));
 
-    const { authAPI, APIError } = require('../services/enhancedAPI_fixed');
+    const { authAPI, APIError } = require('../services/enhancedAPI');
     
     await expect(authAPI.checkAuthStatus()).rejects.toThrow(APIError);
   });
