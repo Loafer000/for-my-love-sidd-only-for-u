@@ -194,7 +194,7 @@ describe('Form Validation', () => {
       
       if (!email) {
         newErrors.email = 'Email is required';
-      } else if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         newErrors.email = 'Invalid email format';
       }
       
@@ -290,10 +290,10 @@ describe('Form Validation', () => {
     const passwordInput = screen.getByLabelText('Password');
     const submitButton = screen.getByText('Submit');
     
-    await user.type(emailInput, 'test@example.com');
-    await user.type(passwordInput, 'password123');
-    
+    // Wrap all user interactions in act to prevent React warnings
     await act(async () => {
+      await user.type(emailInput, 'test@example.com');
+      await user.type(passwordInput, 'password123');
       await user.click(submitButton);
     });
     
