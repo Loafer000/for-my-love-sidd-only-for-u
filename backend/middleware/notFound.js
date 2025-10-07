@@ -1,5 +1,4 @@
-const notFound = (req, res, next) => {
-  const error = new Error(`🔍 Route not found - ${req.originalUrl}`);
+const notFound = (req, res) => {
 
   res.status(404).json({
     success: false,

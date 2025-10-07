@@ -1,6 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
+const propertyController = require('../controllers/propertyController');
+const { authenticate, authorize, optionalAuth } = require('../middleware/auth');
+const { validateRequest } = require('../middleware/validation');
 
 // @desc    Test property routes
 // @route   GET /api/properties/test
@@ -23,10 +26,6 @@ router.get('/test', (req, res) => {
 });
 
 // Step 4 Implementation - Property routes
-const { body, query } = require('express-validator');
-const propertyController = require('../controllers/propertyController');
-const { validateRequest } = require('../middleware/validation');
-const { authenticate, optionalAuth } = require('../middleware/auth');
 
 // Public routes
 router.get('/', optionalAuth, propertyController.getProperties);

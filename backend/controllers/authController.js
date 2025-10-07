@@ -582,7 +582,7 @@ exports.verifyEmail = async (req, res) => {
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
-    
+
     if (!user) {
       return res.status(404).json({
         success: false,

@@ -30,5 +30,5 @@ module.exports = {
   resetMocks: true,
   restoreMocks: true,
   transform: {},
-  extensionsToTreatAsEsm: [],
+  extensionsToTreatAsEsm: []
 };

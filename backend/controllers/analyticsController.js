@@ -1,7 +1,7 @@
 // Analytics Controller - Business Intelligence & Insights
 
 const {
-  Property, Booking, User, Chat, ReviewEnhanced
+  Property, Booking, Chat, ReviewEnhanced
 } = require('../models');
 
 // Get dashboard analytics for landlords

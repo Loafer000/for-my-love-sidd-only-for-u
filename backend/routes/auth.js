@@ -4,7 +4,6 @@ const router = express.Router();
 const { body } = require('express-validator');
 const authController = require('../controllers/authController');
 const { validateRequest } = require('../middleware/validation');
-const { rateLimiter } = require('../middleware/rateLimiter');
 const { authenticate } = require('../middleware/auth');
 
 // @desc    Test auth routes
