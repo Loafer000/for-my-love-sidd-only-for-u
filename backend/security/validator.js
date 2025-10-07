@@ -18,10 +18,11 @@ class SecurityValidator {
     switch (type) {
     case 'email':
       return validator.isEmail(input) ? validator.normalizeEmail(input) : null;
-    case 'password':
+    case 'password': {
       // Password must be at least 8 chars, contain uppercase, lowercase, number, special char
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       return passwordRegex.test(input) ? input : null;
+    }
     case 'phone':
       return validator.isMobilePhone(input) ? input : null;
     case 'alphanumeric':

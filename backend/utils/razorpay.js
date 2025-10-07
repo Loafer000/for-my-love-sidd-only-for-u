@@ -44,15 +44,6 @@ const createOrder = async (amount, currency = 'INR', receipt, notes = {}) => {
 const verifyPaymentSignature = (orderId, paymentId, signature, secret) => {
   try {
     // TODO: Implement actual signature verification
-    /*
-    const crypto = require('crypto');
-    const hmac = crypto.createHmac('sha256', secret || process.env.RAZORPAY_KEY_SECRET);
-    hmac.update(orderId + '|' + paymentId);
-    const generated_signature = hmac.digest('hex');
-
-    return generated_signature === signature;
-    */
-
     // Mock verification for now (always return true for development)
     return true;
   } catch (error) {

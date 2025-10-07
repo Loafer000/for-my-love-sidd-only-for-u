@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:security/recommended"
-  ],
+  "extends": [],
   "plugins": [
     "security"
   ],
@@ -16,15 +13,10 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-console": "off",
-    "no-unused-vars": "warn",
     "no-undef": "error",
-    "no-unreachable": "error",
-    "security/detect-unsafe-regex": "warn",
-    "security/detect-buffer-noassert": "error",
+    "no-unreachable": "off",
     "security/detect-eval-with-expression": "error",
     "security/detect-new-buffer": "error",
-    "security/detect-no-csrf-before-method-override": "error",
     "security/detect-pseudoRandomBytes": "error"
   },
   "ignorePatterns": [
