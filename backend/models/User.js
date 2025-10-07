@@ -37,13 +37,13 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: function() {
+    required() {
       return !this.isPhoneVerified || this.authMethod !== 'phone';
     },
     minlength: [6, 'Password must be at least 6 characters'],
     select: false // Don't include password in queries by default
   },
-  
+
   // User Role & Status
   userType: {
     type: String,
@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  
+
   // Verification Status
   emailVerified: {
     type: Boolean,
@@ -75,14 +75,14 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  
+
   // Authentication Methods
   authMethod: {
     type: String,
     enum: ['email', 'phone', 'google', 'facebook'],
     default: 'email'
   },
-  
+
   // Profile Information
   avatar: {
     url: String,
@@ -94,7 +94,7 @@ const userSchema = new mongoose.Schema({
     enum: ['male', 'female', 'other', 'prefer-not-to-say']
   },
   occupation: String,
-  
+
   // Address Information
   address: {
     street: String,
@@ -109,14 +109,14 @@ const userSchema = new mongoose.Schema({
       default: 'India'
     }
   },
-  
+
   // Emergency Contact
   emergencyContact: {
     name: String,
     phone: String,
     relation: String
   },
-  
+
   // Document Verification
   documents: {
     aadhaar: {
@@ -144,7 +144,7 @@ const userSchema = new mongoose.Schema({
       }
     }
   },
-  
+
   // Landlord-specific Information
   landlordInfo: {
     businessName: String,
@@ -170,7 +170,7 @@ const userSchema = new mongoose.Schema({
       default: 0
     }
   },
-  
+
   // Tenant-specific Information
   tenantInfo: {
     monthlyIncome: Number,
@@ -194,7 +194,7 @@ const userSchema = new mongoose.Schema({
       amenities: [String] // ['parking', 'gym', 'pool', 'security']
     }
   },
-  
+
   // Security & Recovery
   resetPasswordToken: String,
   resetPasswordExpire: Date,
@@ -216,7 +216,7 @@ const userSchema = new mongoose.Schema({
       default: 0
     }
   },
-  
+
   // Activity Tracking
   lastLogin: Date,
   loginAttempts: {
@@ -224,7 +224,7 @@ const userSchema = new mongoose.Schema({
     default: 0
   },
   lockUntil: Date,
-  
+
   // Refresh Token for JWT
   refreshTokens: [{
     token: String,
@@ -234,7 +234,7 @@ const userSchema = new mongoose.Schema({
       expires: '7d'
     }
   }],
-  
+
   // Timestamps
   createdAt: {
     type: Date,
@@ -260,17 +260,17 @@ userSchema.index({ isActive: 1, isVerified: 1 });
 userSchema.index({ createdAt: -1 });
 
 // Virtual for account lock status
-userSchema.virtual('isLocked').get(function() {
+userSchema.virtual('isLocked').get(function () {
   return !!(this.lockUntil && this.lockUntil > Date.now());
 });
 
 // Pre-save middleware to hash password
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   // Only hash password if it's modified and exists
   if (!this.isModified('password') || !this.password) {
     return next();
   }
-  
+
   try {
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
@@ -281,13 +281,13 @@ userSchema.pre('save', async function(next) {
 });
 
 // Pre-save middleware to update timestamps
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
 // Method to compare password
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   if (!this.password) {
     return false;
   }
@@ -295,12 +295,12 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 };
 
 // Method to generate JWT token
-userSchema.methods.generateAuthToken = function() {
+userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
-    { 
+    {
       id: this._id,
       email: this.email,
-      userType: this.userType 
+      userType: this.userType
     },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRE || '1d' }
@@ -308,7 +308,7 @@ userSchema.methods.generateAuthToken = function() {
 };
 
 // Method to generate refresh token
-userSchema.methods.generateRefreshToken = function() {
+userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     { id: this._id },
     process.env.JWT_REFRESH_SECRET,
@@ -317,70 +317,70 @@ userSchema.methods.generateRefreshToken = function() {
 };
 
 // Method to generate password reset token
-userSchema.methods.generatePasswordResetToken = function() {
-  const resetToken = Math.random().toString(36).substring(2, 15) + 
-                    Math.random().toString(36).substring(2, 15);
-  
+userSchema.methods.generatePasswordResetToken = function () {
+  const resetToken = Math.random().toString(36).substring(2, 15)
+                    + Math.random().toString(36).substring(2, 15);
+
   this.resetPasswordToken = resetToken;
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
-  
+
   return resetToken;
 };
 
 // Method to generate email verification token
-userSchema.methods.generateEmailVerificationToken = function() {
-  const verificationToken = Math.random().toString(36).substring(2, 15) + 
-                           Math.random().toString(36).substring(2, 15);
-  
+userSchema.methods.generateEmailVerificationToken = function () {
+  const verificationToken = Math.random().toString(36).substring(2, 15)
+                           + Math.random().toString(36).substring(2, 15);
+
   this.emailVerificationToken = verificationToken;
   this.emailVerificationExpire = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
-  
+
   return verificationToken;
 };
 
 // Method to generate OTP
-userSchema.methods.generateOTP = function(type = 'phone') {
+userSchema.methods.generateOTP = function (type = 'phone') {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-  
+
   if (type === 'phone') {
     this.phoneOTP = {
       code: otp,
-      expiresAt: expiresAt,
+      expiresAt,
       attempts: 0
     };
   } else if (type === 'email') {
     this.emailOTP = {
       code: otp,
-      expiresAt: expiresAt,
+      expiresAt,
       attempts: 0
     };
   }
-  
+
   return otp;
 };
 
 // Method to verify OTP
-userSchema.methods.verifyOTP = function(inputOTP, type = 'phone') {
+userSchema.methods.verifyOTP = function (inputOTP, type = 'phone') {
   const otpData = type === 'phone' ? this.phoneOTP : this.emailOTP;
-  
+
   if (!otpData || !otpData.code) {
     return { success: false, message: 'No OTP found' };
   }
-  
+
   if (otpData.expiresAt < new Date()) {
     return { success: false, message: 'OTP has expired' };
   }
-  
+
   if (otpData.attempts >= 5) {
     return { success: false, message: 'Maximum OTP attempts exceeded' };
   }
-  
+
   if (otpData.code !== inputOTP) {
     otpData.attempts += 1;
     return { success: false, message: 'Invalid OTP' };
   }
-  
+
   // OTP is valid
   if (type === 'phone') {
     this.phoneVerified = true;
@@ -389,12 +389,12 @@ userSchema.methods.verifyOTP = function(inputOTP, type = 'phone') {
     this.emailVerified = true;
     this.emailOTP = undefined;
   }
-  
+
   return { success: true, message: 'OTP verified successfully' };
 };
 
 // Method to handle login attempts
-userSchema.methods.incrementLoginAttempts = function() {
+userSchema.methods.incrementLoginAttempts = function () {
   // If we have a previous lock that has expired, restart at 1
   if (this.lockUntil && this.lockUntil < Date.now()) {
     return this.updateOne({
@@ -402,62 +402,62 @@ userSchema.methods.incrementLoginAttempts = function() {
       $set: { loginAttempts: 1 }
     });
   }
-  
+
   const updates = { $inc: { loginAttempts: 1 } };
-  
+
   // Lock account after 5 failed attempts for 2 hours
   if (this.loginAttempts + 1 >= 5 && !this.isLocked) {
     updates.$set = { lockUntil: Date.now() + 2 * 60 * 60 * 1000 };
   }
-  
+
   return this.updateOne(updates);
 };
 
 // Method to reset login attempts
-userSchema.methods.resetLoginAttempts = function() {
+userSchema.methods.resetLoginAttempts = function () {
   return this.updateOne({
     $unset: { loginAttempts: 1, lockUntil: 1 }
   });
 };
 
 // Static method to find by credentials
-userSchema.statics.findByCredentials = async function(identifier, password) {
+userSchema.statics.findByCredentials = async function (identifier, password) {
   // identifier can be email or phone
-  const query = identifier.includes('@') 
+  const query = identifier.includes('@')
     ? { email: identifier.toLowerCase() }
     : { phone: identifier };
-  
+
   const user = await this.findOne(query).select('+password');
-  
+
   if (!user) {
     throw new Error('Invalid credentials');
   }
-  
+
   if (user.isLocked) {
     throw new Error('Account is temporarily locked due to too many failed login attempts');
   }
-  
+
   const isPasswordValid = await user.comparePassword(password);
-  
+
   if (!isPasswordValid) {
     await user.incrementLoginAttempts();
     throw new Error('Invalid credentials');
   }
-  
+
   // Reset login attempts on successful login
   if (user.loginAttempts > 0) {
     await user.resetLoginAttempts();
   }
-  
+
   // Update last login
   user.lastLogin = new Date();
   await user.save();
-  
+
   return user;
 };
 
 // Virtual field for full name
-userSchema.virtual('name').get(function() {
+userSchema.virtual('name').get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 

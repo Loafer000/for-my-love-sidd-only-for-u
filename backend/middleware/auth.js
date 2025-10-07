@@ -32,7 +32,7 @@ const authenticate = async (req, res, next) => {
 
     // Verify token with enhanced error handling
     const decoded = jwt.verify(token, process.env.JWT_SECRET || securityConfig.JWT_SECRET);
-    
+
     // Check token expiration
     if (decoded.exp && decoded.exp < Date.now() / 1000) {
       return res.status(401).json({
@@ -41,10 +41,10 @@ const authenticate = async (req, res, next) => {
         code: 'TOKEN_EXPIRED'
       });
     }
-    
+
     // Get user from database
     const user = await User.findById(decoded.userId).select('-password -refreshTokens');
-    
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -83,19 +83,18 @@ const authenticate = async (req, res, next) => {
 
     // Log successful authentication for security monitoring
     console.log(`🔐 Authentication successful: ${user.email} from ${req.ip || 'unknown IP'}`);
-    
-    next();
 
+    next();
   } catch (error) {
     console.error('Authentication error:', error);
-    
+
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({
         success: false,
         message: 'Invalid token'
       });
     }
-    
+
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({
         success: false,
@@ -127,10 +126,10 @@ const optionalAuth = async (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Get user from database
     const user = await User.findById(decoded.userId).select('-password -refreshTokens');
-    
+
     if (user && !user.isDeleted) {
       req.user = user;
     } else {
@@ -138,7 +137,6 @@ const optionalAuth = async (req, res, next) => {
     }
 
     next();
-
   } catch (error) {
     // If token is invalid, just continue without user
     req.user = null;
@@ -147,91 +145,84 @@ const optionalAuth = async (req, res, next) => {
 };
 
 // Authorize specific user types
-const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
-    }
+const authorize = (...roles) => (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Authentication required'
+    });
+  }
 
-    if (!roles.includes(req.user.userType)) {
-      return res.status(403).json({
-        success: false,
-        message: `Access denied. Required role: ${roles.join(' or ')}`
-      });
-    }
+  if (!roles.includes(req.user.userType)) {
+    return res.status(403).json({
+      success: false,
+      message: `Access denied. Required role: ${roles.join(' or ')}`
+    });
+  }
 
-    next();
-  };
+  next();
 };
 
 // Check if user owns the resource
-const checkOwnership = (Model, param = 'id', ownerField = 'owner') => {
-  return async (req, res, next) => {
-    try {
-      const resourceId = req.params[param];
-      const resource = await Model.findById(resourceId);
+const checkOwnership = (Model, param = 'id', ownerField = 'owner') => async (req, res, next) => {
+  try {
+    const resourceId = req.params[param];
+    const resource = await Model.findById(resourceId);
 
-      if (!resource) {
-        return res.status(404).json({
-          success: false,
-          message: 'Resource not found'
-        });
-      }
-
-      // Check ownership
-      const ownerId = typeof resource[ownerField] === 'object' 
-        ? resource[ownerField].toString() 
-        : resource[ownerField];
-
-      if (ownerId !== req.user._id.toString()) {
-        return res.status(403).json({
-          success: false,
-          message: 'Access denied. You can only access your own resources.'
-        });
-      }
-
-      // Add resource to request for use in controller
-      req.resource = resource;
-      next();
-
-    } catch (error) {
-      console.error('Ownership check error:', error);
-      res.status(500).json({
+    if (!resource) {
+      return res.status(404).json({
         success: false,
-        message: 'Authorization failed'
+        message: 'Resource not found'
       });
     }
-  };
+
+    // Check ownership
+    const ownerId = typeof resource[ownerField] === 'object'
+      ? resource[ownerField].toString()
+      : resource[ownerField];
+
+    if (ownerId !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. You can only access your own resources.'
+      });
+    }
+
+    // Add resource to request for use in controller
+    req.resource = resource;
+    next();
+  } catch (error) {
+    console.error('Ownership check error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Authorization failed'
+    });
+  }
 };
 
 // Check if user is verified
-const requireVerification = (type = 'email') => {
-  return (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
-    }
+const requireVerification = (type = 'email') => (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Authentication required'
+    });
+  }
 
-    const isVerified = type === 'email' 
-      ? req.user.emailVerified 
-      : req.user.phoneVerified;
+  const isVerified = type === 'email'
+    ? req.user.emailVerified
+    : req.user.phoneVerified;
 
-    if (!isVerified) {
-      return res.status(403).json({
-        success: false,
-        message: `${type} verification required`,
-        code: 'VERIFICATION_REQUIRED',
-        verificationType: type
-      });
-    }
+  if (!isVerified) {
+    return res.status(403).json({
+      success: false,
+      message: `${type} verification required`,
+      code: 'VERIFICATION_REQUIRED',
+      verificationType: type
+    });
+  }
 
-    next();
-  };
+  next();
 };
 
 // Check if user account is complete
@@ -244,7 +235,7 @@ const requireCompleteProfile = (req, res, next) => {
   }
 
   const requiredFields = ['firstName', 'lastName', 'phone', 'email'];
-  const missingFields = requiredFields.filter(field => !req.user[field]);
+  const missingFields = requiredFields.filter((field) => !req.user[field]);
 
   if (missingFields.length > 0) {
     return res.status(400).json({

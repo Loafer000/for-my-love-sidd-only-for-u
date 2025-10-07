@@ -41,7 +41,7 @@ const createBooking = async (req, res) => {
       landlord: property.owner._id,
       type: bookingType,
       status: 'pending',
-      
+
       // Contact Information
       contact: {
         name,
@@ -51,12 +51,12 @@ const createBooking = async (req, res) => {
       },
 
       // Dates
-      ...(moveInDate && { 
-        dates: { 
+      ...(moveInDate && {
+        dates: {
           moveIn: new Date(moveInDate),
-          moveOut: leaseDuration ? 
-            new Date(new Date(moveInDate).setMonth(new Date(moveInDate).getMonth() + parseInt(leaseDuration))) : 
-            null
+          moveOut: leaseDuration
+            ? new Date(new Date(moveInDate).setMonth(new Date(moveInDate).getMonth() + parseInt(leaseDuration, 10)))
+            : null
         }
       }),
 
@@ -74,8 +74,8 @@ const createBooking = async (req, res) => {
         rental: {
           monthlyRent: property.rental.monthlyRent,
           securityDeposit: property.rental.securityDeposit,
-          leaseDuration: parseInt(leaseDuration),
-          totalAmount: property.rental.monthlyRent * parseInt(leaseDuration)
+          leaseDuration: parseInt(leaseDuration, 10),
+          totalAmount: property.rental.monthlyRent * parseInt(leaseDuration, 10)
         }
       })
     };
@@ -133,7 +133,6 @@ const createBooking = async (req, res) => {
       message: `${bookingType.charAt(0).toUpperCase() + bookingType.slice(1)} request submitted successfully`,
       data: { booking }
     });
-
   } catch (error) {
     console.error('Create booking error:', error);
     res.status(500).json({
@@ -171,7 +170,6 @@ const getUserBookings = async (req, res) => {
       message: 'Bookings retrieved successfully',
       data: { bookings }
     });
-
   } catch (error) {
     console.error('Get bookings error:', error);
     res.status(500).json({
@@ -213,7 +211,6 @@ const getBookingById = async (req, res) => {
       message: 'Booking retrieved successfully',
       data: { booking }
     });
-
   } catch (error) {
     console.error('Get booking error:', error);
     res.status(500).json({
@@ -298,7 +295,6 @@ const updateBookingStatus = async (req, res) => {
       message: `Booking ${status} successfully`,
       data: { booking }
     });
-
   } catch (error) {
     console.error('Update booking status error:', error);
     res.status(500).json({
@@ -391,7 +387,6 @@ const cancelBooking = async (req, res) => {
       message: 'Booking cancelled successfully',
       data: { booking }
     });
-
   } catch (error) {
     console.error('Cancel booking error:', error);
     res.status(500).json({

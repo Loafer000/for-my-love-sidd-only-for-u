@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const { authenticate } = require('../middleware/auth');
 
@@ -87,9 +88,15 @@ router.get('/performance', authenticate, async (req, res) => {
           monthlyGrowth: 24.8
         },
         leaderboard: [
-          { agentId: 'agent_001', name: 'Sarah Johnson', sales: 12, commission: 468000 },
-          { agentId: 'agent_002', name: 'Mike Chen', sales: 8, commission: 312000 },
-          { agentId: 'agent_003', name: 'David Wilson', sales: 6, commission: 234000 }
+          {
+            agentId: 'agent_001', name: 'Sarah Johnson', sales: 12, commission: 468000
+          },
+          {
+            agentId: 'agent_002', name: 'Mike Chen', sales: 8, commission: 312000
+          },
+          {
+            agentId: 'agent_003', name: 'David Wilson', sales: 6, commission: 234000
+          }
         ]
       }
     };

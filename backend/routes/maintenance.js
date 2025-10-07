@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const { authenticate } = require('../middleware/auth');
 
@@ -46,7 +47,7 @@ router.get('/dashboard', authenticate, async (req, res) => {
 router.get('/work-orders', authenticate, async (req, res) => {
   try {
     const { status = 'all' } = req.query;
-    
+
     // Mock data - replace with actual database queries
     const workOrders = {
       success: true,
@@ -96,8 +97,10 @@ router.get('/work-orders', authenticate, async (req, res) => {
 // @access  Private
 router.post('/work-orders', authenticate, async (req, res) => {
   try {
-    const { title, description, priority, propertyId, unitId } = req.body;
-    
+    const {
+      title, description, priority, propertyId, unitId
+    } = req.body;
+
     // Validate required fields
     if (!title || !description || !priority || !propertyId) {
       return res.status(400).json({
@@ -105,7 +108,7 @@ router.post('/work-orders', authenticate, async (req, res) => {
         message: 'Missing required fields'
       });
     }
-    
+
     // Mock work order creation - replace with actual database operation
     const newWorkOrder = {
       success: true,

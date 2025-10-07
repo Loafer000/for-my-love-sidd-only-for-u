@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const { body } = require('express-validator');
 const notificationController = require('../controllers/notificationController');
@@ -14,9 +15,9 @@ router.get('/test', (req, res) => {
     message: 'Notification routes working!',
     availableRoutes: [
       'POST   /api/notifications/sms',
-      'POST   /api/notifications/email', 
-      'GET    /api/notifications/history',
-    ],
+      'POST   /api/notifications/email',
+      'GET    /api/notifications/history'
+    ]
   });
 });
 

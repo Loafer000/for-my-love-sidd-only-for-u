@@ -1,10 +1,9 @@
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { User } = require('../models');
 const { sendEmail } = require('../utils/email');
 const { sendSMS } = require('../utils/sms');
-const { generateOTP, verifyOTP } = require('../utils/otp');
+const { generateOTP } = require('../utils/otp');
 
 // Generate JWT tokens
 const generateTokens = (userId) => {
@@ -13,24 +12,26 @@ const generateTokens = (userId) => {
     process.env.JWT_SECRET,
     { expiresIn: '15m' }
   );
-  
+
   const refreshToken = jwt.sign(
     { userId },
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: '7d' }
   );
-  
+
   return { accessToken, refreshToken };
 };
 
 // Register new user
 exports.register = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, userType } = req.body;
+    const {
+      firstName, lastName, email, password, userType
+    } = req.body;
 
     // Check if user already exists by email
     const existingUser = await User.findOne({ email: email.toLowerCase() });
-    
+
     if (existingUser) {
       return res.status(409).json({
         success: false,
@@ -67,7 +68,7 @@ exports.register = async (req, res) => {
     try {
       const verificationToken = user.generateEmailVerificationToken();
       await user.save();
-      
+
       await sendEmail({
         to: email,
         subject: 'Verify your email - ConnectSpace',
@@ -99,7 +100,6 @@ exports.register = async (req, res) => {
         }
       }
     });
-
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({
@@ -117,7 +117,7 @@ exports.login = async (req, res) => {
 
     // Find user and include password for verification
     const user = await User.findOne({ email }).select('+password');
-    
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -135,18 +135,18 @@ exports.login = async (req, res) => {
 
     // Verify password
     const isValidPassword = await user.comparePassword(password);
-    
+
     if (!isValidPassword) {
       // Increment failed attempts
       user.loginAttempts += 1;
-      
+
       // Lock account if too many attempts
       if (user.loginAttempts >= 5) {
         user.lockUntil = Date.now() + 30 * 60 * 1000; // 30 minutes
       }
-      
+
       await user.save();
-      
+
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
@@ -190,7 +190,6 @@ exports.login = async (req, res) => {
         }
       }
     });
-
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({
@@ -253,7 +252,6 @@ exports.sendOTP = async (req, res) => {
         expiresIn: 600 // 10 minutes in seconds
       }
     });
-
   } catch (error) {
     console.error('Send OTP error:', error);
     res.status(500).json({
@@ -270,7 +268,7 @@ exports.verifyOTP = async (req, res) => {
     const { phone, otp, type = 'login' } = req.body;
 
     const user = await User.findOne({ phone });
-    
+
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -305,7 +303,7 @@ exports.verifyOTP = async (req, res) => {
     if (user.otp.code !== otp) {
       user.otp.attempts += 1;
       await user.save();
-      
+
       return res.status(400).json({
         success: false,
         message: 'Invalid OTP'
@@ -319,7 +317,7 @@ exports.verifyOTP = async (req, res) => {
 
     // Generate tokens for login
     const { accessToken, refreshToken } = generateTokens(user._id);
-    
+
     user.refreshTokens.push({
       token: refreshToken,
       createdAt: new Date()
@@ -343,7 +341,6 @@ exports.verifyOTP = async (req, res) => {
         }
       }
     });
-
   } catch (error) {
     console.error('Verify OTP error:', error);
     res.status(500).json({
@@ -368,7 +365,7 @@ exports.refreshToken = async (req, res) => {
 
     // Verify refresh token
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-    
+
     // Find user and check if refresh token exists
     const user = await User.findById(decoded.userId);
     if (!user) {
@@ -379,7 +376,7 @@ exports.refreshToken = async (req, res) => {
     }
 
     // Check if refresh token exists in user's tokens
-    const tokenExists = user.refreshTokens.some(token => token.token === refreshToken);
+    const tokenExists = user.refreshTokens.some((token) => token.token === refreshToken);
     if (!tokenExists) {
       return res.status(401).json({
         success: false,
@@ -391,7 +388,7 @@ exports.refreshToken = async (req, res) => {
     const { accessToken, refreshToken: newRefreshToken } = generateTokens(user._id);
 
     // Replace old refresh token with new one
-    user.refreshTokens = user.refreshTokens.filter(token => token.token !== refreshToken);
+    user.refreshTokens = user.refreshTokens.filter((token) => token.token !== refreshToken);
     user.refreshTokens.push({
       token: newRefreshToken,
       createdAt: new Date()
@@ -409,7 +406,6 @@ exports.refreshToken = async (req, res) => {
         }
       }
     });
-
   } catch (error) {
     console.error('Refresh token error:', error);
     res.status(401).json({
@@ -423,14 +419,14 @@ exports.refreshToken = async (req, res) => {
 exports.logout = async (req, res) => {
   try {
     const { refreshToken } = req.body;
-    
+
     if (refreshToken) {
       // Remove refresh token from user's tokens
       const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
       const user = await User.findById(decoded.userId);
-      
+
       if (user) {
-        user.refreshTokens = user.refreshTokens.filter(token => token.token !== refreshToken);
+        user.refreshTokens = user.refreshTokens.filter((token) => token.token !== refreshToken);
         await user.save();
       }
     }
@@ -439,7 +435,6 @@ exports.logout = async (req, res) => {
       success: true,
       message: 'Logout successful'
     });
-
   } catch (error) {
     console.error('Logout error:', error);
     res.json({
@@ -484,7 +479,6 @@ exports.forgotPassword = async (req, res) => {
         success: true,
         message: 'Password reset email sent'
       });
-
     } catch (emailError) {
       console.error('Email send failed:', emailError);
       res.status(500).json({
@@ -492,7 +486,6 @@ exports.forgotPassword = async (req, res) => {
         message: 'Failed to send reset email'
       });
     }
-
   } catch (error) {
     console.error('Forgot password error:', error);
     res.status(500).json({
@@ -534,7 +527,6 @@ exports.resetPassword = async (req, res) => {
       success: true,
       message: 'Password reset successfully'
     });
-
   } catch (error) {
     console.error('Reset password error:', error);
     res.status(500).json({
@@ -575,12 +567,38 @@ exports.verifyEmail = async (req, res) => {
       success: true,
       message: 'Email verified successfully'
     });
-
   } catch (error) {
     console.error('Email verification error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to verify email'
+    });
+  }
+};
+
+// @desc    Get current user profile
+// @route   GET /api/auth/me
+// @access  Private
+exports.getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      user
+    });
+  } catch (error) {
+    console.error('Get profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get user profile'
     });
   }
 };

@@ -1,10 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
 const { body, param } = require('express-validator');
+const multer = require('multer');
 const userController = require('../controllers/userController');
 const { authenticate } = require('../middleware/auth');
 const { validateRequest } = require('../middleware/validation');
-const multer = require('multer');
 
 // Multer configuration for file uploads
 const upload = multer({
@@ -32,14 +33,16 @@ router.get('/test', (req, res) => {
       'GET    /api/users/properties',
       'PUT    /api/users/change-password',
       'GET    /api/users/:id'
-    ],
+    ]
   });
 });
 
 // Validation rules
 const updateProfileValidation = [
-  body('firstName').optional().trim().isLength({ min: 1 }).withMessage('First name is required'),
-  body('lastName').optional().trim().isLength({ min: 1 }).withMessage('Last name is required'),
+  body('firstName').optional().trim().isLength({ min: 1 })
+    .withMessage('First name is required'),
+  body('lastName').optional().trim().isLength({ min: 1 })
+    .withMessage('Last name is required'),
   body('phone').optional().isMobilePhone().withMessage('Valid phone number is required'),
   body('bio').optional().isLength({ max: 500 }).withMessage('Bio must be less than 500 characters')
 ];

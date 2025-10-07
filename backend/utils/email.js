@@ -11,8 +11,8 @@ const createTransporter = () => {
       secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+        pass: process.env.EMAIL_PASS
+      }
     });
   }
   return transporter;
@@ -32,35 +32,34 @@ const sendEmail = async (options) => {
     }
 
     const transporter = createTransporter();
-    
+
     const mailOptions = {
       from: process.env.EMAIL_FROM || `"ConnectSpace" <${process.env.EMAIL_USER}>`,
       to: options.to,
       subject: options.subject,
       html: options.html,
-      text: options.text,
+      text: options.text
     };
 
     const result = await transporter.sendMail(mailOptions);
     console.log('📧 Email sent successfully:', result.messageId);
-    
+
     return {
       success: true,
-      messageId: result.messageId,
+      messageId: result.messageId
     };
-
   } catch (error) {
     console.error('📧 Email send failed:', error);
-    
+
     // Don't throw error in development, just log
     if (process.env.NODE_ENV === 'development') {
       console.log('📧 Email would be sent (dev mode):', {
         to: options.to,
-        subject: options.subject,
+        subject: options.subject
       });
       return { success: true, message: 'Email simulated in dev mode' };
     }
-    
+
     throw error;
   }
 };
@@ -87,7 +86,7 @@ const sendWelcomeEmail = async (user) => {
   return sendEmail({
     to: user.email,
     subject: 'Welcome to ConnectSpace! 🏢',
-    html,
+    html
   });
 };
 
@@ -114,12 +113,12 @@ const sendBookingConfirmation = async (booking, user, property) => {
   return sendEmail({
     to: user.email,
     subject: `Booking Confirmed - ${property.title}`,
-    html,
+    html
   });
 };
 
 module.exports = {
   sendEmail,
   sendWelcomeEmail,
-  sendBookingConfirmation,
+  sendBookingConfirmation
 };

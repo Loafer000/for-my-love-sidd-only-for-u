@@ -49,7 +49,7 @@ const verifyPaymentSignature = (orderId, paymentId, signature, secret) => {
     const hmac = crypto.createHmac('sha256', secret || process.env.RAZORPAY_KEY_SECRET);
     hmac.update(orderId + '|' + paymentId);
     const generated_signature = hmac.digest('hex');
-    
+
     return generated_signature === signature;
     */
 

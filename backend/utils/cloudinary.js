@@ -17,7 +17,7 @@ const uploadToCloudinary = async (fileBuffer, folder = 'properties') => {
       console.warn('⚠️ Cloudinary not configured, using mock upload');
       return {
         public_id: `${folder}/mock_img_${Date.now()}`,
-        secure_url: `https://via.placeholder.com/800x600?text=Mock+Upload`,
+        secure_url: 'https://via.placeholder.com/800x600?text=Mock+Upload',
         width: 800,
         height: 600,
         format: 'jpg',
@@ -32,7 +32,9 @@ const uploadToCloudinary = async (fileBuffer, folder = 'properties') => {
           resource_type: 'image',
           folder,
           transformation: [
-            { width: 1200, height: 800, crop: 'limit', quality: 'auto:good' },
+            {
+              width: 1200, height: 800, crop: 'limit', quality: 'auto:good'
+            },
             { fetch_format: 'auto' }
           ],
           overwrite: true,
@@ -97,10 +99,8 @@ const generateImageURL = (publicId, transformations = {}) => {
 // Upload multiple images
 const uploadMultipleToCloudinary = async (files, folder = 'properties') => {
   try {
-    const uploadPromises = files.map(file => 
-      uploadToCloudinary(file.buffer, folder)
-    );
-    
+    const uploadPromises = files.map((file) => uploadToCloudinary(file.buffer, folder));
+
     return await Promise.all(uploadPromises);
   } catch (error) {
     console.error('Multiple upload error:', error);

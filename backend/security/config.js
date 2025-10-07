@@ -8,7 +8,7 @@ class SecurityConfig {
     this.JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || this.generateSecretKey();
     this.ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || this.generateEncryptionKey();
     this.BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS) || 12;
-    
+
     // Session configuration
     this.SESSION_CONFIG = {
       secret: process.env.SESSION_SECRET || this.generateSecretKey(),
@@ -64,18 +64,18 @@ class SecurityConfig {
   // Encrypt sensitive data
   encrypt(text) {
     if (!text) return null;
-    
+
     const algorithm = 'aes-256-gcm';
     const key = Buffer.from(this.ENCRYPTION_KEY, 'hex');
     const iv = crypto.randomBytes(16);
-    
+
     const cipher = crypto.createCipher(algorithm, key, iv);
-    
+
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
-    
+
     const authTag = cipher.getAuthTag();
-    
+
     return {
       encrypted,
       iv: iv.toString('hex'),
@@ -86,18 +86,18 @@ class SecurityConfig {
   // Decrypt sensitive data
   decrypt(encryptedData) {
     if (!encryptedData) return null;
-    
+
     const algorithm = 'aes-256-gcm';
     const key = Buffer.from(this.ENCRYPTION_KEY, 'hex');
     const iv = Buffer.from(encryptedData.iv, 'hex');
     const authTag = Buffer.from(encryptedData.authTag, 'hex');
-    
+
     const decipher = crypto.createDecipher(algorithm, key, iv);
     decipher.setAuthTag(authTag);
-    
+
     let decrypted = decipher.update(encryptedData.encrypted, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
-    
+
     return decrypted;
   }
 
@@ -116,8 +116,8 @@ class SecurityConfig {
       'MONGODB_URI'
     ];
 
-    const missing = required.filter(key => !process.env[key]);
-    
+    const missing = required.filter((key) => !process.env[key]);
+
     if (missing.length > 0) {
       console.warn('⚠️  Missing environment variables:', missing.join(', '));
       console.warn('⚠️  Using generated keys - CHANGE IN PRODUCTION!');

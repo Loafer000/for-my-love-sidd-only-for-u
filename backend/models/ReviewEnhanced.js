@@ -72,7 +72,7 @@ const reviewSchema = new mongoose.Schema({
       min: 1,
       max: 5
     },
-    
+
     // For User Reviews (Landlord/Tenant)
     responsiveness: {
       type: Number,
@@ -187,7 +187,7 @@ const reviewSchema = new mongoose.Schema({
   analytics: {
     sentiment: {
       type: String,
-      enum: ['positive', 'neutral', 'negative'],
+      enum: ['positive', 'neutral', 'negative']
     },
     keywords: [String], // Extracted keywords from review text
     languageDetected: {
@@ -220,12 +220,12 @@ reviewSchema.index({ propertyId: 1, reviewType: 1, moderationStatus: 1 });
 reviewSchema.index({ revieweeId: 1, reviewType: 1, moderationStatus: 1 });
 
 // Virtual for helpful votes count
-reviewSchema.virtual('helpfulCount').get(function() {
+reviewSchema.virtual('helpfulCount').get(function () {
   return this.businessMetrics.helpfulVotes ? this.businessMetrics.helpfulVotes.length : 0;
 });
 
 // Pre-save hooks
-reviewSchema.pre('save', function(next) {
+reviewSchema.pre('save', function (next) {
   // Auto-detect sentiment based on rating
   if (this.isModified('rating')) {
     if (this.rating >= 4) {
@@ -246,38 +246,38 @@ reviewSchema.pre('save', function(next) {
 });
 
 // Instance methods
-reviewSchema.methods.canBeEdited = function() {
+reviewSchema.methods.canBeEdited = function () {
   const hoursSinceCreation = (new Date() - this.createdAt) / (1000 * 60 * 60);
   return hoursSinceCreation <= 48 && this.moderationStatus !== 'rejected';
 };
 
-reviewSchema.methods.addHelpfulVote = function(userId) {
+reviewSchema.methods.addHelpfulVote = function (userId) {
   if (!this.businessMetrics.helpfulVotes.includes(userId)) {
     this.businessMetrics.helpfulVotes.push(userId);
   }
   return this.save();
 };
 
-reviewSchema.methods.removeHelpfulVote = function(userId) {
+reviewSchema.methods.removeHelpfulVote = function (userId) {
   this.businessMetrics.helpfulVotes.pull(userId);
   return this.save();
 };
 
-reviewSchema.methods.addResponse = function(responseText, responderId) {
+reviewSchema.methods.addResponse = function (responseText, responderId) {
   this.response = {
     text: responseText,
     respondedAt: new Date(),
-    responderId: responderId
+    responderId
   };
   return this.save();
 };
 
 // Static methods for analytics
-reviewSchema.statics.getPropertyRatingStats = function(propertyId) {
+reviewSchema.statics.getPropertyRatingStats = function (propertyId) {
   return this.aggregate([
     {
       $match: {
-        propertyId: propertyId,
+        propertyId,
         reviewType: 'property',
         moderationStatus: 'approved',
         isVisible: true
@@ -303,7 +303,7 @@ reviewSchema.statics.getPropertyRatingStats = function(propertyId) {
   ]);
 };
 
-reviewSchema.statics.getUserRatingStats = function(userId) {
+reviewSchema.statics.getUserRatingStats = function (userId) {
   return this.aggregate([
     {
       $match: {
@@ -327,7 +327,7 @@ reviewSchema.statics.getUserRatingStats = function(userId) {
   ]);
 };
 
-reviewSchema.statics.getModerationQueue = function() {
+reviewSchema.statics.getModerationQueue = function () {
   return this.find({
     $or: [
       { moderationStatus: 'pending' },
@@ -335,19 +335,19 @@ reviewSchema.statics.getModerationQueue = function() {
       { 'businessMetrics.reportCount': { $gte: 3 } }
     ]
   })
-  .populate('reviewerId revieweeId propertyId', 'firstName lastName title')
-  .sort({ createdAt: 1 });
+    .populate('reviewerId revieweeId propertyId', 'firstName lastName title')
+    .sort({ createdAt: 1 });
 };
 
 // Helper function to extract keywords (simple implementation)
 function extractKeywords(text) {
   const stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'was', 'are', 'were', 'been', 'be', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'can', 'may', 'might', 'must'];
-  
+
   return text
     .toLowerCase()
     .replace(/[^a-z\s]/g, '')
     .split(/\s+/)
-    .filter(word => word.length > 3 && !stopWords.includes(word))
+    .filter((word) => word.length > 3 && !stopWords.includes(word))
     .slice(0, 10); // Limit to top 10 keywords
 }
 

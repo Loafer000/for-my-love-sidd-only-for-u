@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const { authenticate } = require('../middleware/auth');
 
@@ -46,7 +47,7 @@ router.get('/dashboard', authenticate, async (req, res) => {
 router.get('/reports', authenticate, async (req, res) => {
   try {
     const { type = 'monthly' } = req.query;
-    
+
     // Mock data - replace with actual database queries
     const reports = {
       success: true,

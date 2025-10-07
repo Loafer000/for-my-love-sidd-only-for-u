@@ -1,8 +1,8 @@
 const request = require('supertest');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const authRoutes = require('../../routes/auth');
 const User = require('../../models/User');
-const jwt = require('jsonwebtoken');
 
 // Create test app
 const app = express();

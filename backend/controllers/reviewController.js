@@ -1,18 +1,20 @@
 // Review Controller - Smart Review & Rating System
 
-const { ReviewEnhanced, Property, Booking, User } = require('../models');
+const {
+  ReviewEnhanced, Property, Booking, User
+} = require('../models');
 
 // Create a new review (only after completed booking)
 const createReview = async (req, res) => {
   try {
-    const { 
-      bookingId, 
-      propertyId, 
+    const {
+      bookingId,
+      propertyId,
       revieweeId, // User being reviewed (landlord or tenant)
-      rating, 
-      reviewText, 
+      rating,
+      reviewText,
       reviewType, // 'property', 'landlord', 'tenant'
-      reviewAspects = {} 
+      reviewAspects = {}
     } = req.body;
     const reviewerId = req.user._id;
 
@@ -97,7 +99,6 @@ const createReview = async (req, res) => {
       message: 'Review submitted successfully',
       data: { review }
     });
-
   } catch (error) {
     console.error('Create review error:', error);
     res.status(500).json({
@@ -112,27 +113,27 @@ const createReview = async (req, res) => {
 const getPropertyReviews = async (req, res) => {
   try {
     const { propertyId } = req.params;
-    const { 
-      page = 1, 
-      limit = 10, 
-      sortBy = 'createdAt', 
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'createdAt',
       order = 'desc',
       rating = null,
       reviewType = null
     } = req.query;
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
     const sortOrder = order === 'asc' ? 1 : -1;
 
     // Build filter
-    let filter = { 
-      propertyId, 
+    const filter = {
+      propertyId,
       moderationStatus: 'approved',
       isVisible: true
     };
 
     if (rating) {
-      filter.rating = parseInt(rating);
+      filter.rating = parseInt(rating, 10);
     }
 
     if (reviewType) {
@@ -145,11 +146,11 @@ const getPropertyReviews = async (req, res) => {
       .populate('revieweeId', 'firstName lastName profilePhoto')
       .sort({ [sortBy]: sortOrder })
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit, 10));
 
     // Get review statistics
     const stats = await ReviewEnhanced.aggregate([
-      { $match: { propertyId: propertyId, moderationStatus: 'approved', isVisible: true } },
+      { $match: { propertyId, moderationStatus: 'approved', isVisible: true } },
       {
         $group: {
           _id: null,
@@ -169,11 +170,11 @@ const getPropertyReviews = async (req, res) => {
     };
 
     // Calculate rating distribution
-    const distribution = [1, 2, 3, 4, 5].map(rating => ({
+    const distribution = [1, 2, 3, 4, 5].map((rating) => ({
       rating,
-      count: reviewStats.ratingDistribution.filter(r => r === rating).length,
-      percentage: reviewStats.totalReviews > 0 
-        ? ((reviewStats.ratingDistribution.filter(r => r === rating).length / reviewStats.totalReviews) * 100).toFixed(1)
+      count: reviewStats.ratingDistribution.filter((r) => r === rating).length,
+      percentage: reviewStats.totalReviews > 0
+        ? ((reviewStats.ratingDistribution.filter((r) => r === rating).length / reviewStats.totalReviews) * 100).toFixed(1)
         : 0
     }));
 
@@ -187,14 +188,13 @@ const getPropertyReviews = async (req, res) => {
           ratingDistribution: distribution
         },
         pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
+          page: parseInt(page, 10),
+          limit: parseInt(limit, 10),
           totalReviews: reviewStats.totalReviews,
-          totalPages: Math.ceil(reviewStats.totalReviews / parseInt(limit))
+          totalPages: Math.ceil(reviewStats.totalReviews / parseInt(limit, 10))
         }
       }
     });
-
   } catch (error) {
     console.error('Get property reviews error:', error);
     res.status(500).json({
@@ -209,18 +209,18 @@ const getPropertyReviews = async (req, res) => {
 const getUserReviews = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { 
+    const {
       role = 'all', // 'reviewer', 'reviewee', 'all'
-      page = 1, 
+      page = 1,
       limit = 10,
       reviewType = null
     } = req.query;
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     // Build filter based on role
-    let filter = { moderationStatus: 'approved', isVisible: true };
-    
+    const filter = { moderationStatus: 'approved', isVisible: true };
+
     if (role === 'reviewer') {
       filter.reviewerId = userId;
     } else if (role === 'reviewee') {
@@ -242,7 +242,7 @@ const getUserReviews = async (req, res) => {
       .populate('propertyId', 'title location images')
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit, 10));
 
     // Get user review statistics
     const reviewerStats = await ReviewEnhanced.aggregate([
@@ -279,13 +279,12 @@ const getUserReviews = async (req, res) => {
         reviews,
         statistics: userStats,
         pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
-          hasMore: reviews.length === parseInt(limit)
+          page: parseInt(page, 10),
+          limit: parseInt(limit, 10),
+          hasMore: reviews.length === parseInt(limit, 10)
         }
       }
     });
-
   } catch (error) {
     console.error('Get user reviews error:', error);
     res.status(500).json({
@@ -347,7 +346,6 @@ const updateReview = async (req, res) => {
       message: 'Review updated successfully',
       data: { review }
     });
-
   } catch (error) {
     console.error('Update review error:', error);
     res.status(500).json({
@@ -374,7 +372,7 @@ const markHelpful = async (req, res) => {
 
     // Check if already marked helpful
     const alreadyMarked = review.businessMetrics.helpfulVotes.includes(userId);
-    
+
     if (alreadyMarked) {
       // Remove helpful vote
       review.businessMetrics.helpfulVotes.pull(userId);
@@ -393,7 +391,6 @@ const markHelpful = async (req, res) => {
         isHelpful: !alreadyMarked
       }
     });
-
   } catch (error) {
     console.error('Mark helpful error:', error);
     res.status(500).json({
@@ -421,7 +418,7 @@ const reportReview = async (req, res) => {
 
     // Check if already reported by this user
     const alreadyReported = review.moderationFlags.some(
-      flag => flag.reporterId && flag.reporterId.toString() === userId.toString()
+      (flag) => flag.reporterId && flag.reporterId.toString() === userId.toString()
     );
 
     if (alreadyReported) {
@@ -457,7 +454,6 @@ const reportReview = async (req, res) => {
         reportCount: review.businessMetrics.reportCount
       }
     });
-
   } catch (error) {
     console.error('Report review error:', error);
     res.status(500).json({
@@ -472,13 +468,13 @@ const reportReview = async (req, res) => {
 const updatePropertyRating = async (propertyId) => {
   try {
     const stats = await ReviewEnhanced.aggregate([
-      { 
-        $match: { 
-          propertyId: propertyId, 
+      {
+        $match: {
+          propertyId,
           reviewType: 'property',
           moderationStatus: 'approved',
           isVisible: true
-        } 
+        }
       },
       {
         $group: {
@@ -500,16 +496,16 @@ const updatePropertyRating = async (propertyId) => {
   }
 };
 
-// Helper function to update user rating  
+// Helper function to update user rating
 const updateUserRating = async (userId) => {
   try {
     const stats = await ReviewEnhanced.aggregate([
-      { 
-        $match: { 
+      {
+        $match: {
           revieweeId: userId,
           moderationStatus: 'approved',
           isVisible: true
-        } 
+        }
       },
       {
         $group: {

@@ -7,7 +7,7 @@ const reviewSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  
+
   // References
   property: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,22 +29,22 @@ const reviewSchema = new mongoose.Schema({
     ref: 'Booking',
     required: [true, 'Booking reference is required']
   },
-  
+
   // Review Type
   type: {
     type: String,
     required: [true, 'Review type is required'],
     enum: {
       values: [
-        'tenant-to-property',    // Tenant reviewing property
-        'tenant-to-landlord',    // Tenant reviewing landlord
-        'landlord-to-tenant',    // Landlord reviewing tenant
-        'landlord-to-property'   // Landlord reviewing their own property experience
+        'tenant-to-property', // Tenant reviewing property
+        'tenant-to-landlord', // Tenant reviewing landlord
+        'landlord-to-tenant', // Landlord reviewing tenant
+        'landlord-to-property' // Landlord reviewing their own property experience
       ],
       message: 'Invalid review type'
     }
   },
-  
+
   // Overall Rating (1-5 stars)
   overall: {
     rating: {
@@ -53,7 +53,7 @@ const reviewSchema = new mongoose.Schema({
       min: [1, 'Rating must be at least 1'],
       max: [5, 'Rating cannot exceed 5'],
       validate: {
-        validator: function(value) {
+        validator(value) {
           return value % 0.5 === 0; // Allow half stars
         },
         message: 'Rating must be in increments of 0.5'
@@ -67,7 +67,7 @@ const reviewSchema = new mongoose.Schema({
       maxlength: [1000, 'Comment cannot exceed 1000 characters']
     }
   },
-  
+
   // Detailed Ratings (Property Reviews)
   propertyRatings: {
     cleanliness: {
@@ -76,7 +76,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -93,7 +93,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -110,7 +110,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -127,7 +127,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -144,7 +144,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -161,7 +161,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -173,7 +173,7 @@ const reviewSchema = new mongoose.Schema({
       }
     }
   },
-  
+
   // User Behavior Ratings (For landlord reviewing tenant or vice versa)
   behaviorRatings: {
     communication: {
@@ -182,7 +182,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -199,7 +199,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -216,7 +216,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -233,7 +233,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -250,7 +250,7 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5,
         validate: {
-          validator: function(value) {
+          validator(value) {
             return !value || value % 0.5 === 0;
           },
           message: 'Rating must be in increments of 0.5'
@@ -262,7 +262,7 @@ const reviewSchema = new mongoose.Schema({
       }
     }
   },
-  
+
   // Pros and Cons
   prosAndCons: {
     pros: [{
@@ -274,7 +274,7 @@ const reviewSchema = new mongoose.Schema({
       maxlength: 100
     }]
   },
-  
+
   // Tags and Categories
   tags: [{
     type: String,
@@ -283,14 +283,14 @@ const reviewSchema = new mongoose.Schema({
       'well-maintained', 'spacious', 'good-location', 'peaceful', 'noisy',
       'expensive', 'value-for-money', 'clean', 'dirty', 'modern', 'outdated',
       'safe', 'unsafe', 'convenient', 'inconvenient', 'furnished', 'unfurnished',
-      
+
       // User behavior tags
       'responsive', 'unresponsive', 'friendly', 'rude', 'professional',
       'unprofessional', 'reliable', 'unreliable', 'helpful', 'unhelpful',
       'respectful', 'disrespectful', 'punctual', 'late'
     ]
   }],
-  
+
   // Media Attachments
   media: [{
     type: {
@@ -309,14 +309,14 @@ const reviewSchema = new mongoose.Schema({
       default: Date.now
     }
   }],
-  
+
   // Review Status and Moderation
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected', 'flagged', 'hidden'],
     default: 'pending'
   },
-  
+
   moderation: {
     reviewedBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -353,7 +353,7 @@ const reviewSchema = new mongoose.Schema({
       }
     }]
   },
-  
+
   // Helpfulness and Voting
   helpfulness: {
     helpful: {
@@ -379,7 +379,7 @@ const reviewSchema = new mongoose.Schema({
       }
     }]
   },
-  
+
   // Response from Reviewee
   response: {
     text: {
@@ -392,7 +392,7 @@ const reviewSchema = new mongoose.Schema({
       ref: 'User'
     }
   },
-  
+
   // Verification
   verified: {
     isVerified: {
@@ -405,7 +405,7 @@ const reviewSchema = new mongoose.Schema({
     },
     verifiedAt: Date
   },
-  
+
   // Analytics and Engagement
   analytics: {
     views: {
@@ -422,7 +422,7 @@ const reviewSchema = new mongoose.Schema({
     },
     lastViewed: Date
   },
-  
+
   // Review Visibility
   visibility: {
     public: {
@@ -438,7 +438,7 @@ const reviewSchema = new mongoose.Schema({
       default: true
     }
   },
-  
+
   // Source Information
   source: {
     platform: {
@@ -456,7 +456,7 @@ const reviewSchema = new mongoose.Schema({
       default: false
     }
   },
-  
+
   // Edit History
   editHistory: [{
     editedAt: {
@@ -470,7 +470,7 @@ const reviewSchema = new mongoose.Schema({
     }],
     reason: String
   }],
-  
+
   // Timestamps
   reviewDate: {
     type: Date,
@@ -484,7 +484,7 @@ const reviewSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  
+
   // Soft Delete
   deletedAt: Date,
   isDeleted: {
@@ -519,94 +519,94 @@ reviewSchema.index({ property: 1, type: 1, status: 1 });
 reviewSchema.index({ booking: 1, reviewer: 1, type: 1 }, { unique: true });
 
 // Virtual for helpfulness score
-reviewSchema.virtual('helpfulnessScore').get(function() {
+reviewSchema.virtual('helpfulnessScore').get(function () {
   const total = this.helpfulness.helpful + this.helpfulness.notHelpful;
   if (total === 0) return 0;
   return (this.helpfulness.helpful / total) * 100;
 });
 
 // Virtual for total detailed ratings average
-reviewSchema.virtual('averageDetailedRating').get(function() {
+reviewSchema.virtual('averageDetailedRating').get(function () {
   const ratings = [];
-  
+
   // Collect property ratings
   if (this.propertyRatings) {
-    Object.values(this.propertyRatings).forEach(rating => {
+    Object.values(this.propertyRatings).forEach((rating) => {
       if (rating.rating) ratings.push(rating.rating);
     });
   }
-  
+
   // Collect behavior ratings
   if (this.behaviorRatings) {
-    Object.values(this.behaviorRatings).forEach(rating => {
+    Object.values(this.behaviorRatings).forEach((rating) => {
       if (rating.rating) ratings.push(rating.rating);
     });
   }
-  
+
   if (ratings.length === 0) return null;
   return ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
 });
 
 // Virtual for review age
-reviewSchema.virtual('ageInDays').get(function() {
+reviewSchema.virtual('ageInDays').get(function () {
   const now = new Date();
   const reviewDate = new Date(this.reviewDate);
   return Math.floor((now - reviewDate) / (1000 * 60 * 60 * 24));
 });
 
 // Pre-save middleware
-reviewSchema.pre('save', function(next) {
+reviewSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
-  
+
   // Generate review ID if not exists
   if (!this.reviewId) {
     this.generateReviewId();
   }
-  
+
   // Auto-approve if conditions are met
   if (this.status === 'pending' && this.shouldAutoApprove()) {
     this.status = 'approved';
     this.moderation.autoApproved = true;
     this.moderation.reviewedAt = new Date();
   }
-  
+
   next();
 });
 
 // Method to generate unique review ID
-reviewSchema.methods.generateReviewId = function() {
+reviewSchema.methods.generateReviewId = function () {
   const date = new Date();
   const year = date.getFullYear().toString().substr(-2);
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const random = Math.random().toString(36).substr(2, 6).toUpperCase();
-  
+
   this.reviewId = `REV_${year}${month}_${random}`;
 };
 
 // Method to check if review should be auto-approved
-reviewSchema.methods.shouldAutoApprove = function() {
+reviewSchema.methods.shouldAutoApprove = function () {
   // Auto-approve criteria
   const hasGoodRating = this.overall.rating >= 3;
   const hasReasonableLength = this.overall.comment.length >= 20 && this.overall.comment.length <= 800;
   const hasNoFlags = this.moderation.flags.length === 0;
-  const isVerified = this.verified.isVerified;
-  
+  const { isVerified } = this.verified;
+
   return hasGoodRating && hasReasonableLength && hasNoFlags && isVerified;
 };
 
 // Method to add helpfulness vote
-reviewSchema.methods.addHelpfulnessVote = function(userId, vote) {
+reviewSchema.methods.addHelpfulnessVote = function (userId, vote) {
   // Check if user already voted
   const existingVote = this.helpfulness.voters.find(
-    voter => voter.user.toString() === userId.toString()
+    (voter) => voter.user.toString() === userId.toString()
   );
-  
+
   if (existingVote) {
     // Update existing vote
     if (existingVote.vote === vote) {
       // Remove vote if same vote
       this.helpfulness.voters = this.helpfulness.voters.filter(
-        voter => voter.user.toString() !== userId.toString()
+        (voter) => voter.user.toString() !== userId.toString()
       );
       this.helpfulness[existingVote.vote === 'helpful' ? 'helpful' : 'notHelpful']--;
     } else {
@@ -620,45 +620,45 @@ reviewSchema.methods.addHelpfulnessVote = function(userId, vote) {
     // Add new vote
     this.helpfulness.voters.push({
       user: userId,
-      vote: vote,
+      vote,
       votedAt: new Date()
     });
     this.helpfulness[vote === 'helpful' ? 'helpful' : 'notHelpful']++;
   }
-  
+
   return this.save();
 };
 
 // Method to add response
-reviewSchema.methods.addResponse = function(responseText, respondedBy) {
+reviewSchema.methods.addResponse = function (responseText, respondedBy) {
   this.response = {
     text: responseText,
     respondedAt: new Date(),
-    respondedBy: respondedBy
+    respondedBy
   };
-  
+
   return this.save();
 };
 
 // Method to flag review
-reviewSchema.methods.flagReview = function(flaggedBy, type, reason) {
+reviewSchema.methods.flagReview = function (flaggedBy, type, reason) {
   this.moderation.flags.push({
-    type: type,
-    flaggedBy: flaggedBy,
-    reason: reason,
+    type,
+    flaggedBy,
+    reason,
     flaggedAt: new Date()
   });
-  
+
   // Auto-hide if multiple flags
   if (this.moderation.flags.length >= 3) {
     this.status = 'flagged';
   }
-  
+
   return this.save();
 };
 
 // Static method to get property review statistics
-reviewSchema.statics.getPropertyStats = function(propertyId) {
+reviewSchema.statics.getPropertyStats = function (propertyId) {
   return this.aggregate([
     {
       $match: {
@@ -687,16 +687,16 @@ reviewSchema.statics.getPropertyStats = function(propertyId) {
 };
 
 // Static method to get user review statistics
-reviewSchema.statics.getUserStats = function(userId, type = 'all') {
+reviewSchema.statics.getUserStats = function (userId, type = 'all') {
   const matchCondition = {
     reviewee: mongoose.Types.ObjectId(userId),
     status: 'approved'
   };
-  
+
   if (type !== 'all') {
     matchCondition.type = type;
   }
-  
+
   return this.aggregate([
     { $match: matchCondition },
     {
@@ -715,16 +715,16 @@ reviewSchema.statics.getUserStats = function(userId, type = 'all') {
 };
 
 // Static method to get recent reviews
-reviewSchema.statics.getRecentReviews = function(limit = 10, type = null) {
+reviewSchema.statics.getRecentReviews = function (limit = 10, type = null) {
   const matchCondition = {
     status: 'approved',
     isDeleted: false
   };
-  
+
   if (type) {
     matchCondition.type = type;
   }
-  
+
   return this.find(matchCondition)
     .sort({ reviewDate: -1 })
     .limit(limit)

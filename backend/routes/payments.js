@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // @desc    Test payment routes
@@ -13,8 +14,8 @@ router.get('/test', (req, res) => {
       'POST   /api/payments/verify',
       'GET    /api/payments/:id',
       'POST   /api/payments/refund',
-      'GET    /api/payments/history',
-    ],
+      'GET    /api/payments/history'
+    ]
   });
 });
 

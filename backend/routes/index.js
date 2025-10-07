@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // Import route modules
@@ -78,6 +79,7 @@ router.get('/docs', (req, res) => {
       authentication: {
         'POST /auth/register': 'User registration',
         'POST /auth/login': 'User login',
+        'GET /auth/me': 'Get current user profile',
         'POST /auth/logout': 'User logout',
         'POST /auth/refresh': 'Refresh access token',
         'POST /auth/forgot-password': 'Request password reset',

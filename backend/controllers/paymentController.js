@@ -14,7 +14,9 @@ const razorpay = new Razorpay({
 // Create payment order
 const createPaymentOrder = async (req, res) => {
   try {
-    const { amount, currency = 'INR', bookingId, propertyId } = req.body;
+    const {
+      amount, currency = 'INR', bookingId, propertyId
+    } = req.body;
 
     // TODO: Integrate with Razorpay
     // const order = await razorpay.orders.create({
@@ -63,11 +65,11 @@ const createPaymentOrder = async (req, res) => {
 // Verify payment
 const verifyPayment = async (req, res) => {
   try {
-    const { 
-      razorpay_order_id, 
-      razorpay_payment_id, 
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
       razorpay_signature,
-      bookingId 
+      bookingId
     } = req.body;
 
     // TODO: Implement Razorpay signature verification
@@ -128,7 +130,7 @@ const verifyPayment = async (req, res) => {
 const getPaymentHistory = async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     // TODO: Implement payment history from database
     const mockPayments = [
@@ -154,7 +156,7 @@ const getPaymentHistory = async (req, res) => {
       data: {
         payments: mockPayments,
         pagination: {
-          currentPage: parseInt(page),
+          currentPage: parseInt(page, 10),
           totalPages: 1,
           totalPayments: mockPayments.length
         }

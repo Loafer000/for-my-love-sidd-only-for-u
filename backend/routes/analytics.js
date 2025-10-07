@@ -1,15 +1,16 @@
 // Analytics Routes - Business Intelligence & Insights
 
 const express = require('express');
+
 const router = express.Router();
-const { 
+const { param, query, validationResult } = require('express-validator');
+const {
   getLandlordDashboard,
-  getTenantDashboard, 
+  getTenantDashboard,
   getPlatformAnalytics,
   getChatAnalytics
 } = require('../controllers/analyticsController');
 const { authenticate } = require('../middleware/auth');
-const { param, query, validationResult } = require('express-validator');
 
 // Validation middleware
 const handleValidationErrors = (req, res, next) => {
@@ -25,7 +26,8 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Landlord dashboard analytics
-router.get('/landlord/dashboard',
+router.get(
+  '/landlord/dashboard',
   authenticate,
   [
     query('timeframe')
@@ -37,8 +39,9 @@ router.get('/landlord/dashboard',
   getLandlordDashboard
 );
 
-// Tenant dashboard analytics  
-router.get('/tenant/dashboard',
+// Tenant dashboard analytics
+router.get(
+  '/tenant/dashboard',
   authenticate,
   [
     query('timeframe')
@@ -51,7 +54,8 @@ router.get('/tenant/dashboard',
 );
 
 // Platform-wide analytics (admin only for now)
-router.get('/platform',
+router.get(
+  '/platform',
   authenticate,
   [
     query('timeframe')
@@ -64,7 +68,8 @@ router.get('/platform',
 );
 
 // Chat conversation analytics
-router.get('/chat/:chatId',
+router.get(
+  '/chat/:chatId',
   authenticate,
   [
     param('chatId')
@@ -126,7 +131,7 @@ router.get('/mock/landlord', authenticate, (req, res) => {
         occupancyRate: 85.3
       },
       {
-        propertyTitle: '3BHK Villa with Garden', 
+        propertyTitle: '3BHK Villa with Garden',
         bookings: 6,
         revenue: 270000,
         avgRating: 4.5,
@@ -215,7 +220,7 @@ router.get('/mock/platform', authenticate, (req, res) => {
     },
     growth: {
       userGrowth: '+15%',
-      propertyGrowth: '+8%', 
+      propertyGrowth: '+8%',
       revenueGrowth: '+23%',
       chatEngagement: '+12%'
     },
@@ -265,7 +270,7 @@ router.get('/mock/platform', authenticate, (req, res) => {
 // Mock chat analytics
 router.get('/mock/chat/:chatId', authenticate, (req, res) => {
   const { chatId } = req.params;
-  
+
   const mockData = {
     businessContext: {
       inquiryType: 'general',
@@ -324,7 +329,8 @@ router.get('/mock/chat/:chatId', authenticate, (req, res) => {
 // Advanced Analytics Routes for Premium Features
 
 // Overview Analytics
-router.get('/overview',
+router.get(
+  '/overview',
   authenticate,
   [
     query('timeRange')
@@ -365,7 +371,8 @@ router.get('/overview',
 );
 
 // Revenue Analytics
-router.get('/revenue',
+router.get(
+  '/revenue',
   authenticate,
   async (req, res) => {
     try {
@@ -389,7 +396,8 @@ router.get('/revenue',
 );
 
 // Occupancy Analytics
-router.get('/occupancy',
+router.get(
+  '/occupancy',
   authenticate,
   async (req, res) => {
     try {
@@ -413,7 +421,8 @@ router.get('/occupancy',
 );
 
 // Maintenance Analytics
-router.get('/maintenance',
+router.get(
+  '/maintenance',
   authenticate,
   async (req, res) => {
     try {
@@ -438,7 +447,8 @@ router.get('/maintenance',
 );
 
 // Lead Analytics
-router.get('/leads',
+router.get(
+  '/leads',
   authenticate,
   async (req, res) => {
     try {
@@ -463,7 +473,8 @@ router.get('/leads',
 );
 
 // Property Performance
-router.get('/property-performance',
+router.get(
+  '/property-performance',
   authenticate,
   async (req, res) => {
     try {
@@ -486,12 +497,13 @@ router.get('/property-performance',
 );
 
 // Export Report
-router.post('/export',
+router.post(
+  '/export',
   authenticate,
   async (req, res) => {
     try {
       const { format, timeRange, metrics } = req.body;
-      
+
       // This would generate the actual report
       res.json({
         success: true,

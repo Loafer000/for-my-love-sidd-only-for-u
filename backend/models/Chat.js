@@ -46,7 +46,7 @@ const chatMessageSchema = new mongoose.Schema({
     type: String,
     enum: [
       'price_discussion',
-      'visit_request', 
+      'visit_request',
       'booking_intent',
       'payment_discussion',
       'contact_exchange_attempt',
@@ -110,7 +110,7 @@ const chatSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  
+
   // Business Intelligence Fields
   businessContext: {
     inquiryType: {
@@ -140,7 +140,7 @@ const chatSchema = new mongoose.Schema({
       type: String,
       enum: [
         'initial_inquiry',
-        'price_negotiation', 
+        'price_negotiation',
         'visit_scheduling',
         'application_process',
         'payment_setup',
@@ -229,19 +229,18 @@ chatMessageSchema.index({ businessFlags: 1 });
 chatMessageSchema.index({ readBy: 1 });
 
 // Virtual for unread message count (computed in controller for performance)
-chatSchema.virtual('unreadCount').get(function() {
-  return 0; // Computed in controller
-});
+chatSchema.virtual('unreadCount').get(() => 0 // Computed in controller
+);
 
 // Pre-save hooks
-chatSchema.pre('save', function(next) {
+chatSchema.pre('save', function (next) {
   if (this.isModified('lastActivity') || this.isNew) {
     this.lastActivity = new Date();
   }
   next();
 });
 
-chatMessageSchema.pre('save', function(next) {
+chatMessageSchema.pre('save', function (next) {
   if (this.isModified('content') && !this.isNew) {
     this.isEdited = true;
     this.editedAt = new Date();
@@ -250,14 +249,14 @@ chatMessageSchema.pre('save', function(next) {
 });
 
 // Static methods for business intelligence
-chatSchema.statics.getAnalytics = function(timeframe = '7d') {
+chatSchema.statics.getAnalytics = function (timeframe = '7d') {
   // Implementation for chat analytics
   return this.aggregate([
     // Analytics pipeline will go here
   ]);
 };
 
-chatSchema.statics.detectRiskChats = function() {
+chatSchema.statics.detectRiskChats = function () {
   return this.find({
     $or: [
       { 'analytics.bypassAttempts': { $gt: 2 } },
@@ -268,30 +267,30 @@ chatSchema.statics.detectRiskChats = function() {
 };
 
 // Instance methods
-chatSchema.methods.calculateGuidanceScore = function() {
+chatSchema.methods.calculateGuidanceScore = function () {
   let score = 0;
   const maxActions = this.platformGuidance.suggestedActions.length;
   const completedActions = this.platformGuidance.completedActions.length;
-  
+
   if (maxActions > 0) {
     score = (completedActions / maxActions) * 100;
   }
-  
+
   // Adjust for risk flags
   const riskPenalty = this.platformGuidance.riskFlags.length * 10;
   score = Math.max(0, score - riskPenalty);
-  
+
   this.platformGuidance.guidanceScore = score;
   return score;
 };
 
-chatSchema.methods.addRiskFlag = function(flagType, severity = 'medium') {
+chatSchema.methods.addRiskFlag = function (flagType, severity = 'medium') {
   this.platformGuidance.riskFlags.push({
     type: flagType,
     severity,
     detectedAt: new Date()
   });
-  
+
   this.analytics.bypassAttempts += 1;
   this.calculateGuidanceScore();
 };

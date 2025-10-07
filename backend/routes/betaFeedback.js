@@ -1,6 +1,7 @@
 // Backend API endpoint for collecting beta feedback
 const express = require('express');
 const { authenticate } = require('../middleware/auth');
+
 const router = express.Router();
 
 // Beta Feedback Schema (if using MongoDB)
@@ -121,7 +122,6 @@ router.post('/beta-feedback', async (req, res) => {
       message: 'Thank you for your feedback!',
       feedbackId: feedback._id
     });
-
   } catch (error) {
     console.error('Beta feedback error:', error);
     res.status(500).json({
@@ -143,7 +143,7 @@ router.get('/beta-analytics', authenticate, async (req, res) => {
     }
 
     const totalFeedback = await BetaFeedback.countDocuments();
-    
+
     const averageRating = await BetaFeedback.aggregate([
       {
         $group: {
@@ -188,7 +188,6 @@ router.get('/beta-analytics', authenticate, async (req, res) => {
         recentFeedback
       }
     });
-
   } catch (error) {
     console.error('Beta analytics error:', error);
     res.status(500).json({
@@ -215,7 +214,7 @@ router.get('/beta-export', authenticate, async (req, res) => {
     // Convert to CSV format
     const csv = [
       'Date,Rating,Liked,Difficult,Would Use,Suggestions,Email',
-      ...feedback.map(f => [
+      ...feedback.map((f) => [
         f.createdAt.toISOString().split('T')[0],
         f.rating,
         `"${f.liked?.replace(/"/g, '""') || ''}"`,
@@ -229,7 +228,6 @@ router.get('/beta-export', authenticate, async (req, res) => {
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename=beta-feedback.csv');
     res.send(csv);
-
   } catch (error) {
     console.error('Beta export error:', error);
     res.status(500).json({

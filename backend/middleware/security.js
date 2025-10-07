@@ -1,12 +1,12 @@
 // Enhanced Security Middleware for Critical Endpoints
+const rateLimit = require('express-rate-limit');
 const SecurityValidator = require('../security/validator');
 const securityConfig = require('../security/config');
-const rateLimit = require('express-rate-limit');
 
 // SQL Injection Protection
 const sqlInjectionProtection = (req, res, next) => {
   const checkFields = ['query', 'params', 'body'];
-  
+
   for (const field of checkFields) {
     if (req[field]) {
       for (const [key, value] of Object.entries(req[field])) {
@@ -166,9 +166,9 @@ const securityHeaders = (req, res, next) => {
 // CSRF Protection for state-changing operations
 const csrfProtection = (req, res, next) => {
   const methods = ['POST', 'PUT', 'DELETE', 'PATCH'];
-  
+
   if (methods.includes(req.method)) {
-    const origin = req.headers.origin;
+    const { origin } = req.headers;
     const allowedOrigins = [
       process.env.FRONTEND_URL || 'http://localhost:3000',
       'http://localhost:3000',
@@ -188,32 +188,30 @@ const csrfProtection = (req, res, next) => {
 };
 
 // IP Whitelist/Blacklist (for admin endpoints)
-const ipFilter = (whitelist = [], blacklist = []) => {
-  return (req, res, next) => {
-    const clientIP = req.ip || req.connection.remoteAddress;
+const ipFilter = (whitelist = [], blacklist = []) => (req, res, next) => {
+  const clientIP = req.ip || req.connection.remoteAddress;
 
-    // Check blacklist first
-    if (blacklist.length > 0 && blacklist.includes(clientIP)) {
-      console.error(`🚨 Blocked IP attempt: ${clientIP}`);
-      return res.status(403).json({
-        success: false,
-        message: 'Access denied',
-        code: 'IP_BLOCKED'
-      });
-    }
+  // Check blacklist first
+  if (blacklist.length > 0 && blacklist.includes(clientIP)) {
+    console.error(`🚨 Blocked IP attempt: ${clientIP}`);
+    return res.status(403).json({
+      success: false,
+      message: 'Access denied',
+      code: 'IP_BLOCKED'
+    });
+  }
 
-    // Check whitelist if defined
-    if (whitelist.length > 0 && !whitelist.includes(clientIP)) {
-      console.error(`🚨 Non-whitelisted IP attempt: ${clientIP}`);
-      return res.status(403).json({
-        success: false,
-        message: 'Access denied',
-        code: 'IP_NOT_WHITELISTED'
-      });
-    }
+  // Check whitelist if defined
+  if (whitelist.length > 0 && !whitelist.includes(clientIP)) {
+    console.error(`🚨 Non-whitelisted IP attempt: ${clientIP}`);
+    return res.status(403).json({
+      success: false,
+      message: 'Access denied',
+      code: 'IP_NOT_WHITELISTED'
+    });
+  }
 
-    next();
-  };
+  next();
 };
 
 module.exports = {

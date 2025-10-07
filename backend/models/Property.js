@@ -14,7 +14,7 @@ const propertySchema = new mongoose.Schema({
     trim: true,
     maxlength: [2000, 'Description cannot exceed 2000 characters']
   },
-  
+
   // Property Type & Category
   propertyType: {
     type: String,
@@ -32,14 +32,14 @@ const propertySchema = new mongoose.Schema({
       message: 'Invalid category'
     }
   },
-  
+
   // Owner Information
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'Property owner is required']
   },
-  
+
   // Location Details
   address: {
     street: {
@@ -73,7 +73,7 @@ const propertySchema = new mongoose.Schema({
     },
     landmark: String
   },
-  
+
   // Geographic Coordinates
   location: {
     type: {
@@ -86,7 +86,7 @@ const propertySchema = new mongoose.Schema({
       required: [true, 'Property coordinates are required']
     }
   },
-  
+
   // Property Specifications
   specifications: {
     bedrooms: {
@@ -138,7 +138,7 @@ const propertySchema = new mongoose.Schema({
       default: 0
     }
   },
-  
+
   // Rental Information
   rental: {
     monthlyRent: {
@@ -201,7 +201,7 @@ const propertySchema = new mongoose.Schema({
       default: false
     }
   },
-  
+
   // Amenities & Features
   amenities: {
     basic: [{
@@ -244,7 +244,7 @@ const propertySchema = new mongoose.Schema({
       ]
     }]
   },
-  
+
   // Property Rules & Preferences
   rules: {
     smokingAllowed: {
@@ -282,7 +282,7 @@ const propertySchema = new mongoose.Schema({
       }
     }
   },
-  
+
   // Media & Documentation
   images: [{
     url: {
@@ -301,14 +301,14 @@ const propertySchema = new mongoose.Schema({
       default: 'other'
     }
   }],
-  
+
   videos: [{
     url: String,
     publicId: String,
     caption: String,
     duration: Number // in seconds
   }],
-  
+
   documents: [{
     name: String,
     url: String,
@@ -318,7 +318,7 @@ const propertySchema = new mongoose.Schema({
       enum: ['ownership-proof', 'noc', 'floor-plan', 'other']
     }
   }],
-  
+
   // Virtual Tour
   virtualTour: {
     url: String,
@@ -327,20 +327,20 @@ const propertySchema = new mongoose.Schema({
       enum: ['matterport', '360-view', 'custom']
     }
   },
-  
+
   // Availability & Status
   status: {
     type: String,
     enum: ['available', 'rented', 'maintenance', 'sold', 'inactive'],
     default: 'available'
   },
-  
+
   visibility: {
     type: String,
     enum: ['public', 'private', 'draft'],
     default: 'draft'
   },
-  
+
   // Verification & Quality
   verification: {
     status: {
@@ -355,14 +355,14 @@ const propertySchema = new mongoose.Schema({
     verifiedAt: Date,
     rejectionReason: String
   },
-  
+
   qualityScore: {
     type: Number,
     min: 0,
     max: 100,
     default: 0
   },
-  
+
   // Analytics & Performance
   analytics: {
     views: {
@@ -390,7 +390,7 @@ const propertySchema = new mongoose.Schema({
       source: String // 'search', 'direct', 'recommendation'
     }]
   },
-  
+
   // Reviews & Ratings
   reviews: {
     averageRating: {
@@ -411,7 +411,7 @@ const propertySchema = new mongoose.Schema({
       valueForMoney: { type: Number, default: 0 }
     }
   },
-  
+
   // SEO & Marketing
   seo: {
     metaTitle: String,
@@ -423,7 +423,7 @@ const propertySchema = new mongoose.Schema({
       sparse: true
     }
   },
-  
+
   // Featured & Promotion
   featured: {
     isFeatured: {
@@ -437,7 +437,7 @@ const propertySchema = new mongoose.Schema({
       default: 'basic'
     }
   },
-  
+
   // Timestamps
   createdAt: {
     type: Date,
@@ -447,7 +447,7 @@ const propertySchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  
+
   // Soft Delete
   deletedAt: Date,
   isDeleted: {
@@ -476,33 +476,33 @@ propertySchema.index({ createdAt: -1 });
 propertySchema.index({ isDeleted: 1 });
 
 // Compound indexes for common queries
-propertySchema.index({ 
-  'address.city': 1, 
-  propertyType: 1, 
+propertySchema.index({
+  'address.city': 1,
+  propertyType: 1,
   status: 1,
-  'rental.monthlyRent': 1 
+  'rental.monthlyRent': 1
 });
 
-propertySchema.index({ 
-  'address.city': 1, 
+propertySchema.index({
+  'address.city': 1,
   'specifications.bedrooms': 1,
-  'rental.monthlyRent': 1 
+  'rental.monthlyRent': 1
 });
 
 // Virtual for primary image
-propertySchema.virtual('primaryImage').get(function() {
-  const primary = this.images.find(img => img.isPrimary);
+propertySchema.virtual('primaryImage').get(function () {
+  const primary = this.images.find((img) => img.isPrimary);
   return primary || this.images[0] || null;
 });
 
 // Virtual for full address
-propertySchema.virtual('fullAddress').get(function() {
+propertySchema.virtual('fullAddress').get(function () {
   const addr = this.address;
   return `${addr.street}, ${addr.area}, ${addr.city}, ${addr.state} - ${addr.pincode}`;
 });
 
 // Virtual for rent per sqft
-propertySchema.virtual('rentPerSqft').get(function() {
+propertySchema.virtual('rentPerSqft').get(function () {
   if (this.specifications.area.carpet && this.rental.monthlyRent) {
     return Math.round(this.rental.monthlyRent / this.specifications.area.carpet);
   }
@@ -510,14 +510,14 @@ propertySchema.virtual('rentPerSqft').get(function() {
 });
 
 // Virtual for total images count
-propertySchema.virtual('totalImages').get(function() {
+propertySchema.virtual('totalImages').get(function () {
   return this.images.length;
 });
 
 // Pre-save middleware to update timestamps
-propertySchema.pre('save', function(next) {
+propertySchema.pre('save', function (next) {
   this.updatedAt = Date.now();
-  
+
   // Auto-generate slug if not provided
   if (!this.slug && this.title) {
     this.slug = this.title
@@ -527,29 +527,29 @@ propertySchema.pre('save', function(next) {
       .replace(/-+/g, '-')
       .trim('-');
   }
-  
+
   // Calculate quality score
   this.calculateQualityScore();
-  
+
   next();
 });
 
 // Method to calculate quality score
-propertySchema.methods.calculateQualityScore = function() {
+propertySchema.methods.calculateQualityScore = function () {
   let score = 0;
-  
+
   // Basic information completeness (40 points)
   if (this.title && this.title.length >= 10) score += 5;
   if (this.description && this.description.length >= 100) score += 10;
   if (this.images && this.images.length >= 5) score += 15;
   if (this.images && this.images.length >= 10) score += 5;
   if (this.virtualTour && this.virtualTour.url) score += 5;
-  
+
   // Location details (20 points)
   if (this.address && this.address.landmark) score += 5;
   if (this.location && this.location.coordinates && this.location.coordinates.length === 2) score += 10;
   if (this.amenities.convenience && this.amenities.convenience.length >= 3) score += 5;
-  
+
   // Amenities completeness (20 points)
   const totalAmenities = [
     ...this.amenities.basic,
@@ -558,53 +558,53 @@ propertySchema.methods.calculateQualityScore = function() {
     ...this.amenities.recreational,
     ...this.amenities.utilities
   ].length;
-  
+
   if (totalAmenities >= 5) score += 5;
   if (totalAmenities >= 10) score += 5;
   if (totalAmenities >= 15) score += 10;
-  
+
   // Verification and documentation (20 points)
   if (this.verification.status === 'verified') score += 10;
   if (this.documents && this.documents.length >= 2) score += 5;
   if (this.owner && this.populated('owner')) {
-    const owner = this.owner;
+    const { owner } = this;
     if (owner.documentVerified) score += 5;
   }
-  
+
   this.qualityScore = Math.min(score, 100);
 };
 
 // Method to increment view count
-propertySchema.methods.incrementViews = function(userId = null, source = 'direct') {
+propertySchema.methods.incrementViews = function (userId = null, source = 'direct') {
   this.analytics.views += 1;
   this.analytics.lastViewed = new Date();
-  
+
   if (userId) {
     // Avoid duplicate view entries from same user within 24 hours
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const recentView = this.analytics.viewHistory.find(
-      view => view.user && view.user.toString() === userId.toString() && view.viewedAt > oneDayAgo
+      (view) => view.user && view.user.toString() === userId.toString() && view.viewedAt > oneDayAgo
     );
-    
+
     if (!recentView) {
       this.analytics.viewHistory.push({
         user: userId,
         viewedAt: new Date(),
-        source: source
+        source
       });
-      
+
       // Keep only last 100 view history entries
       if (this.analytics.viewHistory.length > 100) {
         this.analytics.viewHistory = this.analytics.viewHistory.slice(-100);
       }
     }
   }
-  
+
   return this.save();
 };
 
 // Static method to find nearby properties
-propertySchema.statics.findNearby = function(longitude, latitude, maxDistance = 5000) {
+propertySchema.statics.findNearby = function (longitude, latitude, maxDistance = 5000) {
   return this.find({
     location: {
       $near: {
@@ -622,23 +622,23 @@ propertySchema.statics.findNearby = function(longitude, latitude, maxDistance = 
 };
 
 // Static method for advanced search
-propertySchema.statics.advancedSearch = function(filters) {
+propertySchema.statics.advancedSearch = function (filters) {
   const query = { isDeleted: false };
-  
+
   // Basic filters
   if (filters.city) query['address.city'] = new RegExp(filters.city, 'i');
   if (filters.area) query['address.area'] = new RegExp(filters.area, 'i');
   if (filters.propertyType) query.propertyType = { $in: filters.propertyType };
   if (filters.category) query.category = filters.category;
   if (filters.status) query.status = filters.status;
-  
+
   // Rent range
   if (filters.minRent || filters.maxRent) {
     query['rental.monthlyRent'] = {};
     if (filters.minRent) query['rental.monthlyRent'].$gte = filters.minRent;
     if (filters.maxRent) query['rental.monthlyRent'].$lte = filters.maxRent;
   }
-  
+
   // Bedrooms
   if (filters.bedrooms) {
     if (Array.isArray(filters.bedrooms)) {
@@ -647,14 +647,14 @@ propertySchema.statics.advancedSearch = function(filters) {
       query['specifications.bedrooms'] = filters.bedrooms;
     }
   }
-  
+
   // Area range
   if (filters.minArea || filters.maxArea) {
     query['specifications.area.carpet'] = {};
     if (filters.minArea) query['specifications.area.carpet'].$gte = filters.minArea;
     if (filters.maxArea) query['specifications.area.carpet'].$lte = filters.maxArea;
   }
-  
+
   // Amenities
   if (filters.amenities && filters.amenities.length > 0) {
     query.$or = [
@@ -665,12 +665,12 @@ propertySchema.statics.advancedSearch = function(filters) {
       { 'amenities.utilities': { $in: filters.amenities } }
     ];
   }
-  
+
   // Furnishing
   if (filters.furnishing) {
     query['amenities.basic'] = { $in: filters.furnishing };
   }
-  
+
   return this.find(query);
 };
 

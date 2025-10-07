@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // @desc    Test property routes
@@ -16,8 +17,8 @@ router.get('/test', (req, res) => {
       'DELETE /api/properties/:id',
       'GET    /api/properties/search',
       'POST   /api/properties/:id/images',
-      'DELETE /api/properties/:id/images/:imageId',
-    ],
+      'DELETE /api/properties/:id/images/:imageId'
+    ]
   });
 });
 
@@ -31,7 +32,8 @@ const { authenticate, optionalAuth } = require('../middleware/auth');
 router.get('/', optionalAuth, propertyController.getProperties);
 router.get('/featured', propertyController.getFeaturedProperties);
 router.get('/search', propertyController.searchProperties);
-router.get('/nearby', 
+router.get(
+  '/nearby',
   [
     query('longitude').isFloat().withMessage('Valid longitude is required'),
     query('latitude').isFloat().withMessage('Valid latitude is required')

@@ -8,7 +8,7 @@ const requiredEnvVars = {
     description: 'MongoDB connection string',
     secure: true
   },
-  
+
   // Authentication & Security
   JWT_SECRET: {
     required: true,
@@ -34,7 +34,7 @@ const requiredEnvVars = {
     secure: true,
     minLength: 64
   },
-  
+
   // Email Configuration
   EMAIL_USER: {
     required: true,
@@ -51,7 +51,7 @@ const requiredEnvVars = {
     description: 'From email address',
     secure: false
   },
-  
+
   // Payment Gateway
   STRIPE_SECRET_KEY: {
     required: true,
@@ -63,7 +63,7 @@ const requiredEnvVars = {
     description: 'Stripe webhook secret',
     secure: true
   },
-  
+
   // File Storage
   CLOUDINARY_CLOUD_NAME: {
     required: false,
@@ -80,7 +80,7 @@ const requiredEnvVars = {
     description: 'Cloudinary API secret',
     secure: true
   },
-  
+
   // Application
   NODE_ENV: {
     required: true,
@@ -99,7 +99,7 @@ const requiredEnvVars = {
     description: 'Frontend application URL',
     secure: false
   },
-  
+
   // Security Configuration
   BCRYPT_ROUNDS: {
     required: false,
@@ -169,20 +169,20 @@ class EnvironmentValidator {
           const insecurePatterns = [
             /^(test|example|demo|sample|default)$/i,
             /^(123|password|secret|key)$/i,
-            /^[a-zA-Z]{1,10}$/,  // Too simple
-            /^[0-9]{1,10}$/      // Only numbers
+            /^[a-zA-Z]{1,10}$/, // Too simple
+            /^[0-9]{1,10}$/ // Only numbers
           ];
 
-          if (insecurePatterns.some(pattern => pattern.test(value))) {
+          if (insecurePatterns.some((pattern) => pattern.test(value))) {
             results.warnings.push(`⚠️  ${key} appears to use an insecure/default value`);
             results.insecure.push(key);
           }
         }
 
         // Display status
-        const status = config.secure ? 
-          `✓ ${key}: ${value.substring(0, 4)}${'*'.repeat(Math.max(0, value.length - 4))}` :
-          `✓ ${key}: ${value}`;
+        const status = config.secure
+          ? `✓ ${key}: ${value.substring(0, 4)}${'*'.repeat(Math.max(0, value.length - 4))}`
+          : `✓ ${key}: ${value}`;
         console.log(status);
       } else if (!config.required) {
         console.log(`- ${key}: (optional, not set)`);
@@ -219,12 +219,12 @@ class EnvironmentValidator {
 
       // Check SSL/HTTPS requirements
       if (process.env.FRONTEND_URL && !process.env.FRONTEND_URL.startsWith('https://')) {
-        results.warnings.push(`⚠️  PRODUCTION: FRONTEND_URL should use HTTPS`);
+        results.warnings.push('⚠️  PRODUCTION: FRONTEND_URL should use HTTPS');
       }
 
       // Check secure cookie settings
       if (!process.env.SECURE_COOKIES || process.env.SECURE_COOKIES !== 'true') {
-        results.warnings.push(`⚠️  PRODUCTION: Consider setting SECURE_COOKIES=true`);
+        results.warnings.push('⚠️  PRODUCTION: Consider setting SECURE_COOKIES=true');
       }
     }
   }
@@ -241,20 +241,20 @@ class EnvironmentValidator {
 
     if (results.errors.length > 0) {
       console.log('🚨 ERRORS (must fix):');
-      results.errors.forEach(error => console.log(`  ${error}`));
+      results.errors.forEach((error) => console.log(`  ${error}`));
       console.log('');
     }
 
     if (results.warnings.length > 0) {
       console.log('⚠️  WARNINGS (should fix):');
-      results.warnings.forEach(warning => console.log(`  ${warning}`));
+      results.warnings.forEach((warning) => console.log(`  ${warning}`));
       console.log('');
     }
 
     if (results.insecure.length > 0) {
       console.log('🔓 INSECURE VALUES DETECTED:');
       console.log('  These environment variables may be using default or insecure values:');
-      results.insecure.forEach(key => {
+      results.insecure.forEach((key) => {
         const config = requiredEnvVars[key];
         console.log(`  - ${key}: ${config.description}`);
       });
@@ -263,7 +263,7 @@ class EnvironmentValidator {
 
     if (results.missing.length > 0) {
       console.log('📋 MISSING REQUIRED VARIABLES:');
-      results.missing.forEach(key => {
+      results.missing.forEach((key) => {
         const config = requiredEnvVars[key];
         console.log(`  - ${key}: ${config.description}`);
       });
@@ -282,7 +282,7 @@ class EnvironmentValidator {
 
   static generateSecrets() {
     const crypto = require('crypto');
-    
+
     console.log('\n🔑 GENERATED SECURE SECRETS\n');
     console.log('Copy these to your .env file:\n');
     console.log('# Authentication & Security');

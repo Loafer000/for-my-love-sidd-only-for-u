@@ -1,10 +1,10 @@
 // Upload Controller - Production Cloudinary integration
 
-const { 
-  uploadToCloudinary, 
-  deleteFromCloudinary, 
+const {
+  uploadToCloudinary,
+  deleteFromCloudinary,
   generateImageURL,
-  uploadMultipleToCloudinary 
+  uploadMultipleToCloudinary
 } = require('../utils/cloudinary');
 
 // Upload single image
@@ -19,7 +19,7 @@ const uploadSingleImage = async (req, res) => {
 
     // Upload to Cloudinary
     const uploadResult = await uploadToCloudinary(
-      req.file.buffer, 
+      req.file.buffer,
       req.body.folder || 'properties'
     );
 
@@ -57,9 +57,7 @@ const uploadMultipleImages = async (req, res) => {
     }
 
     // Upload multiple files to Cloudinary
-    const uploadPromises = req.files.map(file => 
-      uploadToCloudinary(file.buffer, req.body.folder || 'properties')
-    );
+    const uploadPromises = req.files.map((file) => uploadToCloudinary(file.buffer, req.body.folder || 'properties'));
 
     const uploadResults = await Promise.all(uploadPromises);
 
@@ -72,7 +70,7 @@ const uploadMultipleImages = async (req, res) => {
       created_at: new Date()
     }));
 
-    const uploadedImages = mockUploads.map(upload => ({
+    const uploadedImages = mockUploads.map((upload) => ({
       url: upload.secure_url,
       publicId: upload.public_id
     }));
@@ -102,7 +100,7 @@ const deleteImage = async (req, res) => {
 
     // Delete from Cloudinary
     const result = await deleteFromCloudinary(publicId);
-    
+
     if (result.result !== 'ok') {
       return res.status(400).json({
         success: false,

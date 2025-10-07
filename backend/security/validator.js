@@ -16,18 +16,18 @@ class SecurityValidator {
     input = input.replace(/on\w+\s*=/gi, '');
 
     switch (type) {
-      case 'email':
-        return validator.isEmail(input) ? validator.normalizeEmail(input) : null;
-      case 'password':
-        // Password must be at least 8 chars, contain uppercase, lowercase, number, special char
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return passwordRegex.test(input) ? input : null;
-      case 'phone':
-        return validator.isMobilePhone(input) ? input : null;
-      case 'alphanumeric':
-        return validator.isAlphanumeric(input) ? input : null;
-      default:
-        return validator.escape(input);
+    case 'email':
+      return validator.isEmail(input) ? validator.normalizeEmail(input) : null;
+    case 'password':
+      // Password must be at least 8 chars, contain uppercase, lowercase, number, special char
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return passwordRegex.test(input) ? input : null;
+    case 'phone':
+      return validator.isMobilePhone(input) ? input : null;
+    case 'alphanumeric':
+      return validator.isAlphanumeric(input) ? input : null;
+    default:
+      return validator.escape(input);
     }
   }
 
@@ -53,7 +53,7 @@ class SecurityValidator {
 
     return {
       isValid: errors.length === 0,
-      errors: errors,
+      errors,
       sanitized: {
         title: this.sanitizeInput(propertyData.title),
         description: this.sanitizeInput(propertyData.description),
@@ -74,7 +74,7 @@ class SecurityValidator {
         retryAfter: Math.ceil(windowMs / 1000)
       },
       standardHeaders: true,
-      legacyHeaders: false,
+      legacyHeaders: false
     });
   }
 
@@ -83,16 +83,16 @@ class SecurityValidator {
     return helmet({
       contentSecurityPolicy: {
         directives: {
-          defaultSrc: ["'self'"],
-          styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-          fontSrc: ["'self'", "https://fonts.gstatic.com"],
-          imgSrc: ["'self'", "data:", "https:"],
-          scriptSrc: ["'self'"],
-          connectSrc: ["'self'"],
-          frameSrc: ["'none'"],
-          objectSrc: ["'none'"],
-          upgradeInsecureRequests: [],
-        },
+          defaultSrc: ['\'self\''],
+          styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
+          fontSrc: ['\'self\'', 'https://fonts.gstatic.com'],
+          imgSrc: ['\'self\'', 'data:', 'https:'],
+          scriptSrc: ['\'self\''],
+          connectSrc: ['\'self\''],
+          frameSrc: ['\'none\''],
+          objectSrc: ['\'none\''],
+          upgradeInsecureRequests: []
+        }
       },
       crossOriginEmbedderPolicy: false
     });
@@ -106,13 +106,13 @@ class SecurityValidator {
       /(\b(xp_|sp_|cmd|shell|exec)\b)/i
     ];
 
-    return sqlPatterns.some(pattern => pattern.test(input));
+    return sqlPatterns.some((pattern) => pattern.test(input));
   }
 
   // Validate JWT token format (without verifying signature - that's done in auth middleware)
   static validateJWTFormat(token) {
     if (!token) return false;
-    
+
     const parts = token.split('.');
     if (parts.length !== 3) return false;
 

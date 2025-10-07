@@ -12,7 +12,7 @@ const paymentSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  
+
   // References
   booking: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,7 +29,7 @@ const paymentSchema = new mongoose.Schema({
     ref: 'Property',
     required: [true, 'Property reference is required']
   },
-  
+
   // Payment Details
   amount: {
     original: {
@@ -48,57 +48,57 @@ const paymentSchema = new mongoose.Schema({
       enum: ['INR', 'USD', 'EUR']
     }
   },
-  
+
   // Payment Type
   type: {
     type: String,
     required: [true, 'Payment type is required'],
     enum: {
       values: [
-        'booking-amount',      // Initial booking payment
-        'security-deposit',    // Security deposit
-        'monthly-rent',        // Regular monthly rent
-        'maintenance',         // Maintenance charges
-        'brokerage',          // Broker commission
-        'penalty',            // Late payment penalty
-        'utility-bills',      // Electricity, water, etc.
-        'refund',             // Refund payment
-        'advance-rent',       // Advance rent payment
-        'token-amount',       // Token money
-        'registration-fee',   // Registration charges
-        'other'              // Other charges
+        'booking-amount', // Initial booking payment
+        'security-deposit', // Security deposit
+        'monthly-rent', // Regular monthly rent
+        'maintenance', // Maintenance charges
+        'brokerage', // Broker commission
+        'penalty', // Late payment penalty
+        'utility-bills', // Electricity, water, etc.
+        'refund', // Refund payment
+        'advance-rent', // Advance rent payment
+        'token-amount', // Token money
+        'registration-fee', // Registration charges
+        'other' // Other charges
       ],
       message: 'Invalid payment type'
     }
   },
-  
+
   category: {
     type: String,
     enum: ['rent', 'deposit', 'fee', 'refund', 'penalty'],
     required: true
   },
-  
+
   // Payment Status
   status: {
     type: String,
     enum: {
       values: [
-        'initiated',      // Payment process started
-        'pending',        // Awaiting payment
-        'processing',     // Payment in progress
-        'success',        // Payment successful
-        'failed',         // Payment failed
-        'cancelled',      // Payment cancelled
-        'refunded',       // Payment refunded
+        'initiated', // Payment process started
+        'pending', // Awaiting payment
+        'processing', // Payment in progress
+        'success', // Payment successful
+        'failed', // Payment failed
+        'cancelled', // Payment cancelled
+        'refunded', // Payment refunded
         'partially-refunded', // Partial refund
-        'disputed',       // Payment disputed
-        'expired'         // Payment link expired
+        'disputed', // Payment disputed
+        'expired' // Payment link expired
       ],
       message: 'Invalid payment status'
     },
     default: 'initiated'
   },
-  
+
   statusHistory: [{
     status: String,
     timestamp: {
@@ -112,7 +112,7 @@ const paymentSchema = new mongoose.Schema({
       ref: 'User'
     }
   }],
-  
+
   // Payment Gateway Details
   gateway: {
     provider: {
@@ -120,11 +120,11 @@ const paymentSchema = new mongoose.Schema({
       enum: ['razorpay', 'paytm', 'phonepe', 'gpay', 'payu', 'cashfree', 'stripe', 'manual'],
       required: true
     },
-    transactionId: String,        // Gateway transaction ID
-    paymentId: String,           // Gateway payment ID
-    signature: String,           // Payment signature for verification
-    receipt: String,             // Receipt number
-    
+    transactionId: String, // Gateway transaction ID
+    paymentId: String, // Gateway payment ID
+    signature: String, // Payment signature for verification
+    receipt: String, // Receipt number
+
     // Gateway specific data
     razorpay: {
       paymentId: String,
@@ -132,21 +132,21 @@ const paymentSchema = new mongoose.Schema({
       signature: String,
       paymentLinkId: String
     },
-    
+
     paytm: {
       txnId: String,
       orderId: String,
       txnAmount: String,
       checksum: String
     },
-    
+
     stripe: {
       paymentIntentId: String,
       chargeId: String,
       customerId: String
     }
   },
-  
+
   // Payment Method
   method: {
     type: {
@@ -163,26 +163,26 @@ const paymentSchema = new mongoose.Schema({
         type: String,
         issuer: String
       },
-      
+
       // Bank details
       bank: {
         name: String,
         ifsc: String,
         accountType: String
       },
-      
+
       // UPI details
       upi: {
         vpa: String,
         app: String
       },
-      
+
       // Wallet details
       wallet: {
         provider: String,
         walletId: String
       },
-      
+
       // Cash/Cheque details
       offline: {
         referenceNumber: String,
@@ -195,7 +195,7 @@ const paymentSchema = new mongoose.Schema({
       }
     }
   },
-  
+
   // Timing Information
   timing: {
     initiatedAt: {
@@ -207,19 +207,19 @@ const paymentSchema = new mongoose.Schema({
     refundedAt: Date,
     dueDate: Date,
     expiresAt: Date,
-    
+
     // Processing times
     processingTime: Number, // milliseconds
     gatewayResponseTime: Number // milliseconds
   },
-  
+
   // Fees & Charges Breakdown
   breakdown: {
     baseAmount: {
       type: Number,
       required: true
     },
-    
+
     taxes: [{
       name: {
         type: String,
@@ -228,13 +228,13 @@ const paymentSchema = new mongoose.Schema({
       rate: Number,
       amount: Number
     }],
-    
+
     fees: [{
       name: String,
       amount: Number,
       description: String
     }],
-    
+
     discounts: [{
       name: String,
       amount: Number,
@@ -242,12 +242,12 @@ const paymentSchema = new mongoose.Schema({
       code: String,
       description: String
     }],
-    
+
     gatewayCharges: {
       type: Number,
       default: 0
     },
-    
+
     convenience: {
       fee: {
         type: Number,
@@ -259,7 +259,7 @@ const paymentSchema = new mongoose.Schema({
       }
     }
   },
-  
+
   // Refund Information
   refund: {
     eligible: {
@@ -287,7 +287,7 @@ const paymentSchema = new mongoose.Schema({
       default: 7
     }
   },
-  
+
   // Receipt & Documentation
   receipt: {
     number: {
@@ -303,7 +303,7 @@ const paymentSchema = new mongoose.Schema({
     },
     sentAt: Date
   },
-  
+
   // Verification & Security
   verification: {
     signature: String,
@@ -319,7 +319,7 @@ const paymentSchema = new mongoose.Schema({
     ipAddress: String,
     userAgent: String
   },
-  
+
   // Communication & Notifications
   notifications: [{
     type: {
@@ -334,7 +334,7 @@ const paymentSchema = new mongoose.Schema({
     template: String,
     recipient: String
   }],
-  
+
   // Failure Information
   failure: {
     code: String,
@@ -354,7 +354,7 @@ const paymentSchema = new mongoose.Schema({
     },
     lastRetryAt: Date
   },
-  
+
   // Recurring Payment Information (for rent)
   recurring: {
     isRecurring: {
@@ -376,7 +376,7 @@ const paymentSchema = new mongoose.Schema({
       bankAccount: String
     }
   },
-  
+
   // Analytics & Tracking
   analytics: {
     source: {
@@ -392,7 +392,7 @@ const paymentSchema = new mongoose.Schema({
       ip: String
     }
   },
-  
+
   // Notes & Comments
   notes: [{
     text: String,
@@ -410,7 +410,7 @@ const paymentSchema = new mongoose.Schema({
       default: 'user'
     }
   }],
-  
+
   // Compliance & Audit
   compliance: {
     gstRequired: {
@@ -434,7 +434,7 @@ const paymentSchema = new mongoose.Schema({
     },
     invoiceNumber: String
   },
-  
+
   // Timestamps
   createdAt: {
     type: Date,
@@ -470,156 +470,156 @@ paymentSchema.index({ status: 1, 'timing.dueDate': 1 });
 paymentSchema.index({ 'gateway.provider': 1, status: 1 });
 
 // Virtual for total amount after taxes and fees
-paymentSchema.virtual('totalAmount').get(function() {
+paymentSchema.virtual('totalAmount').get(function () {
   return this.amount.final || this.amount.original;
 });
 
 // Virtual for tax amount
-paymentSchema.virtual('totalTax').get(function() {
+paymentSchema.virtual('totalTax').get(function () {
   return this.breakdown.taxes.reduce((total, tax) => total + tax.amount, 0);
 });
 
 // Virtual for discount amount
-paymentSchema.virtual('totalDiscount').get(function() {
+paymentSchema.virtual('totalDiscount').get(function () {
   return this.breakdown.discounts.reduce((total, discount) => total + discount.amount, 0);
 });
 
 // Virtual for payment age in days
-paymentSchema.virtual('ageInDays').get(function() {
+paymentSchema.virtual('ageInDays').get(function () {
   const now = new Date();
   const created = new Date(this.createdAt);
   return Math.floor((now - created) / (1000 * 60 * 60 * 24));
 });
 
 // Virtual for is overdue
-paymentSchema.virtual('isOverdue').get(function() {
+paymentSchema.virtual('isOverdue').get(function () {
   if (!this.timing.dueDate || this.status === 'success') return false;
   return new Date() > this.timing.dueDate;
 });
 
 // Pre-save middleware
-paymentSchema.pre('save', function(next) {
+paymentSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
-  
+
   // Generate payment ID if not exists
   if (!this.paymentId) {
     this.generatePaymentId();
   }
-  
+
   // Generate order ID if not exists
   if (!this.orderId) {
     this.generateOrderId();
   }
-  
+
   // Generate receipt number if payment is successful and receipt doesn't exist
   if (this.status === 'success' && !this.receipt.number) {
     this.generateReceiptNumber();
   }
-  
+
   next();
 });
 
 // Method to generate unique payment ID
-paymentSchema.methods.generatePaymentId = function() {
+paymentSchema.methods.generatePaymentId = function () {
   const timestamp = Date.now().toString();
   const random = Math.random().toString(36).substr(2, 6).toUpperCase();
   this.paymentId = `PAY_${timestamp}_${random}`;
 };
 
 // Method to generate unique order ID
-paymentSchema.methods.generateOrderId = function() {
+paymentSchema.methods.generateOrderId = function () {
   const date = new Date();
   const year = date.getFullYear().toString().substr(-2);
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
   const random = Math.random().toString(36).substr(2, 6).toUpperCase();
-  
+
   this.orderId = `ORD_${year}${month}${day}_${random}`;
 };
 
 // Method to generate receipt number
-paymentSchema.methods.generateReceiptNumber = function() {
+paymentSchema.methods.generateReceiptNumber = function () {
   const date = new Date();
   const year = date.getFullYear().toString();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const random = Math.random().toString(36).substr(2, 4).toUpperCase();
-  
+
   this.receipt.number = `RCP_${year}${month}_${random}`;
   this.receipt.generatedAt = new Date();
 };
 
 // Method to update payment status
-paymentSchema.methods.updateStatus = function(newStatus, reason = '', notes = '', updatedBy = null) {
+paymentSchema.methods.updateStatus = function (newStatus, reason = '', notes = '', updatedBy = null) {
   const oldStatus = this.status;
   this.status = newStatus;
-  
+
   // Add to status history
   this.statusHistory.push({
     status: newStatus,
     timestamp: new Date(),
-    reason: reason,
-    notes: notes,
-    updatedBy: updatedBy
+    reason,
+    notes,
+    updatedBy
   });
-  
+
   // Update timing based on status
   const now = new Date();
   switch (newStatus) {
-    case 'success':
-      this.timing.paidAt = now;
-      if (!this.receipt.number) {
-        this.generateReceiptNumber();
-      }
-      break;
-    case 'failed':
-      this.timing.failedAt = now;
-      break;
-    case 'refunded':
-    case 'partially-refunded':
-      this.timing.refundedAt = now;
-      this.refund.processed = true;
-      this.refund.processedAt = now;
-      break;
+  case 'success':
+    this.timing.paidAt = now;
+    if (!this.receipt.number) {
+      this.generateReceiptNumber();
+    }
+    break;
+  case 'failed':
+    this.timing.failedAt = now;
+    break;
+  case 'refunded':
+  case 'partially-refunded':
+    this.timing.refundedAt = now;
+    this.refund.processed = true;
+    this.refund.processedAt = now;
+    break;
   }
-  
+
   return this.save();
 };
 
 // Method to add note
-paymentSchema.methods.addNote = function(text, addedBy, type = 'user') {
+paymentSchema.methods.addNote = function (text, addedBy, type = 'user') {
   this.notes.push({
-    text: text,
-    addedBy: addedBy,
+    text,
+    addedBy,
     addedAt: new Date(),
-    type: type
+    type
   });
-  
+
   return this.save();
 };
 
 // Method to calculate refund amount
-paymentSchema.methods.calculateRefund = function(percentage = 100) {
+paymentSchema.methods.calculateRefund = function (percentage = 100) {
   const refundableAmount = this.amount.final - this.breakdown.gatewayCharges;
   return Math.round(refundableAmount * (percentage / 100));
 };
 
 // Method to initiate refund
-paymentSchema.methods.initiateRefund = function(amount = null, reason = '') {
+paymentSchema.methods.initiateRefund = function (amount = null, reason = '') {
   if (!this.refund.eligible) {
     throw new Error('Payment is not eligible for refund');
   }
-  
+
   const refundAmount = amount || this.calculateRefund();
-  
+
   this.refund.amount = refundAmount;
   this.refund.reason = reason;
   this.refund.status = 'pending';
-  
+
   return this.save();
 };
 
 // Static method to get payment statistics
-paymentSchema.statics.getStatistics = function(filters = {}) {
+paymentSchema.statics.getStatistics = function (filters = {}) {
   const pipeline = [
     { $match: filters },
     {
@@ -631,18 +631,18 @@ paymentSchema.statics.getStatistics = function(filters = {}) {
       }
     }
   ];
-  
+
   return this.aggregate(pipeline);
 };
 
 // Static method to get revenue by period
-paymentSchema.statics.getRevenueByPeriod = function(startDate, endDate, groupBy = 'day') {
+paymentSchema.statics.getRevenueByPeriod = function (startDate, endDate, groupBy = 'day') {
   const groupFormat = {
     day: { $dateToString: { format: '%Y-%m-%d', date: '$timing.paidAt' } },
     month: { $dateToString: { format: '%Y-%m', date: '$timing.paidAt' } },
     year: { $dateToString: { format: '%Y', date: '$timing.paidAt' } }
   };
-  
+
   return this.aggregate([
     {
       $match: {
@@ -658,12 +658,12 @@ paymentSchema.statics.getRevenueByPeriod = function(startDate, endDate, groupBy 
         averageAmount: { $avg: '$amount.final' }
       }
     },
-    { $sort: { '_id': 1 } }
+    { $sort: { _id: 1 } }
   ]);
 };
 
 // Static method to find overdue payments
-paymentSchema.statics.findOverdue = function() {
+paymentSchema.statics.findOverdue = function () {
   return this.find({
     status: { $in: ['pending', 'initiated'] },
     'timing.dueDate': { $lt: new Date() }

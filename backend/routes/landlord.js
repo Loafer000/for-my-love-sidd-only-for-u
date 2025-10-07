@@ -1,8 +1,9 @@
 // Landlord Management Routes
 const express = require('express');
+
 const router = express.Router();
-const { authenticate } = require('../middleware/auth');
 const { query, body, validationResult } = require('express-validator');
+const { authenticate } = require('../middleware/auth');
 
 // Validation middleware
 const handleValidationErrors = (req, res, next) => {
@@ -18,13 +19,14 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Get portfolio overview
-router.get('/portfolio',
+router.get(
+  '/portfolio',
   authenticate,
   async (req, res) => {
     try {
       // This would fetch from your database based on authenticated user
       const userId = req.user.id;
-      
+
       // For now, returning empty structure that matches expected format
       const portfolioData = {
         totalProperties: 0,
@@ -51,12 +53,13 @@ router.get('/portfolio',
 );
 
 // Get tenants
-router.get('/tenants',
+router.get(
+  '/tenants',
   authenticate,
   async (req, res) => {
     try {
       const userId = req.user.id;
-      
+
       const tenantsData = [];
 
       res.json({
@@ -75,7 +78,8 @@ router.get('/tenants',
 );
 
 // Get financials
-router.get('/financials',
+router.get(
+  '/financials',
   authenticate,
   [
     query('timeRange')
@@ -88,7 +92,7 @@ router.get('/financials',
     try {
       const userId = req.user.id;
       const { timeRange = '30d' } = req.query;
-      
+
       const financialsData = {
         monthlyIncome: 0,
         monthlyExpenses: 0,
@@ -115,12 +119,13 @@ router.get('/financials',
 );
 
 // Get compliance status
-router.get('/compliance',
+router.get(
+  '/compliance',
   authenticate,
   async (req, res) => {
     try {
       const userId = req.user.id;
-      
+
       const complianceData = [];
 
       res.json({
@@ -139,7 +144,8 @@ router.get('/compliance',
 );
 
 // Add property
-router.post('/properties',
+router.post(
+  '/properties',
   authenticate,
   [
     body('name').notEmpty().withMessage('Property name is required'),
@@ -151,7 +157,7 @@ router.post('/properties',
     try {
       const userId = req.user.id;
       const propertyData = req.body;
-      
+
       // This would save to your database
       const newProperty = {
         id: Date.now(), // Temporary ID generation
@@ -177,14 +183,15 @@ router.post('/properties',
 );
 
 // Update property
-router.put('/properties/:id',
+router.put(
+  '/properties/:id',
   authenticate,
   async (req, res) => {
     try {
       const userId = req.user.id;
       const propertyId = req.params.id;
       const updateData = req.body;
-      
+
       // This would update in your database
       res.json({
         success: true,
@@ -203,7 +210,8 @@ router.put('/properties/:id',
 );
 
 // Add tenant
-router.post('/tenants',
+router.post(
+  '/tenants',
   authenticate,
   [
     body('name').notEmpty().withMessage('Tenant name is required'),
@@ -215,7 +223,7 @@ router.post('/tenants',
     try {
       const userId = req.user.id;
       const tenantData = req.body;
-      
+
       // This would save to your database
       const newTenant = {
         id: Date.now(), // Temporary ID generation

@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // @desc    Test upload routes
@@ -11,14 +12,14 @@ router.get('/test', (req, res) => {
     availableRoutes: [
       'POST   /api/upload/image',
       'POST   /api/upload/documents',
-      'DELETE /api/upload/:fileId',
-    ],
+      'DELETE /api/upload/:fileId'
+    ]
   });
 });
 
+const multer = require('multer');
 const uploadController = require('../controllers/uploadController');
 const { authenticate } = require('../middleware/auth');
-const multer = require('multer');
 
 // Multer configuration
 const upload = multer({

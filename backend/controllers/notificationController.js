@@ -74,7 +74,9 @@ const sendSMSNotification = async (req, res) => {
 // Send email notification
 const sendEmailNotification = async (req, res) => {
   try {
-    const { to, subject, htmlContent, textContent, type = 'general' } = req.body;
+    const {
+      to, subject, htmlContent, textContent, type = 'general'
+    } = req.body;
 
     // TODO: Implement Nodemailer email
     /*
@@ -127,7 +129,7 @@ const sendEmailNotification = async (req, res) => {
 const getNotificationHistory = async (req, res) => {
   try {
     const { page = 1, limit = 10, type } = req.query;
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     // TODO: Implement from database
     const mockNotifications = [
@@ -159,7 +161,7 @@ const getNotificationHistory = async (req, res) => {
       data: {
         notifications: mockNotifications,
         pagination: {
-          currentPage: parseInt(page),
+          currentPage: parseInt(page, 10),
           totalPages: 1,
           totalNotifications: mockNotifications.length
         }
@@ -178,7 +180,9 @@ const getNotificationHistory = async (req, res) => {
 // Send booking confirmation notifications
 const sendBookingConfirmation = async (bookingData) => {
   try {
-    const { tenant, landlord, property, booking } = bookingData;
+    const {
+      tenant, landlord, property, booking
+    } = bookingData;
 
     // Email to tenant
     const tenantEmailContent = `

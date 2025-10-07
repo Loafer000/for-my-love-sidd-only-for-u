@@ -1,17 +1,20 @@
 // Review Routes - Smart Review & Rating System
 
 const express = require('express');
+
 const router = express.Router();
-const { 
-  createReview, 
-  getPropertyReviews, 
+const {
+  body, param, query, validationResult
+} = require('express-validator');
+const {
+  createReview,
+  getPropertyReviews,
   getUserReviews,
   updateReview,
   markHelpful,
   reportReview
 } = require('../controllers/reviewController');
 const { authenticate } = require('../middleware/auth');
-const { body, param, query, validationResult } = require('express-validator');
 
 // Validation middleware
 const handleValidationErrors = (req, res, next) => {
@@ -27,7 +30,8 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Create a new review
-router.post('/create',
+router.post(
+  '/create',
   authenticate,
   [
     body('bookingId')
@@ -74,7 +78,8 @@ router.post('/create',
 );
 
 // Get reviews for a property
-router.get('/property/:propertyId',
+router.get(
+  '/property/:propertyId',
   [
     param('propertyId')
       .isMongoId()
@@ -109,7 +114,8 @@ router.get('/property/:propertyId',
 );
 
 // Get reviews for a user (as reviewer or reviewee)
-router.get('/user/:userId',
+router.get(
+  '/user/:userId',
   [
     param('userId')
       .isMongoId()
@@ -136,7 +142,8 @@ router.get('/user/:userId',
 );
 
 // Update a review (within 48 hours)
-router.put('/:reviewId',
+router.put(
+  '/:reviewId',
   authenticate,
   [
     param('reviewId')
@@ -164,7 +171,8 @@ router.put('/:reviewId',
 );
 
 // Mark review as helpful/unhelpful
-router.post('/:reviewId/helpful',
+router.post(
+  '/:reviewId/helpful',
   authenticate,
   [
     param('reviewId')
@@ -176,7 +184,8 @@ router.post('/:reviewId/helpful',
 );
 
 // Report inappropriate review
-router.post('/:reviewId/report',
+router.post(
+  '/:reviewId/report',
   authenticate,
   [
     param('reviewId')
@@ -221,7 +230,7 @@ router.get('/test', authenticate, (req, res) => {
 // DEPRECATED: Get mock property reviews
 router.get('/mock/property/:propertyId', (req, res) => {
   const { propertyId } = req.params;
-  
+
   res.json({
     success: true,
     message: 'Mock property reviews',
@@ -371,7 +380,7 @@ router.get('/mock/property/:propertyId', (req, res) => {
 // Get mock user reviews
 router.get('/mock/user/:userId', (req, res) => {
   const { userId } = req.params;
-  
+
   res.json({
     success: true,
     message: 'Mock user reviews',

@@ -1,9 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
 const { body } = require('express-validator');
 const authController = require('../controllers/authController');
 const { validateRequest } = require('../middleware/validation');
 const { rateLimiter } = require('../middleware/rateLimiter');
+const { authenticate } = require('../middleware/auth');
 
 // @desc    Test auth routes
 // @route   GET /api/auth/test
@@ -15,14 +17,15 @@ router.get('/test', (req, res) => {
     availableRoutes: [
       'POST /api/auth/register',
       'POST /api/auth/login',
+      'GET /api/auth/me',
       'POST /api/auth/send-otp',
       'POST /api/auth/verify-otp',
       'POST /api/auth/refresh-token',
       'POST /api/auth/logout',
       'POST /api/auth/forgot-password',
       'POST /api/auth/reset-password',
-      'POST /api/auth/verify-email',
-    ],
+      'POST /api/auth/verify-email'
+    ]
   });
 });
 
@@ -65,43 +68,49 @@ const loginValidation = [
 ];
 
 // Implemented authentication routes
-router.post('/register', 
-  registerValidation, 
-  validateRequest, 
+router.post(
+  '/register',
+  registerValidation,
+  validateRequest,
   authController.register
 );
 
-router.post('/login', 
-  loginValidation, 
-  validateRequest, 
+router.post(
+  '/login',
+  loginValidation,
+  validateRequest,
   authController.login
 );
 
-router.post('/send-otp', 
-  body('phone').isMobilePhone('en-IN').withMessage('Please provide a valid phone number'), 
-  validateRequest, 
+router.post(
+  '/send-otp',
+  body('phone').isMobilePhone('en-IN').withMessage('Please provide a valid phone number'),
+  validateRequest,
   authController.sendOTP
 );
 
-router.post('/verify-otp', 
+router.post(
+  '/verify-otp',
   [
     body('phone').isMobilePhone('en-IN').withMessage('Please provide a valid phone number'),
     body('otp').isLength({ min: 6, max: 6 }).isNumeric().withMessage('OTP must be a 6-digit number')
   ],
-  validateRequest, 
+  validateRequest,
   authController.verifyOTP
 );
 
 router.post('/refresh-token', authController.refreshToken);
 router.post('/logout', authController.logout);
 
-router.post('/forgot-password', 
+router.post(
+  '/forgot-password',
   body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email'),
-  validateRequest, 
+  validateRequest,
   authController.forgotPassword
 );
 
-router.post('/reset-password', 
+router.post(
+  '/reset-password',
   [
     body('token').notEmpty().withMessage('Reset token is required'),
     body('newPassword')
@@ -110,16 +119,20 @@ router.post('/reset-password',
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
       .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number')
   ],
-  validateRequest, 
+  validateRequest,
   authController.resetPassword
 );
 
-router.post('/verify-email', 
+router.post(
+  '/verify-email',
   body('token').notEmpty().withMessage('Verification token is required'),
-  validateRequest, 
+  validateRequest,
   authController.verifyEmail
 );
-// router.post('/reset-password', resetPassword);
-// router.get('/me', protect, getMe);
+
+// @desc    Get current user profile
+// @route   GET /api/auth/me
+// @access  Private
+router.get('/me', authenticate, authController.getMe);
 
 module.exports = router;

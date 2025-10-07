@@ -26,7 +26,7 @@ describe('API Integration Tests', () => {
 
       expect(registerResponse.body.success).toBe(true);
       expect(registerResponse.body.token).toBeDefined();
-      
+
       userId = registerResponse.body.user.id;
       authToken = registerResponse.body.token;
 
@@ -154,7 +154,7 @@ describe('API Integration Tests', () => {
     test('should complete booking flow with payment', async () => {
       // Create booking inquiry
       const inquiryData = {
-        propertyId: propertyId,
+        propertyId,
         message: 'I am interested in this property',
         checkIn: '2024-11-01',
         checkOut: '2025-10-31'
@@ -171,7 +171,7 @@ describe('API Integration Tests', () => {
 
       // Create payment order
       const paymentData = {
-        bookingId: bookingId,
+        bookingId,
         amount: 60000
       };
 
@@ -278,14 +278,12 @@ describe('API Integration Tests', () => {
 
     test('should handle rate limiting', async () => {
       // Make multiple rapid requests to trigger rate limiting
-      const requests = Array(20).fill().map(() => 
-        request(app).get('/api/properties')
-      );
+      const requests = Array(20).fill().map(() => request(app).get('/api/properties'));
 
       const responses = await Promise.all(requests);
-      
+
       // Should have at least one rate limited response
-      const rateLimited = responses.some(res => res.status === 429);
+      const rateLimited = responses.some((res) => res.status === 429);
       expect(rateLimited).toBe(true);
     });
   });

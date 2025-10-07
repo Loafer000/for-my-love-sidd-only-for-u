@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const { body, param } = require('express-validator');
 const bookingController = require('../controllers/bookingController');
@@ -17,8 +18,8 @@ router.get('/test', (req, res) => {
       'GET    /api/bookings/:id',
       'POST   /api/bookings',
       'PUT    /api/bookings/:id/status',
-      'POST   /api/bookings/:id/cancel',
-    ],
+      'POST   /api/bookings/:id/cancel'
+    ]
   });
 });
 

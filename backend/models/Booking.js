@@ -7,7 +7,7 @@ const bookingSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  
+
   // Core References
   property: {
     type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +24,7 @@ const bookingSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'Landlord reference is required']
   },
-  
+
   // Booking Dates
   dates: {
     moveInDate: {
@@ -34,7 +34,7 @@ const bookingSchema = new mongoose.Schema({
     moveOutDate: {
       type: Date,
       validate: {
-        validator: function(value) {
+        validator(value) {
           return !value || value > this.dates.moveInDate;
         },
         message: 'Move-out date must be after move-in date'
@@ -50,30 +50,30 @@ const bookingSchema = new mongoose.Schema({
     actualMoveInDate: Date,
     actualMoveOutDate: Date
   },
-  
+
   // Booking Status Management
   status: {
     type: String,
     enum: {
       values: [
-        'pending',           // Initial booking request
-        'landlord-review',   // Awaiting landlord approval
-        'approved',          // Landlord approved
-        'rejected',          // Landlord rejected
-        'payment-pending',   // Awaiting payment
-        'payment-failed',    // Payment failed
-        'confirmed',         // Booking confirmed (payment successful)
-        'active',           // Tenant moved in
-        'completed',        // Lease completed normally
-        'cancelled',        // Cancelled by either party
-        'terminated',       // Early termination
-        'disputed'          // Under dispute
+        'pending', // Initial booking request
+        'landlord-review', // Awaiting landlord approval
+        'approved', // Landlord approved
+        'rejected', // Landlord rejected
+        'payment-pending', // Awaiting payment
+        'payment-failed', // Payment failed
+        'confirmed', // Booking confirmed (payment successful)
+        'active', // Tenant moved in
+        'completed', // Lease completed normally
+        'cancelled', // Cancelled by either party
+        'terminated', // Early termination
+        'disputed' // Under dispute
       ],
       message: 'Invalid booking status'
     },
     default: 'pending'
   },
-  
+
   statusHistory: [{
     status: String,
     changedBy: {
@@ -87,7 +87,7 @@ const bookingSchema = new mongoose.Schema({
     reason: String,
     notes: String
   }],
-  
+
   // Financial Information
   financial: {
     monthlyRent: {
@@ -134,14 +134,14 @@ const bookingSchema = new mongoose.Schema({
       type: Number,
       required: true
     },
-    
+
     // Additional charges/discounts
     additionalCharges: [{
       name: String,
       amount: Number,
       description: String
     }],
-    
+
     discounts: [{
       name: String,
       amount: Number,
@@ -150,7 +150,7 @@ const bookingSchema = new mongoose.Schema({
       code: String
     }]
   },
-  
+
   // Payment Information
   payments: [{
     type: {
@@ -177,8 +177,8 @@ const bookingSchema = new mongoose.Schema({
       enum: ['pending', 'paid', 'failed', 'refunded', 'partially-paid'],
       default: 'pending'
     },
-    paymentId: String,  // From payment gateway
-    orderId: String,    // From payment gateway
+    paymentId: String, // From payment gateway
+    orderId: String, // From payment gateway
     method: {
       type: String,
       enum: ['online', 'cash', 'cheque', 'bank-transfer', 'upi', 'card']
@@ -191,7 +191,7 @@ const bookingSchema = new mongoose.Schema({
     receipt: String,
     notes: String
   }],
-  
+
   // Agreement & Documents
   agreement: {
     templateUsed: String,
@@ -218,7 +218,7 @@ const bookingSchema = new mongoose.Schema({
     documentUrl: String,
     documentId: String // Cloudinary or storage ID
   },
-  
+
   documents: [{
     name: {
       type: String,
@@ -259,7 +259,7 @@ const bookingSchema = new mongoose.Schema({
     },
     verifiedAt: Date
   }],
-  
+
   // Communication & Notes
   communication: [{
     from: {
@@ -295,7 +295,7 @@ const bookingSchema = new mongoose.Schema({
       type: String
     }]
   }],
-  
+
   // Approval & Rejection
   landlordResponse: {
     approved: Boolean,
@@ -304,7 +304,7 @@ const bookingSchema = new mongoose.Schema({
     notes: String,
     conditions: [String]
   },
-  
+
   // Inspection & Move-in
   inspection: {
     scheduled: {
@@ -330,7 +330,7 @@ const bookingSchema = new mongoose.Schema({
     },
     notes: String
   },
-  
+
   // Cancellation & Termination
   cancellation: {
     cancelledBy: {
@@ -364,7 +364,7 @@ const bookingSchema = new mongoose.Schema({
       reason: String
     }
   },
-  
+
   // Reviews & Feedback (Post-booking)
   review: {
     tenantReview: {
@@ -390,7 +390,7 @@ const bookingSchema = new mongoose.Schema({
       reviewedAt: Date
     }
   },
-  
+
   // Analytics & Tracking
   analytics: {
     source: {
@@ -405,7 +405,7 @@ const bookingSchema = new mongoose.Schema({
     utmMedium: String,
     utmCampaign: String
   },
-  
+
   // Renewal Information
   renewal: {
     eligible: {
@@ -425,7 +425,7 @@ const bookingSchema = new mongoose.Schema({
     approved: Boolean,
     approvedAt: Date
   },
-  
+
   // Emergency Contacts
   emergencyContact: {
     name: String,
@@ -434,7 +434,7 @@ const bookingSchema = new mongoose.Schema({
     email: String,
     address: String
   },
-  
+
   // Special Conditions
   specialConditions: [{
     condition: String,
@@ -447,7 +447,7 @@ const bookingSchema = new mongoose.Schema({
       default: Date.now
     }
   }],
-  
+
   // Timestamps
   createdAt: {
     type: Date,
@@ -482,7 +482,7 @@ bookingSchema.index({ property: 1, status: 1 });
 bookingSchema.index({ status: 1, 'dates.moveInDate': 1 });
 
 // Virtual for booking duration in days
-bookingSchema.virtual('durationDays').get(function() {
+bookingSchema.virtual('durationDays').get(function () {
   if (this.dates.moveInDate && this.dates.moveOutDate) {
     const diffTime = Math.abs(this.dates.moveOutDate - this.dates.moveInDate);
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -491,125 +491,125 @@ bookingSchema.virtual('durationDays').get(function() {
 });
 
 // Virtual for total pending amount
-bookingSchema.virtual('pendingAmount').get(function() {
+bookingSchema.virtual('pendingAmount').get(function () {
   return this.payments
-    .filter(payment => payment.status === 'pending')
+    .filter((payment) => payment.status === 'pending')
     .reduce((total, payment) => total + payment.amount, 0);
 });
 
 // Virtual for total paid amount
-bookingSchema.virtual('paidAmount').get(function() {
+bookingSchema.virtual('paidAmount').get(function () {
   return this.payments
-    .filter(payment => payment.status === 'paid')
+    .filter((payment) => payment.status === 'paid')
     .reduce((total, payment) => total + payment.amount, 0);
 });
 
 // Virtual for current payment status
-bookingSchema.virtual('paymentStatus').get(function() {
-  const totalAmount = this.financial.totalAmount;
-  const paidAmount = this.paidAmount;
-  
+bookingSchema.virtual('paymentStatus').get(function () {
+  const { totalAmount } = this.financial;
+  const { paidAmount } = this;
+
   if (paidAmount === 0) return 'unpaid';
   if (paidAmount >= totalAmount) return 'paid';
   return 'partially-paid';
 });
 
 // Pre-save middleware
-bookingSchema.pre('save', function(next) {
+bookingSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
-  
+
   // Generate booking ID if not exists
   if (!this.bookingId) {
     this.generateBookingId();
   }
-  
+
   // Calculate move-out date if not provided
   if (!this.dates.moveOutDate && this.dates.moveInDate && this.dates.leaseDuration.months) {
     const moveOut = new Date(this.dates.moveInDate);
     moveOut.setMonth(moveOut.getMonth() + this.dates.leaseDuration.months);
     this.dates.moveOutDate = moveOut;
   }
-  
+
   next();
 });
 
 // Method to generate unique booking ID
-bookingSchema.methods.generateBookingId = function() {
+bookingSchema.methods.generateBookingId = function () {
   const date = new Date();
   const year = date.getFullYear().toString().substr(-2);
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const random = Math.random().toString(36).substr(2, 6).toUpperCase();
-  
+
   this.bookingId = `BK${year}${month}${random}`;
 };
 
 // Method to update booking status
-bookingSchema.methods.updateStatus = function(newStatus, changedBy, reason = '', notes = '') {
+bookingSchema.methods.updateStatus = function (newStatus, changedBy, reason = '', notes = '') {
   const oldStatus = this.status;
   this.status = newStatus;
-  
+
   // Add to status history
   this.statusHistory.push({
     status: newStatus,
-    changedBy: changedBy,
+    changedBy,
     changedAt: new Date(),
-    reason: reason,
-    notes: notes
+    reason,
+    notes
   });
-  
+
   // Auto-update based on status
   if (newStatus === 'active' && !this.dates.actualMoveInDate) {
     this.dates.actualMoveInDate = new Date();
   }
-  
+
   if (['completed', 'cancelled', 'terminated'].includes(newStatus) && !this.dates.actualMoveOutDate) {
     this.dates.actualMoveOutDate = new Date();
   }
-  
+
   return this.save();
 };
 
 // Method to add payment
-bookingSchema.methods.addPayment = function(paymentData) {
+bookingSchema.methods.addPayment = function (paymentData) {
   this.payments.push({
     ...paymentData,
     status: paymentData.status || 'pending'
   });
-  
+
   return this.save();
 };
 
 // Method to update payment status
-bookingSchema.methods.updatePaymentStatus = function(paymentId, status, transactionDetails = {}) {
+bookingSchema.methods.updatePaymentStatus = function (paymentId, status, transactionDetails = {}) {
   const payment = this.payments.id(paymentId);
   if (!payment) {
     throw new Error('Payment not found');
   }
-  
+
   payment.status = status;
   if (status === 'paid') {
     payment.paidDate = new Date();
   }
-  
+
   // Update transaction details
-  Object.keys(transactionDetails).forEach(key => {
+  Object.keys(transactionDetails).forEach((key) => {
     if (payment.schema.paths[key]) {
       payment[key] = transactionDetails[key];
     }
   });
-  
+
   return this.save();
 };
 
 // Method to calculate refund amount
-bookingSchema.methods.calculateRefund = function() {
-  const paidAmount = this.paidAmount;
+bookingSchema.methods.calculateRefund = function () {
+  const { paidAmount } = this;
   let refundAmount = 0;
-  
+
   // Basic refund logic (can be customized)
   if (this.status === 'cancelled') {
     const daysSinceBooking = Math.ceil((Date.now() - this.createdAt) / (1000 * 60 * 60 * 24));
-    
+
     if (daysSinceBooking <= 1) {
       // Full refund within 24 hours
       refundAmount = paidAmount;
@@ -624,12 +624,12 @@ bookingSchema.methods.calculateRefund = function() {
       refundAmount = this.financial.securityDeposit;
     }
   }
-  
+
   return Math.max(0, refundAmount);
 };
 
 // Static method to find bookings by date range
-bookingSchema.statics.findByDateRange = function(startDate, endDate, status = null) {
+bookingSchema.statics.findByDateRange = function (startDate, endDate, status = null) {
   const query = {
     $or: [
       {
@@ -646,18 +646,18 @@ bookingSchema.statics.findByDateRange = function(startDate, endDate, status = nu
       }
     ]
   };
-  
+
   if (status) {
     query.status = status;
   }
-  
+
   return this.find(query);
 };
 
 // Static method for dashboard analytics
-bookingSchema.statics.getDashboardStats = function(userId, userType = 'tenant') {
+bookingSchema.statics.getDashboardStats = function (userId, userType = 'tenant') {
   const matchField = userType === 'tenant' ? 'tenant' : 'landlord';
-  
+
   return this.aggregate([
     {
       $match: { [matchField]: userId }

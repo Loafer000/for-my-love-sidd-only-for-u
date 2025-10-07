@@ -1,6 +1,8 @@
 // Analytics Controller - Business Intelligence & Insights
 
-const { Property, Booking, User, Chat, ReviewEnhanced } = require('../models');
+const {
+  Property, Booking, User, Chat, ReviewEnhanced
+} = require('../models');
 
 // Get dashboard analytics for landlords
 const getLandlordDashboard = async (req, res) => {
@@ -10,28 +12,28 @@ const getLandlordDashboard = async (req, res) => {
 
     // Calculate date range
     const endDate = new Date();
-    let startDate = new Date();
-    
+    const startDate = new Date();
+
     switch (timeframe) {
-      case '7d':
-        startDate.setDate(endDate.getDate() - 7);
-        break;
-      case '30d':
-        startDate.setDate(endDate.getDate() - 30);
-        break;
-      case '90d':
-        startDate.setDate(endDate.getDate() - 90);
-        break;
-      case '1y':
-        startDate.setFullYear(endDate.getFullYear() - 1);
-        break;
-      default:
-        startDate.setDate(endDate.getDate() - 30);
+    case '7d':
+      startDate.setDate(endDate.getDate() - 7);
+      break;
+    case '30d':
+      startDate.setDate(endDate.getDate() - 30);
+      break;
+    case '90d':
+      startDate.setDate(endDate.getDate() - 90);
+      break;
+    case '1y':
+      startDate.setFullYear(endDate.getFullYear() - 1);
+      break;
+    default:
+      startDate.setDate(endDate.getDate() - 30);
     }
 
     // Get property statistics
     const properties = await Property.find({ owner: landlordId });
-    const propertyIds = properties.map(p => p._id);
+    const propertyIds = properties.map((p) => p._id);
 
     // Bookings analytics
     const bookingStats = await Booking.aggregate([
@@ -170,7 +172,7 @@ const getLandlordDashboard = async (req, res) => {
         totalBookings: bookingStats[0]?.totalBookings || 0,
         totalRevenue: bookingStats[0]?.totalRevenue || 0,
         avgBookingValue: bookingStats[0]?.avgBookingValue || 0,
-        completionRate: bookingStats[0]?.totalBookings > 0 
+        completionRate: bookingStats[0]?.totalBookings > 0
           ? ((bookingStats[0]?.completedBookings || 0) / bookingStats[0].totalBookings * 100).toFixed(1)
           : 0
       },
@@ -185,13 +187,13 @@ const getLandlordDashboard = async (req, res) => {
         totalInquiries: chatStats[0]?.totalInquiries || 0,
         activeChats: chatStats[0]?.activeChats || 0,
         avgGuidanceScore: chatStats[0]?.avgGuidanceScore || 0,
-        conversionRate: chatStats[0]?.totalInquiries > 0 
+        conversionRate: chatStats[0]?.totalInquiries > 0
           ? ((bookingStats[0]?.totalBookings || 0) / chatStats[0].totalInquiries * 100).toFixed(1)
           : 0,
         platformRisk: {
           bypassAttempts: chatStats[0]?.bypassAttempts || 0,
-          riskLevel: (chatStats[0]?.bypassAttempts || 0) > 5 ? 'high' : 
-                     (chatStats[0]?.bypassAttempts || 0) > 2 ? 'medium' : 'low'
+          riskLevel: (chatStats[0]?.bypassAttempts || 0) > 5 ? 'high'
+            : (chatStats[0]?.bypassAttempts || 0) > 2 ? 'medium' : 'low'
         }
       }
     };
@@ -203,7 +205,6 @@ const getLandlordDashboard = async (req, res) => {
       timeframe,
       generatedAt: new Date()
     });
-
   } catch (error) {
     console.error('Landlord dashboard error:', error);
     res.status(500).json({
@@ -222,20 +223,20 @@ const getTenantDashboard = async (req, res) => {
 
     // Calculate date range
     const endDate = new Date();
-    let startDate = new Date();
-    
+    const startDate = new Date();
+
     switch (timeframe) {
-      case '7d':
-        startDate.setDate(endDate.getDate() - 7);
-        break;
-      case '30d':
-        startDate.setDate(endDate.getDate() - 30);
-        break;
-      case '90d':
-        startDate.setDate(endDate.getDate() - 90);
-        break;
-      default:
-        startDate.setDate(endDate.getDate() - 30);
+    case '7d':
+      startDate.setDate(endDate.getDate() - 7);
+      break;
+    case '30d':
+      startDate.setDate(endDate.getDate() - 30);
+      break;
+    case '90d':
+      startDate.setDate(endDate.getDate() - 90);
+      break;
+    default:
+      startDate.setDate(endDate.getDate() - 30);
     }
 
     // Booking history
@@ -359,7 +360,6 @@ const getTenantDashboard = async (req, res) => {
       timeframe,
       generatedAt: new Date()
     });
-
   } catch (error) {
     console.error('Tenant dashboard error:', error);
     res.status(500).json({
@@ -421,7 +421,6 @@ const getPlatformAnalytics = async (req, res) => {
       timeframe,
       generatedAt: new Date()
     });
-
   } catch (error) {
     console.error('Platform analytics error:', error);
     res.status(500).json({
@@ -462,9 +461,7 @@ const getChatAnalytics = async (req, res) => {
         'Share property documents',
         'Initiate price negotiation',
         'Start rental application'
-      ].filter((action, index) => {
-        return !chat.platformGuidance.completedActions.includes(action.toLowerCase().replace(' ', '_'));
-      })
+      ].filter((action, index) => !chat.platformGuidance.completedActions.includes(action.toLowerCase().replace(' ', '_')))
     };
 
     res.json({
@@ -472,7 +469,6 @@ const getChatAnalytics = async (req, res) => {
       message: 'Chat analytics retrieved',
       data: analysis
     });
-
   } catch (error) {
     console.error('Chat analytics error:', error);
     res.status(500).json({
@@ -487,10 +483,10 @@ const getChatAnalytics = async (req, res) => {
 const calculateRiskLevel = (chat) => {
   const bypassAttempts = chat.analytics?.bypassAttempts || 0;
   const riskFlags = chat.platformGuidance?.riskFlags || [];
-  
-  const criticalFlags = riskFlags.filter(flag => flag.severity === 'critical').length;
-  const highFlags = riskFlags.filter(flag => flag.severity === 'high').length;
-  
+
+  const criticalFlags = riskFlags.filter((flag) => flag.severity === 'critical').length;
+  const highFlags = riskFlags.filter((flag) => flag.severity === 'high').length;
+
   if (criticalFlags > 0 || bypassAttempts > 5) return 'critical';
   if (highFlags > 1 || bypassAttempts > 2) return 'high';
   if (riskFlags.length > 0 || bypassAttempts > 0) return 'medium';
@@ -500,7 +496,7 @@ const calculateRiskLevel = (chat) => {
 const generateRecommendations = (chat) => {
   const recommendations = [];
   const riskLevel = calculateRiskLevel(chat);
-  
+
   if (riskLevel === 'critical') {
     recommendations.push('Immediate intervention required - possible platform bypass attempt');
     recommendations.push('Consider flagging conversation for admin review');
@@ -513,7 +509,7 @@ const generateRecommendations = (chat) => {
     recommendations.push('Continue normal conversation flow');
     recommendations.push('Encourage use of platform features when appropriate');
   }
-  
+
   return recommendations;
 };
 

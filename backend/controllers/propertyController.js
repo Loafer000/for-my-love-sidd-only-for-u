@@ -26,23 +26,23 @@ exports.getProperties = async (req, res) => {
     if (city) filters['address.city'] = new RegExp(city, 'i');
     if (area) filters['address.area'] = new RegExp(area, 'i');
     if (propertyType) filters.propertyType = propertyType;
-    if (bedrooms) filters['specifications.bedrooms'] = parseInt(bedrooms);
+    if (bedrooms) filters['specifications.bedrooms'] = parseInt(bedrooms, 10);
 
     if (minRent || maxRent) {
       filters['rental.monthlyRent'] = {};
-      if (minRent) filters['rental.monthlyRent'].$gte = parseInt(minRent);
-      if (maxRent) filters['rental.monthlyRent'].$lte = parseInt(maxRent);
+      if (minRent) filters['rental.monthlyRent'].$gte = parseInt(minRent, 10);
+      if (maxRent) filters['rental.monthlyRent'].$lte = parseInt(maxRent, 10);
     }
 
     // Calculate pagination
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     // Execute query
     const properties = await Property.find(filters)
       .populate('owner', 'firstName lastName phone email profilePicture')
       .sort(sort)
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit, 10));
 
     // Get total count for pagination
     const total = await Property.countDocuments(filters);
@@ -53,15 +53,14 @@ exports.getProperties = async (req, res) => {
       data: {
         properties,
         pagination: {
-          currentPage: parseInt(page),
-          totalPages: Math.ceil(total / parseInt(limit)),
+          currentPage: parseInt(page, 10),
+          totalPages: Math.ceil(total / parseInt(limit, 10)),
           totalProperties: total,
           hasNextPage: skip + properties.length < total,
-          hasPrevPage: parseInt(page) > 1
+          hasPrevPage: parseInt(page, 10) > 1
         }
       }
     });
-
   } catch (error) {
     console.error('Get properties error:', error);
     res.status(500).json({
@@ -105,7 +104,6 @@ exports.getPropertyById = async (req, res) => {
       message: 'Property retrieved successfully',
       data: { property }
     });
-
   } catch (error) {
     console.error('Get property error:', error);
     res.status(500).json({
@@ -136,7 +134,6 @@ exports.createProperty = async (req, res) => {
       message: 'Property created successfully',
       data: { property }
     });
-
   } catch (error) {
     console.error('Create property error:', error);
     res.status(500).json({
@@ -171,7 +168,7 @@ exports.updateProperty = async (req, res) => {
     }
 
     // Update property
-    Object.keys(updates).forEach(key => {
+    Object.keys(updates).forEach((key) => {
       property[key] = updates[key];
     });
 
@@ -182,7 +179,6 @@ exports.updateProperty = async (req, res) => {
       message: 'Property updated successfully',
       data: { property }
     });
-
   } catch (error) {
     console.error('Update property error:', error);
     res.status(500).json({
@@ -225,7 +221,6 @@ exports.deleteProperty = async (req, res) => {
       success: true,
       message: 'Property deleted successfully'
     });
-
   } catch (error) {
     console.error('Delete property error:', error);
     res.status(500).json({
@@ -240,7 +235,7 @@ exports.deleteProperty = async (req, res) => {
 exports.searchProperties = async (req, res) => {
   try {
     const searchFilters = req.body;
-    
+
     const properties = await Property.advancedSearch(searchFilters)
       .populate('owner', 'firstName lastName profilePicture')
       .sort('-qualityScore -createdAt')
@@ -255,7 +250,6 @@ exports.searchProperties = async (req, res) => {
         searchFilters
       }
     });
-
   } catch (error) {
     console.error('Search properties error:', error);
     res.status(500).json({
@@ -279,9 +273,9 @@ exports.findNearbyProperties = async (req, res) => {
     }
 
     const properties = await Property.findNearby(
-      parseFloat(longitude), 
-      parseFloat(latitude), 
-      parseInt(maxDistance)
+      parseFloat(longitude),
+      parseFloat(latitude),
+      parseInt(maxDistance, 10)
     ).populate('owner', 'firstName lastName profilePicture');
 
     res.json({
@@ -290,10 +284,9 @@ exports.findNearbyProperties = async (req, res) => {
       data: {
         properties,
         searchCenter: { longitude: parseFloat(longitude), latitude: parseFloat(latitude) },
-        maxDistance: parseInt(maxDistance)
+        maxDistance: parseInt(maxDistance, 10)
       }
     });
-
   } catch (error) {
     console.error('Find nearby properties error:', error);
     res.status(500).json({
@@ -308,7 +301,7 @@ exports.findNearbyProperties = async (req, res) => {
 exports.searchProperties = async (req, res) => {
   try {
     const {
-      q,              // Search query
+      q, // Search query
       city,
       area,
       propertyType,
@@ -366,13 +359,13 @@ exports.searchProperties = async (req, res) => {
 
     if (area) filters['address.area'] = new RegExp(area, 'i');
     if (propertyType) filters.propertyType = propertyType;
-    if (bedrooms) filters['specifications.bedrooms'] = parseInt(bedrooms);
+    if (bedrooms) filters['specifications.bedrooms'] = parseInt(bedrooms, 10);
 
     // Price range filter
     if (minRent || maxRent) {
       filters['rental.monthlyRent'] = {};
-      if (minRent) filters['rental.monthlyRent'].$gte = parseInt(minRent);
-      if (maxRent) filters['rental.monthlyRent'].$lte = parseInt(maxRent);
+      if (minRent) filters['rental.monthlyRent'].$gte = parseInt(minRent, 10);
+      if (maxRent) filters['rental.monthlyRent'].$lte = parseInt(maxRent, 10);
     }
 
     // Amenities filter
@@ -382,14 +375,14 @@ exports.searchProperties = async (req, res) => {
     }
 
     // Calculate pagination
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     // Execute search query
     const properties = await Property.find(filters)
       .populate('owner', 'firstName lastName phone email profilePicture')
       .sort(sort)
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit, 10));
 
     // Get total count for pagination
     const total = await Property.countDocuments(filters);
@@ -400,17 +393,18 @@ exports.searchProperties = async (req, res) => {
       data: {
         properties,
         searchQuery: q,
-        filters: { city, area, propertyType, minRent, maxRent, bedrooms, amenities },
+        filters: {
+          city, area, propertyType, minRent, maxRent, bedrooms, amenities
+        },
         pagination: {
-          currentPage: parseInt(page),
-          totalPages: Math.ceil(total / parseInt(limit)),
+          currentPage: parseInt(page, 10),
+          totalPages: Math.ceil(total / parseInt(limit, 10)),
           totalProperties: total,
           hasNextPage: skip + properties.length < total,
-          hasPrevPage: parseInt(page) > 1
+          hasPrevPage: parseInt(page, 10) > 1
         }
       }
     });
-
   } catch (error) {
     console.error('Search properties error:', error);
     res.status(500).json({
@@ -433,16 +427,15 @@ exports.getFeaturedProperties = async (req, res) => {
       visibility: 'public',
       isDeleted: false
     })
-    .populate('owner', 'firstName lastName profilePicture')
-    .sort('-featured.promotionLevel -qualityScore -createdAt')
-    .limit(parseInt(limit));
+      .populate('owner', 'firstName lastName profilePicture')
+      .sort('-featured.promotionLevel -qualityScore -createdAt')
+      .limit(parseInt(limit, 10));
 
     res.json({
       success: true,
       message: 'Featured properties retrieved successfully',
       data: { properties }
     });
-
   } catch (error) {
     console.error('Get featured properties error:', error);
     res.status(500).json({
@@ -467,12 +460,12 @@ exports.getOwnerProperties = async (req, res) => {
       filters.status = status;
     }
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     const properties = await Property.find(filters)
       .sort('-createdAt')
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit, 10));
 
     const total = await Property.countDocuments(filters);
 
@@ -482,13 +475,12 @@ exports.getOwnerProperties = async (req, res) => {
       data: {
         properties,
         pagination: {
-          currentPage: parseInt(page),
-          totalPages: Math.ceil(total / parseInt(limit)),
+          currentPage: parseInt(page, 10),
+          totalPages: Math.ceil(total / parseInt(limit, 10)),
           totalProperties: total
         }
       }
     });
-
   } catch (error) {
     console.error('Get owner properties error:', error);
     res.status(500).json({

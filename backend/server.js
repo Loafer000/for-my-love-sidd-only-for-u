@@ -14,12 +14,12 @@ const connectDB = require('./config/database');
 // Import security configurations
 const { EnvironmentValidator } = require('./security/environment');
 const securityConfig = require('./security/config');
-const { 
-  securityHeaders, 
-  sqlInjectionProtection, 
-  xssProtection, 
-  validateInput, 
-  csrfProtection 
+const {
+  securityHeaders,
+  sqlInjectionProtection,
+  xssProtection,
+  validateInput,
+  csrfProtection
 } = require('./middleware/security');
 
 // Import routes - Step 4 Implementation
@@ -54,37 +54,37 @@ app.set('trust proxy', 1);
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https://res.cloudinary.com", "https://maps.googleapis.com"],
-      scriptSrc: ["'self'"],
-    },
-  },
+      defaultSrc: ['\'self\''],
+      styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
+      fontSrc: ['\'self\'', 'https://fonts.gstatic.com'],
+      imgSrc: ['\'self\'', 'data:', 'https://res.cloudinary.com', 'https://maps.googleapis.com'],
+      scriptSrc: ['\'self\'']
+    }
+  }
 }));
 
 // CORS configuration - Allow all localhost ports in development
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin(origin, callback) {
     // In development, allow all localhost origins
     if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
-      
+
       // Allow all localhost origins in development
       if (origin.startsWith('http://localhost:')) {
         return callback(null, true);
       }
     }
-    
+
     // For production, use specific allowed origins
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
       'http://localhost:3000',
-      'http://localhost:3001', 
+      'http://localhost:3001',
       'http://localhost:3002',
       'http://localhost:3003'
     ];
-    
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -93,7 +93,7 @@ const corsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
 
 app.use(cors(corsOptions));
@@ -118,10 +118,10 @@ const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
   max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
   message: {
-    error: 'Too many requests from this IP, please try again later.',
+    error: 'Too many requests from this IP, please try again later.'
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false // Disable the `X-RateLimit-*` headers
 });
 
 app.use('/api/', limiter);
@@ -147,12 +147,13 @@ app.get('/api/health', (req, res) => {
     message: 'ConnectSpace API is running!',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV,
-    version: require('./package.json').version,
+    version: require('./package.json').version
   });
 });
 
 // API Routes - Step 4 Implementation
 const apiRoutes = require('./routes/index');
+
 app.use('/api', apiRoutes);
 
 // Root endpoint
@@ -160,7 +161,7 @@ app.get('/', (req, res) => {
   res.json({
     message: 'Welcome to ConnectSpace API',
     version: require('./package.json').version,
-    documentation: '/api/health',
+    documentation: '/api/health'
   });
 });
 

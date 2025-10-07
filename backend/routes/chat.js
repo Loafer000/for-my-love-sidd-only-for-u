@@ -1,16 +1,19 @@
 // Chat Routes - Smart Transaction-Focused Chat System
 
 const express = require('express');
+
 const router = express.Router();
-const { 
-  createOrGetChat, 
-  sendMessage, 
-  getChatMessages, 
+const {
+  body, param, query, validationResult
+} = require('express-validator');
+const {
+  createOrGetChat,
+  sendMessage,
+  getChatMessages,
   getUserChats,
   handleQuickAction
 } = require('../controllers/chatController');
 const { authenticate } = require('../middleware/auth');
-const { body, param, query, validationResult } = require('express-validator');
 
 // Validation middleware
 const handleValidationErrors = (req, res, next) => {
@@ -26,7 +29,8 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Create or get existing chat for a property
-router.post('/create', 
+router.post(
+  '/create',
   authenticate,
   [
     body('propertyId')
@@ -44,7 +48,8 @@ router.post('/create',
 );
 
 // Send message in a chat
-router.post('/message',
+router.post(
+  '/message',
   authenticate,
   [
     body('chatId')
@@ -79,7 +84,8 @@ router.post('/message',
 );
 
 // Get messages for a specific chat
-router.get('/:chatId/messages',
+router.get(
+  '/:chatId/messages',
   authenticate,
   [
     param('chatId')
@@ -99,7 +105,8 @@ router.get('/:chatId/messages',
 );
 
 // Get all chats for current user
-router.get('/my-chats',
+router.get(
+  '/my-chats',
   authenticate,
   [
     query('status')
@@ -120,7 +127,8 @@ router.get('/my-chats',
 );
 
 // Handle quick actions from chat interface
-router.post('/action',
+router.post(
+  '/action',
   authenticate,
   [
     body('chatId')
@@ -133,7 +141,7 @@ router.post('/action',
       .withMessage('Action type is required')
       .isIn([
         'schedule_visit',
-        'start_application', 
+        'start_application',
         'view_documents',
         'price_negotiation',
         'secure_payment',
@@ -157,7 +165,7 @@ router.get('/test', authenticate, (req, res) => {
     user: req.user.firstName,
     features: [
       '🔍 Smart keyword detection',
-      '🚦 Platform guidance system', 
+      '🚦 Platform guidance system',
       '⚡ Quick action buttons',
       '📊 Business intelligence tracking',
       '🛡️ Bypass attempt monitoring',
@@ -167,7 +175,7 @@ router.get('/test', authenticate, (req, res) => {
   });
 });
 
-// DEPRECATED: Mock routes for development only - use real chat endpoints  
+// DEPRECATED: Mock routes for development only - use real chat endpoints
 // These will be removed when real-time chat is implemented
 
 // DEPRECATED: Get mock chat list
@@ -222,8 +230,8 @@ router.get('/mock/list', authenticate, (req, res) => {
             profilePhoto: 'https://images.unsplash.com/photo-1494790108755-2616b612b786'
           },
           lastMessage: {
-            content: { 
-              text: 'The rent seems high. Can we negotiate?',
+            content: {
+              text: 'The rent seems high. Can we negotiate?'
             },
             businessFlags: ['price_discussion'],
             createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2) // 2 hours ago
@@ -253,7 +261,7 @@ router.get('/mock/list', authenticate, (req, res) => {
 // Get mock messages for a chat
 router.get('/mock/:chatId/messages', authenticate, (req, res) => {
   const { chatId } = req.params;
-  
+
   const mockMessages = [
     {
       _id: '674f1a2b3c4d5e6f7a8b9c07',
@@ -278,20 +286,20 @@ router.get('/mock/:chatId/messages', authenticate, (req, res) => {
       content: {
         text: 'Welcome to ConnectSpace Chat! This conversation is about "Cozy 2BHK Apartment in Bandra". Use the quick actions below to proceed with your inquiry.',
         quickActions: [
-          { 
-            type: 'schedule_visit', 
-            label: 'Schedule Visit', 
-            requiresPlatform: true 
+          {
+            type: 'schedule_visit',
+            label: 'Schedule Visit',
+            requiresPlatform: true
           },
-          { 
-            type: 'ask_amenities', 
-            label: 'Ask about Amenities', 
-            requiresPlatform: false 
+          {
+            type: 'ask_amenities',
+            label: 'Ask about Amenities',
+            requiresPlatform: false
           },
-          { 
-            type: 'start_application', 
-            label: 'Start Rental Application', 
-            requiresPlatform: true 
+          {
+            type: 'start_application',
+            label: 'Start Rental Application',
+            requiresPlatform: true
           }
         ]
       },

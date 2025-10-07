@@ -26,8 +26,10 @@ const getUserProfile = async (req, res) => {
 // Update user profile
 const updateUserProfile = async (req, res) => {
   try {
-    const { firstName, lastName, phone, bio, location, preferences } = req.body;
-    
+    const {
+      firstName, lastName, phone, bio, location, preferences
+    } = req.body;
+
     const updateData = {
       firstName,
       lastName,
@@ -71,14 +73,14 @@ const uploadProfilePhoto = async (req, res) => {
 
     // TODO: Integrate with Cloudinary later
     // const uploadResult = await uploadToCloudinary(req.file.buffer, 'profiles');
-    
+
     // Mock upload for now - replace with actual Cloudinary integration
     const profilePhotoUrl = `https://via.placeholder.com/300x300?text=Profile+${req.user._id}`;
 
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { 
-        $set: { 
+      {
+        $set: {
           profilePhoto: profilePhotoUrl,
           updatedAt: new Date()
         }
@@ -89,7 +91,7 @@ const uploadProfilePhoto = async (req, res) => {
     res.json({
       success: true,
       message: 'Profile photo uploaded successfully',
-      data: { 
+      data: {
         user,
         profilePhoto: profilePhotoUrl
       }
@@ -110,7 +112,7 @@ const changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user._id);
-    
+
     // Verify current password
     const isCurrentPasswordValid = await user.comparePassword(currentPassword);
     if (!isCurrentPasswordValid) {
@@ -143,17 +145,17 @@ const changePassword = async (req, res) => {
 const getUserProperties = async (req, res) => {
   try {
     const { page = 1, limit = 10, status } = req.query;
-    
+
     const filters = { owner: req.user._id, isDeleted: false };
     if (status) filters.status = status;
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     const properties = await Property.find(filters)
       .populate('owner', 'firstName lastName phone email')
       .sort('-createdAt')
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit, 10));
 
     const total = await Property.countDocuments(filters);
 
@@ -163,11 +165,11 @@ const getUserProperties = async (req, res) => {
       data: {
         properties,
         pagination: {
-          currentPage: parseInt(page),
-          totalPages: Math.ceil(total / parseInt(limit)),
+          currentPage: parseInt(page, 10),
+          totalPages: Math.ceil(total / parseInt(limit, 10)),
           totalProperties: total,
           hasNextPage: skip + properties.length < total,
-          hasPrevPage: parseInt(page) > 1
+          hasPrevPage: parseInt(page, 10) > 1
         }
       }
     });
@@ -185,7 +187,7 @@ const getUserProperties = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const user = await User.findById(id)
       .select('firstName lastName profilePhoto bio location userType verifications createdAt')
       .populate('properties', 'title location price images status');

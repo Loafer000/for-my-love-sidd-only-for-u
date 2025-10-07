@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
     url: req.originalUrl,
     method: req.method,
     ip: req.ip,
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toISOString()
   });
 
   // Mongoose bad ObjectId
@@ -17,32 +17,32 @@ const errorHandler = (err, req, res, next) => {
     const message = 'Resource not found';
     error = {
       message,
-      statusCode: 404,
+      statusCode: 404
     };
   }
 
   // Mongoose duplicate key error
   if (err.code === 11000) {
     let message = 'Duplicate field value entered';
-    
+
     // Extract field name from error
     const field = Object.keys(err.keyValue)[0];
     if (field) {
       message = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
     }
-    
+
     error = {
       message,
-      statusCode: 400,
+      statusCode: 400
     };
   }
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map(val => val.message).join(', ');
+    const message = Object.values(err.errors).map((val) => val.message).join(', ');
     error = {
       message,
-      statusCode: 400,
+      statusCode: 400
     };
   }
 
@@ -50,14 +50,14 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === 'JsonWebTokenError') {
     error = {
       message: 'Invalid token',
-      statusCode: 401,
+      statusCode: 401
     };
   }
 
   if (err.name === 'TokenExpiredError') {
     error = {
       message: 'Token expired',
-      statusCode: 401,
+      statusCode: 401
     };
   }
 
@@ -65,14 +65,14 @@ const errorHandler = (err, req, res, next) => {
   if (err.code === 'LIMIT_FILE_SIZE') {
     error = {
       message: 'File size too large',
-      statusCode: 400,
+      statusCode: 400
     };
   }
 
   if (err.code === 'LIMIT_UNEXPECTED_FILE') {
     error = {
       message: 'Unexpected file field',
-      statusCode: 400,
+      statusCode: 400
     };
   }
 
@@ -80,7 +80,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.type === 'entity.parse.failed') {
     error = {
       message: 'Invalid JSON format',
-      statusCode: 400,
+      statusCode: 400
     };
   }
 
@@ -88,7 +88,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.status === 429) {
     error = {
       message: 'Too many requests, please try again later',
-      statusCode: 429,
+      statusCode: 429
     };
   }
 
@@ -102,8 +102,8 @@ const errorHandler = (err, req, res, next) => {
     error: message,
     ...(process.env.NODE_ENV === 'development' && {
       stack: err.stack,
-      details: error,
-    }),
+      details: error
+    })
   };
 
   res.status(statusCode).json(errorResponse);

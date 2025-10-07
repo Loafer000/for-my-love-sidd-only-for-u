@@ -1,6 +1,6 @@
 const request = require('supertest');
 const express = require('express');
-const propertyRoutes = require('../../routes/property');
+const propertyRoutes = require('../../routes/properties');
 const Property = require('../../models/Property');
 
 // Create test app
@@ -25,16 +25,37 @@ describe('Property Routes', () => {
       const propertyData = {
         title: 'Beautiful Apartment',
         description: 'A stunning 2BHK apartment',
-        price: 75000,
-        location: {
-          address: '456 Test Avenue',
+        propertyType: 'apartment',
+        category: 'residential',
+        address: {
+          street: '456 Test Avenue',
+          area: 'Test Area',
           city: 'Test City',
           state: 'Test State',
-          zipCode: '54321'
+          pincode: '123456'
         },
-        propertyType: 'apartment',
-        bhk: 2,
-        area: 1500,
+        location: {
+          coordinates: [12.345, 67.890]
+        },
+        specifications: {
+          bedrooms: 2,
+          bathrooms: 2,
+          area: {
+            carpet: 1500
+          },
+          floor: {
+            current: 5,
+            total: 15
+          }
+        },
+        rental: {
+          monthlyRent: 30000,
+          securityDeposit: 60000,
+          leaseDuration: {
+            minimum: 11
+          },
+          availableFrom: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000) // 10 days from now
+        },
         amenities: ['parking', 'gym', 'swimming pool']
       };
 
@@ -47,7 +68,7 @@ describe('Property Routes', () => {
       expect(response.body.success).toBe(true);
       expect(response.body.message).toBe('Property created successfully');
       expect(response.body.property.title).toBe(propertyData.title);
-      expect(response.body.property.price).toBe(propertyData.price);
+      expect(response.body.property.specifications.bedrooms).toBe(propertyData.specifications.bedrooms);
 
       // Verify property was created in database
       const property = await Property.findById(response.body.property._id);
@@ -166,7 +187,7 @@ describe('Property Routes', () => {
 
     test('should return 404 for non-existent property', async () => {
       const nonExistentId = '507f1f77bcf86cd799439011';
-      
+
       const response = await request(app)
         .get(`/api/properties/${nonExistentId}`)
         .expect(404);
