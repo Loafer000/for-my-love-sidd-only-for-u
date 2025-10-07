@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import { APIError } from '../services/enhancedAPI_fixed';
+import { APIError } from '../services/enhancedAPI';
 
 // Test utilities for React Testing Library
 
