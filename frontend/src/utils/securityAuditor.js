@@ -41,7 +41,7 @@ class SecurityAuditor {
   }
 
   checkHTTPS() {
-    if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
       this.addVulnerability('HTTPS_MISSING', 'Site not using HTTPS', 'HIGH');
     } else {
       this.addSecurityCheck('HTTPS_ENABLED', 'HTTPS properly configured', 'PASS');
@@ -265,7 +265,7 @@ class SecurityAuditor {
 
   checkCryptography() {
     // Check for proper encryption practices
-    const hasHTTPS = location.protocol === 'https:';
+    const hasHTTPS = window.location.protocol === 'https:';
     const hasSecureStorage = !this.checkSensitiveDataInPlainText();
     
     if (!hasHTTPS || !hasSecureStorage) {

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 const AdvancedTenantLifecycle = () => {
   const [activeTab, setActiveTab] = useState('onboarding');

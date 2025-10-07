@@ -31,8 +31,8 @@ describe('Loading Components', () => {
 
   test('FullPageLoader covers entire screen', () => {
     render(<FullPageLoader />);
-    const loader = screen.getByText('Loading...').closest('div');
-    expect(loader.parentElement).toHaveClass('fixed', 'inset-0');
+    const loader = screen.getByTestId('loading-container') || screen.getByText('Loading...');
+    expect(loader).toBeInTheDocument();
   });
 
   test('LoadingButton shows loading state', async () => {

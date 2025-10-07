@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 const AdvancedAgentPerformance = () => {
   const [activeTab, setActiveTab] = useState('performance');

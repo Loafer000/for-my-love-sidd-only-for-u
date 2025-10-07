@@ -189,7 +189,6 @@ const PropertySearchDemo = () => {
 // Main Test Dashboard Component
 // DEPRECATED: Test Dashboard Component - Remove in production  
 // This component was for development testing only
-import React from 'react';
 
 const TestDashboard = () => {
   return (

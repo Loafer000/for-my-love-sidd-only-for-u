@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 const AdvancedMaintenanceTools = () => {
   const [activeTab, setActiveTab] = useState('workorders');
