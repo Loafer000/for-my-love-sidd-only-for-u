@@ -12,8 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     
     services:
-      mongodb:
-        image: mongo:5.0
+      - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: 🔧 Install backend dependencies
+      run: |
+        cd backend
+        npm ci
+
+    - name: 🔧 Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci        image: mongo:5.0
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: password
@@ -239,7 +252,17 @@ jobs:
       with:
         node-version: '18'
 
-    - name: 🔒 Run npm audit (Backend)
+    - name: � Install backend dependencies
+      run: |
+        cd backend
+        npm ci
+
+    - name: 🔧 Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+
+    - name: �🔒 Run npm audit (Backend)
       run: |
         cd backend
         npm audit --audit-level moderate
