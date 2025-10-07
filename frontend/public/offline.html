@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - ConnectSpace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .offline-container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .offline-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .offline-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .offline-features {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .offline-features h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .retry-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .retry-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .connectivity-status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .online .connectivity-status {
+            background: rgba(16, 185, 129, 0.3);
+        }
+
+        .offline .connectivity-status {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .offline-container {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .offline-message {
+                font-size: 1.1rem;
+            }
+
+            .retry-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📡</div>
+        
+        <h1>You're Offline</h1>
+        
+        <p class="offline-message">
+            Don't worry! ConnectSpace works offline too. You can still browse cached properties, 
+            view your favorites, and perform many actions that will sync when you're back online.
+        </p>
+
+        <div class="offline-features">
+            <h3>Available Offline Features</h3>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">🏠</span>
+                    Browse previously viewed properties
+                </li>
+                <li>
+                    <span class="feature-icon">⭐</span>
+                    Access your saved favorites
+                </li>
+                <li>
+                    <span class="feature-icon">🔍</span>
+                    Use cached search results
+                </li>
+                <li>
+                    <span class="feature-icon">📱</span>
+                    View property photos and details
+                </li>
+                <li>
+                    <span class="feature-icon">💾</span>
+                    Queue actions for later sync
+                </li>
+                <li>
+                    <span class="feature-icon">🔔</span>
+                    Receive cached notifications
+                </li>
+            </ul>
+        </div>
+
+        <button class="retry-btn" onclick="location.reload()">
+            🔄 Try Again
+        </button>
+        
+        <a href="/" class="retry-btn">
+            🏠 Go to Homepage
+        </a>
+
+        <div class="connectivity-status" id="connectivity-status">
+            <span id="connectivity-text">Checking connection...</span>
+        </div>
+    </div>
+
+    <script>
+        // Monitor connectivity status
+        function updateConnectivityStatus() {
+            const statusElement = document.getElementById('connectivity-status');
+            const textElement = document.getElementById('connectivity-text');
+            
+            if (navigator.onLine) {
+                document.body.className = 'online';
+                textElement.textContent = '🟢 Connection restored! You can refresh to access all features.';
+            } else {
+                document.body.className = 'offline';
+                textElement.textContent = '🔴 Still offline. Using cached content.';
+            }
+        }
+
+        // Check connectivity on load
+        updateConnectivityStatus();
+
+        // Listen for connectivity changes
+        window.addEventListener('online', updateConnectivityStatus);
+        window.addEventListener('offline', updateConnectivityStatus);
+
+        // Auto-refresh when online
+        window.addEventListener('online', () => {
+            setTimeout(() => {
+                if (confirm('Connection restored! Would you like to refresh and access all features?')) {
+                    location.reload();
+                }
+            }, 1000);
+        });
+
+        // Service worker update check
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.addEventListener('updatefound', () => {
+                    const statusElement = document.getElementById('connectivity-text');
+                    statusElement.textContent = '🔄 App update available! Refresh to get the latest version.';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

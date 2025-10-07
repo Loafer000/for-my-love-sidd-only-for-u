@@ -1,0 +1,91 @@
+config:
+  target: 'http://localhost:5000'
+  phases:
+    - duration: 60
+      arrivalRate: 5
+    - duration: 120
+      arrivalRate: 10
+    - duration: 60
+      arrivalRate: 20
+  defaults:
+    headers:
+      Content-Type: application/json
+
+scenarios:
+  - name: "Authentication Flow"
+    weight: 30
+    flow:
+      - post:
+          url: "/api/auth/register"
+          json:
+            firstName: "Load"
+            lastName: "Test"
+            email: "loadtest-{{ $randomString() }}@example.com"
+            password: "password123"
+            phoneNumber: "+{{ $randomInt(1000000000, 9999999999) }}"
+            userType: "tenant"
+          capture:
+            json: "$.token"
+            as: "authToken"
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "loadtest-{{ $randomString() }}@example.com"
+            password: "password123"
+
+  - name: "Property Browsing"
+    weight: 50
+    flow:
+      - get:
+          url: "/api/properties"
+      - get:
+          url: "/api/properties"
+          qs:
+            page: "{{ $randomInt(1, 5) }}"
+            limit: "10"
+      - get:
+          url: "/api/properties"
+          qs:
+            minPrice: "{{ $randomInt(20000, 50000) }}"
+            maxPrice: "{{ $randomInt(50000, 100000) }}"
+
+  - name: "Property Management"
+    weight: 20
+    flow:
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "landlord@example.com"
+            password: "password123"
+          capture:
+            json: "$.token"
+            as: "authToken"
+      - post:
+          url: "/api/properties"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          json:
+            title: "Load Test Property {{ $randomString() }}"
+            description: "Property created during load testing"
+            price: "{{ $randomInt(30000, 100000) }}"
+            location:
+              address: "{{ $randomInt(1, 999) }} Test Street"
+              city: "Load Test City"
+              state: "Test State"
+              zipCode: "{{ $randomInt(10000, 99999) }}"
+            propertyType: "apartment"
+            bhk: "{{ $randomInt(1, 4) }}"
+            area: "{{ $randomInt(500, 2000) }}"
+            amenities: ["parking", "gym"]
+          capture:
+            json: "$.property._id"
+            as: "propertyId"
+      - get:
+          url: "/api/properties/{{ propertyId }}"
+
+plugins:
+  expect:
+    - statusCode: [200, 201]
+    - contentType: json
+  metrics-by-endpoint:
+    useOnlyRequestNames: true

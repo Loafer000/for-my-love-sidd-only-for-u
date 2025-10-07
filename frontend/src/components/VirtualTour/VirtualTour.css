@@ -1,0 +1,595 @@
+.virtual-tour {
+  background: #1a1a1a;
+  color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  min-height: 600px;
+}
+
+.tour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  border-bottom: 1px solid #4a5568;
+}
+
+.tour-title h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+}
+
+.tour-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge.premium {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #92400e;
+}
+
+.badge.interactive {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.tour-controls {
+  display: flex;
+  gap: 16px;
+}
+
+.control-group {
+  display: flex;
+  gap: 8px;
+}
+
+.control-btn {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.control-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+}
+
+.room-navigation {
+  padding: 0 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 16px 0;
+}
+
+.room-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+  position: relative;
+}
+
+.room-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.room-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.room-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #667eea;
+}
+
+.room-icon {
+  font-size: 18px;
+}
+
+.room-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tour-main-content {
+  position: relative;
+  min-height: 500px;
+}
+
+/* 360° Tour Styles */
+.tour-360-container {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+}
+
+.tour-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #2d3748;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.tour-360-viewer {
+  position: relative;
+  height: 100%;
+}
+
+.tour-360-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: grab;
+  transition: transform 0.3s ease;
+}
+
+.tour-360-image:active {
+  cursor: grabbing;
+}
+
+.tour-hotspot {
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hotspot-marker {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.hotspot-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  background: rgba(102, 126, 234, 0.3);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.hotspot-dot {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
+  background: #667eea;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.hotspot-tooltip {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hotspot-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.9);
+}
+
+.tour-hotspot:hover .hotspot-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #667eea;
+}
+
+.tooltip-content {
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tour-info-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 40px 24px 24px;
+  color: white;
+}
+
+.tour-info-overlay h3 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.tour-info-overlay p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+/* Video Tour Styles */
+.video-tour-container {
+  padding: 24px;
+  background: #2d3748;
+}
+
+.tour-video {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.video-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.video-info p {
+  margin: 0 0 16px 0;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+.video-features {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.feature {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  backdrop-filter: blur(5px);
+}
+
+/* Floor Plan Styles */
+.floor-plan-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  padding: 24px;
+  background: #2d3748;
+  min-height: 500px;
+}
+
+.floor-plan-viewer {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.floor-plan-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.floor-plan-rooms {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+}
+
+.floor-room {
+  position: absolute;
+  background: rgba(102, 126, 234, 0.9);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 12px;
+  font-weight: 500;
+  backdrop-filter: blur(5px);
+}
+
+.floor-room:hover {
+  background: rgba(102, 126, 234, 1);
+  transform: scale(1.1);
+}
+
+.floor-room.active {
+  background: #fbbf24;
+  color: #92400e;
+}
+
+.floor-plan-info {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.floor-plan-info h3 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.floor-plan-info p {
+  margin: 0 0 20px 0;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+.plan-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item strong {
+  color: #667eea;
+}
+
+/* Tour Progress */
+.tour-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 16px 24px;
+  backdrop-filter: blur(10px);
+}
+
+.progress-info {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.progress-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transition: width 0.3s ease;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .virtual-tour {
+    border-radius: 8px;
+    margin: 10px;
+  }
+  
+  .tour-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px;
+  }
+  
+  .tour-controls {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .control-group {
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .control-btn {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .room-navigation {
+    padding: 0 16px;
+  }
+  
+  .room-tabs {
+    padding: 12px 0;
+  }
+  
+  .room-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .room-icon {
+    font-size: 16px;
+  }
+  
+  .tour-360-container {
+    height: 300px;
+  }
+  
+  .tour-info-overlay {
+    padding: 20px 16px 16px;
+  }
+  
+  .tour-info-overlay h3 {
+    font-size: 18px;
+  }
+  
+  .tour-info-overlay p {
+    font-size: 14px;
+  }
+  
+  .video-tour-container {
+    padding: 16px;
+  }
+  
+  .tour-video {
+    height: 250px;
+  }
+  
+  .floor-plan-container {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  
+  .floor-plan-info {
+    padding: 16px;
+  }
+  
+  .hotspot-tooltip {
+    min-width: 150px;
+    font-size: 12px;
+  }
+  
+  .video-features {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tour-header {
+    padding: 12px;
+  }
+  
+  .tour-title h2 {
+    font-size: 18px;
+  }
+  
+  .badge {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+  
+  .room-tab {
+    padding: 6px 8px;
+  }
+  
+  .room-name {
+    display: none;
+  }
+  
+  .tour-360-container {
+    height: 250px;
+  }
+  
+  .tour-progress {
+    padding: 12px 16px;
+  }
+}
