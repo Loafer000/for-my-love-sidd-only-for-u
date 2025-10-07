@@ -17,7 +17,7 @@ describe('Smoke Tests', () => {
 
     it('should validate basic security functions', () => {
       const { sanitizeInput } = require('../security/validator');
-      
+
       // Test basic input sanitization
       const result = sanitizeInput('<script>alert("xss")</script>test@example.com', 'email');
       expect(result).toBeTruthy();
@@ -25,7 +25,7 @@ describe('Smoke Tests', () => {
 
     it('should handle utility functions', () => {
       const razorpay = require('../utils/razorpay');
-      
+
       // Test that razorpay utilities are accessible
       expect(razorpay.verifyPaymentSignature).toBeDefined();
       expect(razorpay.createOrder).toBeDefined();

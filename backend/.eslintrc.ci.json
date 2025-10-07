@@ -15,6 +15,9 @@
   "rules": {
     "no-undef": "error",
     "no-unreachable": "off",
+    "linebreak-style": "off",
+    "eol-last": "off",
+    "no-trailing-spaces": "off",
     "security/detect-eval-with-expression": "error",
     "security/detect-new-buffer": "error",
     "security/detect-pseudoRandomBytes": "error"
@@ -23,6 +26,9 @@
     "node_modules/",
     "coverage/",
     "dist/",
-    "build/"
+    "build/",
+    "tests/",
+    "*.config.js",
+    "jest.config*.js"
   ]
 }
