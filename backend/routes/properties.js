@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const propertyController = require('../controllers/propertyController');
-const { authenticate, authorize, optionalAuth } = require('../middleware/auth');
+const { authenticate, optionalAuth } = require('../middleware/auth');
 const { validateRequest } = require('../middleware/validation');
 
 // @desc    Test property routes
@@ -17,10 +17,7 @@ router.get('/test', (req, res) => {
       'GET    /api/properties/:id',
       'POST   /api/properties',
       'PUT    /api/properties/:id',
-      'DELETE /api/properties/:id',
-      'GET    /api/properties/search',
-      'POST   /api/properties/:id/images',
-      'DELETE /api/properties/:id/images/:imageId'
+      'DELETE /api/properties/:id'
     ]
   });
 });

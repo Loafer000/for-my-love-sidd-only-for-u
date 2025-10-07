@@ -1,7 +1,7 @@
 // Review Controller - Smart Review & Rating System
 
 const {
-  ReviewEnhanced, Property, Booking, User
+  ReviewEnhanced, Property, Booking, User, Review
 } = require('../models');
 
 // Create a new review (only after completed booking)

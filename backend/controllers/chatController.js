@@ -1,7 +1,7 @@
 // Chat Controller - Smart Transaction-Focused Chat System
 
 const {
-  Chat, ChatMessage, Property, Booking, User
+  Chat, ChatMessage, Property
 } = require('../models');
 
 // Create or get existing chat for a property inquiry

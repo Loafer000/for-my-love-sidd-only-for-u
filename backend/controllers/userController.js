@@ -1,5 +1,4 @@
-const { User } = require('../models');
-const { uploadToCloudinary } = require('../utils/cloudinary');
+const { User, Property } = require('../models');
 
 // Get user profile
 const getUserProfile = async (req, res) => {
