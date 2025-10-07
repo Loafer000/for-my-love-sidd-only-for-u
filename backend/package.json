@@ -15,6 +15,7 @@
     "test:load": "artillery run tests/load/load-test.yml",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
+    "lint:ci": "eslint . --ext .js --config .eslintrc.ci.json",
     "security:audit": "npm audit",
     "security:check": "npm audit --audit-level moderate",
     "build": "node build.js"

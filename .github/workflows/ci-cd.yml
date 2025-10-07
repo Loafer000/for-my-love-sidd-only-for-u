@@ -57,7 +57,7 @@ jobs:
     - name: 🧪 Run backend linting
       run: |
         cd backend
-        npm run lint
+        npm run lint:ci
 
     - name: 🧪 Run backend unit tests
       run: |
@@ -275,7 +275,7 @@ jobs:
     - name: 🔒 Run security linting
       run: |
         cd backend
-        npm run lint
+        npm run lint:ci
         cd ../frontend
         npm run lint
 

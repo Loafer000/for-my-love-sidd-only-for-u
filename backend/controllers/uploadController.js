@@ -61,18 +61,18 @@ const uploadMultipleImages = async (req, res) => {
 
     const uploadResults = await Promise.all(uploadPromises);
 
-    const formattedResults = uploadResults.map((result) => ({
+    const formattedResults = uploadResults.map((result, index) => ({
       secure_url: `https://via.placeholder.com/800x600?text=Uploaded+Image+${Date.now()}_${index}`,
       width: 800,
       height: 600,
       format: 'jpg',
-      bytes: file.size,
+      bytes: req.files[index]?.size || 0,
       created_at: new Date()
     }));
 
-    const uploadedImages = mockUploads.map((upload) => ({
+    const uploadedImages = formattedResults.map((upload) => ({
       url: upload.secure_url,
-      publicId: upload.public_id
+      publicId: `temp_${Date.now()}_${Math.random()}`
     }));
 
     res.json({
@@ -80,7 +80,7 @@ const uploadMultipleImages = async (req, res) => {
       message: `${uploadedImages.length} images uploaded successfully`,
       data: {
         images: uploadedImages,
-        details: mockUploads
+        details: formattedResults
       }
     });
   } catch (error) {
