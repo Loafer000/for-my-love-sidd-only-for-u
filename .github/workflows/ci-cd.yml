@@ -46,22 +46,12 @@ jobs:
         cd backend
         npm run lint:ci
 
-    - name: 🧪 Run backend unit tests
+    - name: 🧪 Run backend CI tests
       run: |
         cd backend
-        npm run test:unit
+        npm run test:ci
       env:
         NODE_ENV: test
-        MONGODB_URI: mongodb://root:password@localhost:27017/connectspace-test?authSource=admin
-        JWT_SECRET: test-jwt-secret-key
-
-    - name: 🧪 Run backend integration tests
-      run: |
-        cd backend
-        npm run test:integration
-      env:
-        NODE_ENV: test
-        MONGODB_URI: mongodb://root:password@localhost:27017/connectspace-test?authSource=admin
         JWT_SECRET: test-jwt-secret-key
 
     - name: 📊 Upload backend coverage

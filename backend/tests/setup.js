@@ -14,29 +14,49 @@ beforeAll(async () => {
     await mongoose.disconnect();
   }
 
-  // Start in-memory MongoDB instance
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  process.env.MONGODB_URI = mongoUri;
+  try {
+    // Start in-memory MongoDB instance with binary configuration
+    mongoServer = await MongoMemoryServer.create({
+      binary: {
+        version: '6.0.4',
+        skipMD5: true
+      },
+      instance: {
+        dbName: 'connectspace-test'
+      }
+    });
+    const mongoUri = mongoServer.getUri();
+    process.env.MONGODB_URI = mongoUri;
 
-  // Connect to the in-memory database
-  await mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
+    // Connect to the in-memory database with longer timeout
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 30000,
+      maxPoolSize: 10
+    });
+  } catch (error) {
+    console.error('Failed to setup test database:', error);
+    throw error;
+  }
 });
 
 // Cleanup after all tests
 afterAll(async () => {
-  // Close database connection
-  await mongoose.connection.dropDatabase();
-  await mongoose.connection.close();
+  try {
+    // Close database connection with timeout
+    if (mongoose.connection.readyState !== 0) {
+      await mongoose.connection.dropDatabase();
+      await mongoose.connection.close();
+    }
 
-  // Stop in-memory MongoDB instance
-  if (mongoServer) {
-    await mongoServer.stop();
+    // Stop in-memory MongoDB instance
+    if (mongoServer) {
+      await mongoServer.stop({ force: true });
+    }
+  } catch (error) {
+    console.error('Error during test cleanup:', error);
   }
-});
+}, 60000);
 
 // Clear database between tests
 afterEach(async () => {
