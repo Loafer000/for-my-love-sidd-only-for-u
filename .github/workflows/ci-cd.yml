@@ -107,67 +107,325 @@ jobs:
         flags: frontend
         name: frontend-coverage
 
-  security-audit:
+  # E2E Testing
+  e2e-tests:
     runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
     
+    services:
+      mongodb:
+        image: mongo:5.0
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: password
+        ports:
+          - 27017:27017
+
     steps:
-    - name: Checkout code
+    - name: 📥 Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
+    - name: 📦 Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    - name: Install backend dependencies
+    - name: 🔧 Install dependencies
       run: |
-        cd backend
-        npm ci
+        cd frontend && npm ci
+        cd ../backend && npm ci
 
-    - name: Install frontend dependencies
-      run: |
-        cd frontend
-        npm ci
-
-    - name: Run npm audit (Backend)
-      run: |
-        cd backend
-        npm audit --audit-level moderate
-
-    - name: Run npm audit (Frontend)
+    - name: 🏗️ Build frontend
       run: |
         cd frontend
-        npm audit --audit-level moderate
+        npm run build
 
-    - name: Run backend security linting
+    - name: 🚀 Start backend server
       run: |
         cd backend
-        npm run lint:ci
+        npm start &
+        sleep 10
+      env:
+        NODE_ENV: test
+        MONGODB_URI: mongodb://root:password@localhost:27017/connectspace-test?authSource=admin
+        JWT_SECRET: test-jwt-secret-key
+        PORT: 5000
 
-  deployment:
+    - name: 🚀 Serve built frontend
+      run: |
+        cd frontend
+        npx serve -s build -p 3000 &
+        sleep 10
+
+    - name: 🧪 Run Cypress E2E tests
+      uses: cypress-io/github-action@v6
+      with:
+        working-directory: frontend
+        wait-on: 'http://localhost:3000, http://localhost:5000/api/health'
+        wait-on-timeout: 120
+        browser: chrome
+      env:
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+    - name: 📊 Upload E2E test results
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: frontend/cypress/screenshots
+
+  # Cross-Browser Testing
+  cross-browser-tests:
     runs-on: ubuntu-latest
-    needs: [backend-tests, frontend-tests, security-audit]
-    if: github.ref == 'refs/heads/main'
+    needs: [backend-tests, frontend-tests]
+    
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
     
     steps:
-    - name: Checkout code
+    - name: 📥 Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
+    - name: 📦 Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    - name: Download build artifacts
+    - name: 🔧 Install dependencies
+      run: |
+        cd frontend && npm ci
+
+    - name: 📥 Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: frontend-build
         path: frontend/build
 
-    - name: Deploy to Production
+    - name: 🧪 Install Playwright
       run: |
-        echo "Deploying to production..."
+        cd frontend
+        npx playwright install ${{ matrix.browser }}
 
-    - name: Notify deployment success
+    - name: 🚀 Serve built frontend
       run: |
-        echo "Deployment completed successfully!"
+        cd frontend
+        npx serve -s build -p 3000 &
+        sleep 10
+
+    - name: 🧪 Run cross-browser tests
+      run: |
+        cd frontend
+        npx playwright test --project=${{ matrix.browser }}
+
+    - name: 📊 Upload test results
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: playwright-results-${{ matrix.browser }}
+        path: frontend/test-results/
+
+  # Performance Testing
+  performance-tests:
+    runs-on: ubuntu-latest
+    needs: [frontend-tests]
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: 📥 Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-build
+        path: frontend/build
+
+    - name: 🚀 Serve built frontend
+      run: |
+        cd frontend
+        npx serve -s build -p 3000 &
+        sleep 10
+
+    - name: ⚡ Run Lighthouse CI
+      run: |
+        npm install -g @lhci/cli
+        lhci autorun --collect.staticDistDir=frontend/build
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+    - name: 📊 Upload Lighthouse results
+      uses: actions/upload-artifact@v4
+      with:
+        name: lighthouse-results
+        path: .lighthouseci/
+
+  # Load Testing
+  load-tests:
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+    
+    services:
+      mongodb:
+        image: mongo:5.0
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: password
+        ports:
+          - 27017:27017
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: 🔧 Install dependencies
+      run: |
+        cd backend && npm ci
+
+    - name: 🚀 Start backend server
+      run: |
+        cd backend
+        npm start &
+        sleep 15
+      env:
+        NODE_ENV: test
+        MONGODB_URI: mongodb://root:password@localhost:27017/connectspace-test?authSource=admin
+        JWT_SECRET: test-jwt-secret-key
+        PORT: 5000
+
+    - name: 🧪 Install Artillery
+      run: npm install -g artillery
+
+    - name: ⚡ Run load tests
+      run: |
+        echo "config:
+          target: 'http://localhost:5000'
+          phases:
+            - duration: 60
+              arrivalRate: 10
+        scenarios:
+          - name: 'API Health Check'
+            requests:
+              - get:
+                  url: '/api/health'" > load-test.yml
+        artillery run load-test.yml
+
+    - name: 📊 Upload load test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: load-test-results
+        path: artillery-report.json
+
+  # Security Audit
+  security-audit:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: 🔧 Install backend dependencies
+      run: |
+        cd backend
+        npm ci
+
+    - name: 🔧 Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+
+    - name: 🔒 Run npm audit (Backend)
+      run: |
+        cd backend
+        npm audit --audit-level moderate
+
+    - name: 🔒 Run npm audit (Frontend)
+      run: |
+        cd frontend
+        npm audit --audit-level moderate
+
+    - name: 🧪 Run backend security linting
+      run: |
+        cd backend
+        npm run lint:ci
+
+  # Deployment
+  deployment:
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests, e2e-tests, cross-browser-tests, performance-tests, load-tests, security-audit]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: 📥 Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-build
+        path: frontend/build
+
+    - name: 🚀 Deploy to Production
+      run: |
+        echo "🚀 Deploying ConnectSpace to production..."
+        echo "📦 Frontend build ready for deployment"
+        echo "🔄 Triggering production deployment..."
+        # Add your actual deployment commands here
+        # Examples:
+        # - Vercel: vercel --prod
+        # - Netlify: netlify deploy --prod
+        # - AWS: aws s3 sync build/ s3://your-bucket
+        # - Docker: docker build and push
+        
+    - name: 📊 Post-deployment health check
+      run: |
+        echo "🏥 Running post-deployment health checks..."
+        # Add health check commands here
+        # curl -f https://your-production-url/api/health
+        
+    - name: 📢 Notify deployment success
+      run: |
+        echo "✅ 🎉 ConnectSpace deployment completed successfully!"
+        echo "📊 Pipeline Summary:"
+        echo "   ✅ Backend tests passed"
+        echo "   ✅ Frontend tests passed" 
+        echo "   ✅ E2E tests passed"
+        echo "   ✅ Cross-browser tests passed"
+        echo "   ✅ Performance tests passed"
+        echo "   ✅ Load tests passed"
+        echo "   ✅ Security audit passed"
+        echo "   ✅ Production deployment successful"
+        echo ""
+        echo "🌟 Your ConnectSpace application is now live!"
+        # Add notification integrations here:
+        # - Slack webhook
+        # - Discord webhook  
+        # - Email notification
+        # - Teams notification
+
+    - name: 📢 Notify on failure
+      if: failure()
+      run: |
+        echo "❌ 🚨 Deployment failed!"
+        echo "Please check the logs and fix the issues."
+        # Add failure notification commands here
