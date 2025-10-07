@@ -31,7 +31,7 @@ describe('Loading Components', () => {
 
   test('FullPageLoader covers entire screen', () => {
     render(<FullPageLoader />);
-    const loader = screen.getByTestId('loading-container') || screen.getByText('Loading...');
+    const loader = screen.getByText('Loading...');
     expect(loader).toBeInTheDocument();
   });
 
